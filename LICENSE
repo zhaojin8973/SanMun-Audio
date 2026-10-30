@@ -1,0 +1,22 @@
+GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3, 19 November 2007
+
+Copyright (c) 2026 SanMu Audio (三木音频)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program (see https://www.gnu.org/licenses/agpl-3.0.html).
+
+---
+Note on Third-Party Frameworks & SDKs:
+1. JUCE Framework (`external/JUCE`): Dual-licensed under AGPLv3 and the JUCE Commercial Licence (see `external/JUCE/LICENSE.md`).
+2. Avid AAX SDK: Not included in this public repository due to Avid's non-disclosure agreement. Open-source builds automatically target VST3 and Audio Unit (AU) when the local AAX SDK is absent.

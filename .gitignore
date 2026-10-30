@@ -1,0 +1,104 @@
+# 本地根仓库：只保存源码、测试、构建脚本和发布文档。
+# 构建目录与生成物
+build*/
+cmake-build-*/
+windows-build/
+dist/
+output/
+audit/
+tmp/
+test-results/
+performance-test/
+candidates/
+releases/
+release-candidate*/
+internal-audit*/
+internal-test*/
+installed-backup*/
+pace-*/
+backup_*/
+
+# 插件、安装包与归档
+*.pkg
+*.zip
+*.aaxplugin
+*.vst3
+*.component
+*.exe
+*.msi
+*.wav
+*.aif
+*.aiff
+*.flac
+*.mp3
+*.dmg
+
+# 本地依赖和 IDE 文件
+node_modules/
+**/node_modules/
+SanMu */node_modules
+__pycache__/
+*.py[cod]
+.venv/
+.DS_Store
+.idea/
+.vscode/
+DerivedData/
+*.xcodeproj/
+*.xcworkspace/
+*.xcuserdata/
+
+# Apple/PACE 私有 SDK、钥匙串、凭据和本机发布记录
+aax-sdk-2-9-0/
+aax-sdk-2-9-0.zip
+**/*keychain*
+**/*credentials*
+**/*secret*
+**/*private-key*
+**/notary-*.json
+**/notary-*.log
+**/notarization/
+
+# 旧的嵌套仓库元数据与 JUCE 副本；根仓库只维护 external/JUCE 子模块
+SanMu */.gitmodules
+SanMu */external/JUCE/
+.legacy-git/
+
+# 网站保持独立仓库；其公开文档不参与插件 Windows 构建
+SanMu Website/
+SanMu UI 设计系统/
+SanMu 资料库/
+研究资料/
+素材/
+素材2/
+
+# Reverb 历史快照与试听审计资料
+SanMu Reverb/releases/
+SanMu Reverb/performance-test/
+SanMu Reverb/performance-test*/
+SanMu Comp/docs/verification/
+Internal_Test_20260928_Manifest.md
+SanMu Reverb/pace-*/
+SanMu Reverb/release-candidate*/
+
+# 本地内部记录与知识图谱配置（保留在本机，不推送到公开 GitHub 仓库）
+SanMu_Audio_Release_Packaging_Guide.md
+SanMu_EQ_Delay_MonoFix_20260928.md
+SanMu Audio系列最终落地检查-交互选中态风险.md
+SanMu Audio系列格式与30天试用授权方案.md
+LEGACY_GIT_ARCHIVE.md
+GITHUB_SETUP.md
+release-docs/internal-beta-*/
+graphify-out/
+**/graphify-out/
+.graphifyignore
+.agents/
+**/.agents/
+.claude/
+**/.claude/
+.codex/
+**/.codex/
+AGENTS.md
+**/AGENTS.md
+CLAUDE.md
+**/CLAUDE.md

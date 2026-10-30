@@ -1,0 +1,14 @@
+{
+  "builtAt": "2026-09-08T15:03:44.612Z",
+  "hashes": {
+    "../../source/dsp/engines/hall/HallField.h": "ffc1fbf87a437fb20b92f62079652dd6beeb6371c25ac27ffcab0e93ea091277",
+    "../../source/dsp/engines/hall/CathedralField.h": "9a04e0c3c1f91d0557abbb7fa6b31728cd8bdad41d168da2780041d94f26168b",
+    "../../source/dsp/engines/plate/PlateField.h": "c5b206f16a4153840a00cf791cda89b719d818a0a977246df4985800397a121b",
+    "../../source/dsp/engines/plate/SteelField.h": "41f48a33a54640f6316edaa3740578624f83d87c524b5ec932a542546ddeeaa9",
+    "../../source/dsp/engines/room/RoomField.h": "de1d7f1f478f280e13437eb953868a542a0d123acc04eaabe6911e43f88b5046",
+    "../../source/dsp/engines/chamber/ChamberField.h": "c6db307418cd95f50e67d0ec8a9cbf02c4f5c8adf2ae91fb831cffd0ec7a4a48",
+    "dsp/suite-bridge.cpp": "43c002fa344506958bfbb80f3e030cd3350a73d448068eadd741850e2f10f334",
+    "public/audio/suite-dsp.js": "042e76199472276e1b8c53f36a340cddf712882d2b6205a3ce6dc74d812d4532",
+    "public/audio/suite-dsp.wasm": "65aef84e54143bf0779ca71bec765de558e6d0f308448683312203794728b5e1"
+  }
+}

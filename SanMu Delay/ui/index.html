@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:">
+    <title>SanMu Delay</title>
+    <link rel="stylesheet" href="shared/reverb.css">
+    <link rel="stylesheet" href="delay.css">
+</head>
+<body>
+<div id="app">
+    <main class="instrument" data-engine="0">
+        <!-- 顶部控制条 Topbar -->
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-wordmark">
+                    <strong>SanMu</strong><span class="brand-product">Delay</span>
+                </div>
+                <div class="brand-audio" aria-label="Audio">
+                    <span>A</span><span>u</span><span>d</span><span>i</span><span>o</span>
+                </div>
+            </div>
+
+            <!-- 预设控制器 -->
+            <div class="preset-control">
+                <button id="preset-prev" class="icon-button" data-icon="chevron-left" data-tip="Previous preset"></button>
+                <button id="preset-open" class="preset-open" data-tip="Browse presets">
+                    <span id="preset-name">Default Settings</span>
+                    <span id="preset-dirty" hidden>·</span>
+                    <i data-icon="chevron-down"></i>
+                </button>
+                <button id="preset-next" class="icon-button" data-icon="chevron-right" data-tip="Next preset"></button>
+                <button id="preset-save" class="icon-button" data-icon="save" data-tip="Save preset"></button>
+            </div>
+
+            <!-- 全局工具仓 -->
+            <div class="tools">
+                <div class="history-tools">
+                    <button id="undo" class="icon-button" data-icon="undo" data-tip="tip:undo"></button>
+                    <button id="redo" class="icon-button" data-icon="redo" data-tip="tip:redo"></button>
+                </div>
+                <fieldset class="compare pill-group" aria-label="A/B">
+                    <label data-tip="tip:ab"><input type="radio" name="ab" value="A" checked><span>A</span></label>
+                    <label data-tip="tip:ab"><input type="radio" name="ab" value="B"><span>B</span></label>
+                </fieldset>
+                <button id="copy-ab" class="icon-button" data-icon="copy" data-tip="tip:copy_ab"></button>
+                <span class="tool-divider"></span>
+                <button id="btn-freeze" class="icon-button power" aria-pressed="false" data-tip="tip:freeze"><span>FREEZE</span></button>
+                <button id="bypass" class="icon-button power" aria-pressed="false" data-tip="tip:bypass">BYP</button>
+                <button id="settings" class="icon-button" data-icon="settings" data-tip="tip:settings"></button>
+            </div>
+        </header>
+
+        <!-- 模式与拓扑栏 Modebar -->
+        <div class="modebar">
+            <!-- 4 大物理引擎 (严格对齐 SanMu 设计系统 .families) -->
+            <fieldset class="families" aria-label="Delay Engine">
+                <label data-tip="tip:engine_0"><input type="radio" name="engine" value="0" checked><span>Modern</span></label>
+                <label data-tip="tip:engine_1"><input type="radio" name="engine" value="1"><span>Tape</span></label>
+                <label data-tip="tip:engine_2"><input type="radio" name="engine" value="2"><span>BBD</span></label>
+                <label data-tip="tip:engine_3"><input type="radio" name="engine" value="3"><span>Diffused</span></label>
+            </fieldset>
+
+            <!-- 路由与引擎同排，使用固定容器避免重复搬移。 -->
+            <div class="mode-routing"><span class="routing-label">ROUTING</span><fieldset class="styles topology-group" aria-label="Topology">
+                <label data-tip="tip:topology_0"><input type="radio" name="topology" value="0" checked><span>Independent</span></label>
+                <label data-tip="tip:topology_1"><input type="radio" name="topology" value="1"><span>Ping-Pong</span></label>
+                <label data-tip="tip:topology_2"><input type="radio" name="topology" value="2"><span>Cross</span></label>
+            </fieldset></div>
+
+        </div>
+
+        <!-- 主工作视窗 Sound Section (Echo Stage + Integrated Meters) -->
+        <section class="sound-section">
+            <div class="stage" id="stage">
+                <div id="echo-editor"></div>
+            </div>
+        </section>
+
+        <!-- 主控制甲板 Main Controls (Primary Hero Parameters) -->
+        <section class="main-controls" aria-label="Primary Delay Controls">
+            <!-- 核心参数：反馈 FEEDBACK (Large Hero Knob) -->
+            <div class="hero-knob-wrapper bpm-hero"><div id="knob-bpm" class="hero-knob"></div></div>
+
+            <div class="engine-char-wrapper">
+                <div id="knob-engine-char-1"></div>
+                <div id="knob-engine-char-2" style="display:none"></div>
+                <div id="knob-modern-clarity"></div>
+            </div>
+
+            <div class="hero-knob-wrapper feedback-hero">
+                <div id="knob-feedback" class="hero-knob"></div>
+            </div>
+
+            <!-- 核心参数：干湿比 MIX (Large Hero Knob) -->
+            <div class="hero-knob-wrapper">
+                <div id="knob-mix" class="hero-knob"></div>
+            </div>
+        </section>
+
+        <!-- 次级参数细节甲板 Details Section -->
+        <section id="details" class="details" aria-label="Secondary Controls">
+            <!-- 阻尼滤波 DAMPING -->
+            <fieldset class="detail-group damping">
+                <legend data-i18n="Damping">DAMPING</legend>
+                <div>
+                    <div id="knob-damp-lowcut"></div>
+                    <div id="knob-damp-highcut"></div>
+                </div>
+            </fieldset>
+
+            <!-- 调制 MODULATION -->
+            <fieldset class="detail-group">
+                <legend data-i18n="Modulation">MODULATION</legend>
+                <div>
+                    <div id="knob-mod-rate"></div>
+                    <div id="knob-mod-depth"></div>
+                </div>
+            </fieldset>
+
+            <!-- 避让 DUCKING -->
+            <fieldset class="detail-group duck-group">
+                <legend>
+                    <label class="toggle-label" data-tip="tip:duck_enable">
+                        <input type="checkbox" id="duck-enable">
+                        <span data-i18n="Ducking">DUCKING</span>
+                    </label>
+                    <div class="duck-meter" data-tip="tip:duck_meter">
+                        <span class="duck-meter-label">GR</span>
+                        <div class="duck-meter-track" role="meter" aria-label="Duck GR" aria-valuemin="0" aria-valuemax="24" aria-valuenow="0"><div id="duck-meter-fill"></div></div>
+                        <output id="duck-meter-value">0.0 dB</output>
+                    </div>
+                    <fieldset class="pill-group mini-pill-group" aria-label="Duck Source">
+                        <label data-tip="tip:duck_internal"><input type="radio" name="duck_source" value="0" checked><span>INT</span></label>
+                        <label data-tip="tip:duck_external"><input type="radio" name="duck_source" value="1"><span>EXT</span></label>
+                    </fieldset>
+                </legend>
+                <div class="duck-knobs-row">
+                    <div id="knob-duck-threshold"></div>
+                    <div id="knob-duck-amount"></div>
+                    <div id="knob-duck-release"></div>
+                </div>
+            </fieldset>
+
+            <!-- 输出增益 OUTPUT -->
+            <fieldset class="detail-group output-group">
+                <legend data-i18n="Output">OUTPUT</legend>
+                <div>
+                    <div id="knob-output-gain"></div>
+                </div>
+            </fieldset>
+        </section>
+
+        <!-- 设置面板 Settings Dialog -->
+        <dialog id="settings-dialog" aria-label="Settings">
+            <div class="dialog-heading">
+                <h2 data-i18n="Settings">Settings</h2>
+                <button class="icon-button close" data-icon="x" data-tip="Close"></button>
+            </div>
+            <fieldset class="setting-group">
+                <legend data-i18n="Appearance">Appearance</legend>
+                <div class="setting-options theme-options">
+                    <label><input type="radio" name="theme" value="light"><span><i class="theme-swatch light"></i><b data-i18n="Light">Light</b></span></label>
+                    <label><input type="radio" name="theme" value="dark"><span><i class="theme-swatch dark"></i><b data-i18n="Dark">Dark</b></span></label>
+                </div>
+            </fieldset>
+            <div class="setting-group visual-setting">
+                <label for="history-enabled" data-i18n="Visual display">Visual display</label>
+                <input type="checkbox" id="history-enabled" role="switch">
+                <p class="setting-note" data-i18n="Hide the decay diagram while time editing, audio and meters remain active.">Hide the decay diagram while time editing, audio and meters remain active.</p>
+            </div>
+            <fieldset class="setting-group">
+                <legend data-i18n="Interface language">Interface language</legend>
+                <div class="setting-options language-options">
+                    <label><input type="radio" name="language" value="en"><span>English</span></label>
+                    <label><input type="radio" name="language" value="zh"><span>中文</span></label>
+                </div>
+            </fieldset>
+            <fieldset class="setting-group">
+                <legend data-i18n="Window · Interface scale">Window · Interface scale</legend>
+                <div class="setting-options scale-options">
+                    <label><input type="radio" name="scale" value="0.85"><span>85%</span></label>
+                    <label><input type="radio" name="scale" value="1"><span>100%</span></label>
+                    <label><input type="radio" name="scale" value="1.15"><span>115%</span></label>
+                    <label><input type="radio" name="scale" value="1.25"><span>125%</span></label>
+                    <label><input type="radio" name="scale" value="1.5"><span>150%</span></label>
+                </div>
+                <button id="reset-window" class="setting-link" data-i18n="Reset size to 100%">Reset size to 100%</button>
+            </fieldset>
+            <fieldset class="setting-group">
+                <legend data-i18n="Tooltips">Tooltips</legend>
+                <div class="setting-options tooltip-options">
+                    <label><input type="radio" name="tips" value="follow"><span><b data-i18n="Follow interface">Follow interface</b></span></label>
+                    <label><input type="radio" name="tips" value="zh"><span><b data-i18n="Chinese tips">Chinese tips</b></span></label>
+                    <label><input type="radio" name="tips" value="en"><span><b data-i18n="English tips">English tips</b></span></label>
+                    <label><input type="radio" name="tips" value="off"><span><b data-i18n="Turn off">Turn off</b></span></label>
+                </div>
+            </fieldset>
+            <div class="setting-links">
+                <button id="help"><b data-i18n="Help manual">Help manual</b><span aria-hidden="true">↗</span></button>
+                <button id="about"><b data-i18n="About SanMu Audio">About SanMu Audio</b><span aria-hidden="true">↗</span></button>
+            </div>
+        </dialog>
+
+        <!-- 预设浏览弹窗 Presets Dialog -->
+        <dialog id="presets-dialog">
+            <div class="dialog-heading">
+                <h2 data-i18n="Presets">Presets</h2>
+                <button class="icon-button close" data-icon="x" data-tip="Close"></button>
+            </div>
+            <input id="preset-search" type="search" aria-label="Search presets" placeholder="Search presets">
+            <div id="preset-list"></div>
+        </dialog>
+
+        <!-- 预设保存弹窗 Save Dialog -->
+        <dialog id="save-dialog">
+            <div class="dialog-heading">
+                <h2 data-i18n="Save preset">Save preset</h2>
+                <button class="icon-button close" data-icon="x" data-tip="Close"></button>
+            </div>
+            <form id="save-form">
+                <input id="save-name" maxlength="60" required aria-label="Preset name">
+                <p id="save-error" role="alert"></p>
+                <button class="save-submit" data-i18n="Save">Save</button>
+            </form>
+        </dialog>
+
+        <!-- 帮助手册弹窗 Help Dialog -->
+        <dialog id="help-dialog">
+            <div class="dialog-heading">
+                <h2 data-i18n="Help manual">Help manual</h2>
+                <button class="icon-button close" data-icon="x" data-tip="Close"></button>
+            </div>
+            <div id="manual-content"></div>
+            <button class="setting-link back-settings" data-i18n="Back to settings">Back to settings</button>
+        </dialog>
+
+        <!-- 关于弹窗 About Dialog -->
+        <dialog id="about-dialog">
+            <div class="dialog-heading">
+                <h2 data-i18n="About SanMu Audio">About SanMu Audio</h2>
+                <button class="icon-button close" data-icon="x" data-tip="Close"></button>
+            </div>
+            <div class="about-brand"><strong>SanMu Delay</strong></div>
+            <p data-i18n="Four delay engines. Three spatial topologies. One unified workspace.">Four delay engines. Three spatial topologies. One unified workspace.</p>
+            <p>Modern · Tape · BBD · Diffused</p>
+            <button class="setting-link back-settings" data-i18n="Back to settings">Back to settings</button>
+        </dialog>
+    </main>
+
+    <!-- 浮动通知与 Tooltip -->
+    <p id="notification" hidden role="status"></p>
+    <div id="tooltip" hidden role="tooltip"></div>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

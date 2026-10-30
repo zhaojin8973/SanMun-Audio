@@ -1,0 +1,17 @@
+[
+  {
+    "format": "AU",
+    "installed": "/Users/zhaojin/Library/Audio/Plug-Ins/Components/SanMu EQ6.component",
+    "sha256": "b421a33ee05812fb3f6bd3ae5e0f226054df12febe30231a1c2902d5d100249f"
+  },
+  {
+    "format": "VST3",
+    "installed": "/Users/zhaojin/Library/Audio/Plug-Ins/VST3/SanMu EQ6.vst3",
+    "sha256": "a0be8daaf44f6b0484d529c737d3ffaad4d3479efd2ca8837a11ee46d976611e"
+  },
+  {
+    "format": "AAX",
+    "installed": "/Library/Application Support/Avid/Audio/Plug-Ins/SanMu EQ6.aaxplugin",
+    "sha256": "56a04314fa8c97f7fc7e1fcd30eeda6f70d25ef1411a0f0523445d17e523bcd8"
+  }
+]

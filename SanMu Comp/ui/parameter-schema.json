@@ -1,0 +1,472 @@
+{
+  "values": {
+    "mode": 1.0,
+    "global_bypass": 0.0,
+    "vox_comp": 0.0,
+    "vox_gain": 0.0,
+    "vox_gate": -80.0,
+    "vox_mix": 100.0,
+    "vox_smooth": 0.0,
+    "vca_threshold": 0.0,
+    "vca_ratio": 2.0,
+    "vca_attack": 30.0,
+    "vca_release": 150.0,
+    "vca_makeup": 3.576278686523438e-7,
+    "vca_sidechain_hp": 0.0,
+    "vca_mix": 100.0,
+    "vca_output_trim": 2.682209014892578e-7,
+    "vca_stereo_link": 100.0,
+    "fet_input": 18.0,
+    "fet_output": 30.0,
+    "fet_attack": 3.0,
+    "fet_release": 4.0,
+    "fet_ratio": 0.0,
+    "fet_mix": 100.0,
+    "fet_sidechain_hp": 60.0,
+    "headroom": 16.0,
+    "in_out_link": 0.0,
+    "fet_output_trim": 2.682209014892578e-7,
+    "fet_stereo_link": 100.0,
+    "opto_gain": 40.0,
+    "opto_peak_reduction": 50.0,
+    "opto_is_limit": 0.0,
+    "opto_mix": 100.0,
+    "opto_sidechain_hp": 60.0,
+    "opto_output_trim": 2.682209014892578e-7,
+    "opto_stereo_link": 100.0
+  },
+  "ui": {
+    "language": "zh",
+    "history": true,
+    "scale": 0.850000023841858,
+    "tips": "follow",
+    "theme": "light"
+  },
+  "listen": {
+    "status": "idle",
+    "progress": 0.0,
+    "seconds": 0.0,
+    "target": 4.0,
+    "hasCapture": false,
+    "ready": false,
+    "applied": false,
+    "canRestore": false,
+    "message": ""
+  },
+  "preset": "Default Settings",
+  "dirty": false,
+  "canUndo": false,
+  "canRedo": false,
+  "ab": "A",
+  "schema": {
+    "mode": {
+      "min": 0.0,
+      "max": 3.0,
+      "step": 1.0,
+      "skew": 1.0,
+      "initial": 1.0,
+      "choices": [
+        "VOX",
+        "VCA",
+        "FET",
+        "Opto"
+      ]
+    },
+    "global_bypass": {
+      "min": 0.0,
+      "max": 1.0,
+      "step": 1.0,
+      "skew": 1.0,
+      "initial": 0.0
+    },
+    "vox_comp": {
+      "min": -36.0,
+      "max": 0.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 0.0
+    },
+    "vox_gain": {
+      "min": -36.0,
+      "max": 0.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 0.0
+    },
+    "vox_gate": {
+      "min": -80.0,
+      "max": 0.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": -80.0
+    },
+    "vox_mix": {
+      "min": 0.0,
+      "max": 100.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 100.0
+    },
+    "vox_smooth": {
+      "min": 0.0,
+      "max": 1.0,
+      "step": 1.0,
+      "skew": 1.0,
+      "initial": 0.0
+    },
+    "vca_threshold": {
+      "min": -60.0,
+      "max": 0.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 0.0
+    },
+    "vca_ratio": {
+      "min": 1.0,
+      "max": 20.0,
+      "step": 0.009999999776483,
+      "skew": 0.400000005960464,
+      "initial": 2.0
+    },
+    "vca_attack": {
+      "min": 0.009999999776483,
+      "max": 300.0,
+      "step": 0.009999999776483,
+      "skew": 0.349999994039536,
+      "initial": 30.0
+    },
+    "vca_release": {
+      "min": 1.0,
+      "max": 2000.0,
+      "step": 0.100000001490116,
+      "skew": 0.349999994039536,
+      "initial": 150.0
+    },
+    "vca_makeup": {
+      "min": -24.0,
+      "max": 24.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 3.576278686523438e-7
+    },
+    "vca_sidechain_hp": {
+      "min": 0.0,
+      "max": 1000.0,
+      "step": 1.0,
+      "skew": 0.349999994039536,
+      "initial": 0.0
+    },
+    "vca_mix": {
+      "min": 0.0,
+      "max": 100.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 100.0
+    },
+    "vca_output_trim": {
+      "min": -18.0,
+      "max": 18.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 2.682209014892578e-7
+    },
+    "vca_stereo_link": {
+      "min": 0.0,
+      "max": 100.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 100.0
+    },
+    "fet_input": {
+      "min": 0.0,
+      "max": 48.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 18.0
+    },
+    "fet_output": {
+      "min": 0.0,
+      "max": 48.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 30.0
+    },
+    "fet_attack": {
+      "min": 1.0,
+      "max": 7.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 3.0
+    },
+    "fet_release": {
+      "min": 1.0,
+      "max": 7.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 4.0
+    },
+    "fet_ratio": {
+      "min": 0.0,
+      "max": 4.0,
+      "step": 1.0,
+      "skew": 1.0,
+      "initial": 0.0,
+      "choices": [
+        "4:1",
+        "8:1",
+        "12:1",
+        "20:1",
+        "All"
+      ]
+    },
+    "fet_mix": {
+      "min": 0.0,
+      "max": 100.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 100.0
+    },
+    "fet_sidechain_hp": {
+      "min": 0.0,
+      "max": 1000.0,
+      "step": 1.0,
+      "skew": 0.349999994039536,
+      "initial": 60.0
+    },
+    "headroom": {
+      "min": 4.0,
+      "max": 28.0,
+      "step": 1.0,
+      "skew": 1.0,
+      "initial": 16.0
+    },
+    "in_out_link": {
+      "min": 0.0,
+      "max": 1.0,
+      "step": 1.0,
+      "skew": 1.0,
+      "initial": 0.0
+    },
+    "fet_output_trim": {
+      "min": -18.0,
+      "max": 18.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 2.682209014892578e-7
+    },
+    "fet_stereo_link": {
+      "min": 0.0,
+      "max": 100.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 100.0
+    },
+    "opto_gain": {
+      "min": 0.0,
+      "max": 100.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 40.0
+    },
+    "opto_peak_reduction": {
+      "min": 0.0,
+      "max": 100.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 50.0
+    },
+    "opto_is_limit": {
+      "min": 0.0,
+      "max": 1.0,
+      "step": 1.0,
+      "skew": 1.0,
+      "initial": 0.0
+    },
+    "opto_mix": {
+      "min": 0.0,
+      "max": 100.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 100.0
+    },
+    "opto_sidechain_hp": {
+      "min": 0.0,
+      "max": 1000.0,
+      "step": 1.0,
+      "skew": 0.349999994039536,
+      "initial": 60.0
+    },
+    "opto_output_trim": {
+      "min": -18.0,
+      "max": 18.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 2.682209014892578e-7
+    },
+    "opto_stereo_link": {
+      "min": 0.0,
+      "max": 100.0,
+      "step": 0.100000001490116,
+      "skew": 1.0,
+      "initial": 100.0
+    }
+  },
+  "presets": [
+    {
+      "id": "factory:0",
+      "name": "Default Settings",
+      "mode": 0,
+      "user": false
+    },
+    {
+      "id": "factory:1",
+      "name": "Modern Pop In-Your-Face Vocal",
+      "mode": 0,
+      "user": false
+    },
+    {
+      "id": "factory:2",
+      "name": "Aggressive Trap / Rap Vocal",
+      "mode": 0,
+      "user": false
+    },
+    {
+      "id": "factory:3",
+      "name": "Intimate Acoustic Ballad",
+      "mode": 0,
+      "user": false
+    },
+    {
+      "id": "factory:4",
+      "name": "Heavy Rock Screamer",
+      "mode": 0,
+      "user": false
+    },
+    {
+      "id": "factory:5",
+      "name": "Podcast / Voiceover Leveler",
+      "mode": 0,
+      "user": false
+    },
+    {
+      "id": "factory:6",
+      "name": "Default Settings",
+      "mode": 1,
+      "user": false
+    },
+    {
+      "id": "factory:7",
+      "name": "Master Bus Glue",
+      "mode": 1,
+      "user": false
+    },
+    {
+      "id": "factory:8",
+      "name": "Punchy Drum Bus",
+      "mode": 1,
+      "user": false
+    },
+    {
+      "id": "factory:9",
+      "name": "Snare Crack & Body",
+      "mode": 1,
+      "user": false
+    },
+    {
+      "id": "factory:10",
+      "name": "Tight Funk Bass",
+      "mode": 1,
+      "user": false
+    },
+    {
+      "id": "factory:11",
+      "name": "Pop Vocal Consistency",
+      "mode": 1,
+      "user": false
+    },
+    {
+      "id": "factory:12",
+      "name": "Default Settings",
+      "mode": 2,
+      "user": false
+    },
+    {
+      "id": "factory:13",
+      "name": "Dr. Pepper Snare 4:1",
+      "mode": 2,
+      "user": false
+    },
+    {
+      "id": "factory:14",
+      "name": "British All-Buttons Smasher",
+      "mode": 2,
+      "user": false
+    },
+    {
+      "id": "factory:15",
+      "name": "Aggressive Vocal 8:1",
+      "mode": 2,
+      "user": false
+    },
+    {
+      "id": "factory:16",
+      "name": "Slammed Drum Room (20:1)",
+      "mode": 2,
+      "user": false
+    },
+    {
+      "id": "factory:17",
+      "name": "Parallel Heavy Crush",
+      "mode": 2,
+      "user": false
+    },
+    {
+      "id": "factory:18",
+      "name": "Punchy Bass Attack (8:1)",
+      "mode": 2,
+      "user": false
+    },
+    {
+      "id": "factory:19",
+      "name": "Default Settings",
+      "mode": 3,
+      "user": false
+    },
+    {
+      "id": "factory:20",
+      "name": "Classic Smooth Vocal",
+      "mode": 3,
+      "user": false
+    },
+    {
+      "id": "factory:21",
+      "name": "Warm Creamy Bass",
+      "mode": 3,
+      "user": false
+    },
+    {
+      "id": "factory:22",
+      "name": "Lush Acoustic Strings",
+      "mode": 3,
+      "user": false
+    },
+    {
+      "id": "factory:23",
+      "name": "Electric Piano Leveler",
+      "mode": 3,
+      "user": false
+    },
+    {
+      "id": "factory:24",
+      "name": "Silky Vocal Warmth",
+      "mode": 3,
+      "user": false
+    },
+    {
+      "id": "factory:25",
+      "name": "Opto Master Peak Limiter",
+      "mode": 3,
+      "user": false
+    }
+  ]
+}

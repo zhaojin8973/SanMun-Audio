@@ -1,0 +1,30 @@
+# ==============================================================================
+# .gitignore - Equuleus EQ 插件
+# ==============================================================================
+
+# 构建产物
+build/
+build-release/
+build-make/
+cmake-build-*/
+
+# IDE
+.idea/
+.vscode/
+*.xcodeproj/
+*.xcworkspace/
+*.xcuserdata/
+DerivedData/
+
+# macOS
+.DS_Store
+*.app
+
+# JUCE 模块（作为子模块管理，不提交到仓库）
+# external/JUCE/ 已在 .gitmodules 中
+
+# 临时文件
+*.swp
+*.swo
+*~
+scratch/

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- 允许 JIT 编译，JUCE 内嵌 Web 视图及 JavaScriptCore 必需 -->
+    <key>com.apple.security.cs.allow-jit</key>
+    <true/>
+    <!-- 允许未签名的可执行内存，用于 Web 引擎和高性能音频 DSP 缓冲区 -->
+    <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+    <true/>
+    <!-- 禁用动态库严格校验，确保插件在不同宿主（DAW）进程中能被平滑载入 -->
+    <key>com.apple.security.cs.disable-library-validation</key>
+    <true/>
+</dict>
+</plist>

@@ -1,0 +1,22 @@
+{
+  "status": "用户确认参考条件，尚未完成候选听审",
+  "reference": {
+    "plugin": "ValhallaVintageVerb",
+    "version": "4.0.5 ARM VST3",
+    "host": "REAPER",
+    "routing": "插入效果",
+    "mode": "Concert Hall",
+    "color": "1970s"
+  },
+  "parameters": {
+    "category": 2, "mode": 0, "mix": 24.8, "predelay": 20.0,
+    "decay": 3.99, "highFreq": 6000.0, "highShelf": -24.0,
+    "bassFreq": 300.0, "bassMult": 1.5, "size": 100.0, "attack": 50.0,
+    "earlyDiff": 100.0, "lateDiff": 100.0, "modRate": 2.53,
+    "modDepth": 38.0, "highCut": 8010.0, "lowCut": 10.0
+  },
+  "diffusion_cases": [[0, 0], [100, 0], [0, 100], [100, 100]],
+  "comparison_mix": [100.0, 24.8],
+  "offline_warmup_seconds": 1.0,
+  "note": "四种扩散组合均由用户实际对照流程要求；同名百分比不承诺相同内部映射。HighCut 是高切低通，LowCut 是低切高通。"
+}

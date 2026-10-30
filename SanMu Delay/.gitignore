@@ -1,0 +1,32 @@
+# ==============================================================================
+# .gitignore - SanMu Delay 插件
+# ==============================================================================
+
+# 构建产物
+build/
+build*/
+build-release/
+build-make/
+build-test/
+cmake-build-*/
+
+# IDE
+.idea/
+.vscode/
+*.xcodeproj/
+*.xcworkspace/
+*.xcuserdata/
+DerivedData/
+
+# macOS
+.DS_Store
+*.app
+
+# JUCE 模块
+external/JUCE
+
+# 临时文件
+*.swp
+*.swo
+*~
+scratch/

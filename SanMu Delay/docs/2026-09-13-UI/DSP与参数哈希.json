@@ -1,0 +1,19 @@
+{
+  "source/params/Parameters.cpp": "af7f0e1254d6d0321c615cbe1735c81cb6e97b3adab001bfcbe91e2e4c45a57a",
+  "source/params/Parameters.h": "a9ba48d664d49874768ad172d51d4c1e44715195007055a57a6e441304ae30f1",
+  "source/dsp/DelayProcessor.h": "8f506473b39c07f65d22c99a63a26dab8602d284c9fa4f15f7b1fc59d5a07917",
+  "source/dsp/DelayProcessor.cpp": "25a23c1823c222f24fa1dd6679b544f9b5f701f6ba014ae5da0c2d38e5a2e006",
+  "source/dsp/primitives/TptSvf.h": "ad24aef90e1846c16e36d48692609eb0f8f916568dd7e9e5df4df300f6bc28e4",
+  "source/dsp/primitives/DelayLine.h": "996a7d8502e1ef956192c1209c9076dcf6df9253ab4c39f135ab943155c81a2a",
+  "source/dsp/primitives/AllpassFilter.h": "300d96cfdb98ff62ff571cc8e65fbe2ad4b976dfa2ee4e2d88dec1e5347c896e",
+  "source/dsp/primitives/DuckingDetector.h": "511de094895ed050f0347d23046eaf6e561a8451bc880edcf5544b4036f3c318",
+  "source/dsp/engines/BbdEngine.h": "5e4110a2091a19f121c2b4fbbdc43481ab2e9f386c7a95b552cffab2a312a261",
+  "source/dsp/engines/TapeEngine.h": "6c509f50656397d7c4be8bd9254fbdb6486e18d01cce803b2fd26bc7f57c5597",
+  "source/dsp/engines/ModernEngine.cpp": "cc612aef848c28b19296691291020eb6ff5dae5cb928e2ec22e7dda6db463638",
+  "source/dsp/engines/DiffusedEngine.h": "7dda1c8ba9ff7eca67a401d73ad4652e8c7c13f98fbdcb941e4212194f447008",
+  "source/dsp/engines/BbdEngine.cpp": "f9785b368fc3c45fcd12ba5c7c5d8b77e2325c08fd7144c406ddf6a9f15ea4ef",
+  "source/dsp/engines/TapeEngine.cpp": "cb69b76055d0e6a4bf94f0f0f61ebd27b82df39bc1ca40aa4afae0461635d169",
+  "source/dsp/engines/ModernEngine.h": "c5dbdbaa0abbd06431643993acf036d8b2f09c7e38429eabf4ee1166ab80174e",
+  "source/dsp/engines/DiffusedEngine.cpp": "6a64b248d9fb387f5d014aaf4aa36679d64ae898e05d9cffc0d23b87a4978878",
+  "source/dsp/engines/DelayEngine.h": "8244d1f4ef51cc2e7c204df43a9bdc9f782ece4a38dfcb87feda90d55264d882"
+}

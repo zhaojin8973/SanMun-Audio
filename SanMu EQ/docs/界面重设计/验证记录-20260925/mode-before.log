@@ -1,0 +1,7 @@
+[运行] 前三种模式参数自动化的采样时间一致性
+  模式 0，块长 257，最大偏差 0.154344
+FAIL: 相同采样时刻的参数变化不得随宿主块长改变音频 (error < 2e-5) at /Users/zhaojin/Documents/SanMun Audio/SanMu EQ/tests/test_mode_integrity.h:33
+[运行] 非默认预设重新初始化和高频中心增益
+  48000 Hz，10 kHz / +6 dB 实测 5.99987 dB
+  96000 Hz，10 kHz / +6 dB 实测 5.99989 dB
+  44100 Hz，10 kHz / +6 dB 实测 5.99994 dB

@@ -1,0 +1,168 @@
+name: Windows VST3 构建
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'SanMu EQ'
+      - 'SanMu EQ/**'
+      - 'SanMu Comp'
+      - 'SanMu Comp/**'
+      - 'SanMu Delay'
+      - 'SanMu Delay/**'
+      - 'SanMu Reverb'
+      - 'SanMu Reverb/**'
+      - 'packaging/**'
+      - '.github/workflows/windows-build.yml'
+      - '.gitmodules'
+      - 'CMakeLists.txt'
+
+# 工作流只读取源码，不提交代码、不创建公开发行版、不上传网站。
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  vst3:
+    name: ${{ matrix.product }} · Windows x64 VST3
+    runs-on: windows-2022
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        product: [EQ6, Comp, Delay, Reverb]
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      SANMU_PRODUCT: ${{ matrix.product }}
+      SANMU_WEBVIEW2_VERSION: '1.0.3485.44'
+
+    steps:
+      # 固定完整提交 SHA，避免标签移动时构建工具悄然变化。
+      - name: 获取同一版本源码及递归子模块
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: 准备 Node.js 24
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '24'
+          architecture: x64
+          package-manager-cache: false
+
+      - name: 建立产物和日志目录
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $output = Join-Path $env:RUNNER_TEMP "sanmu-artifacts\$env:SANMU_PRODUCT"
+          $logs = Join-Path $env:RUNNER_TEMP "sanmu-logs\$env:SANMU_PRODUCT"
+          New-Item -ItemType Directory -Force -Path $output, $logs | Out-Null
+          @{
+            commit = $env:GITHUB_SHA
+            repository = $env:GITHUB_REPOSITORY
+            ref = $env:GITHUB_REF
+            product = $env:SANMU_PRODUCT
+            runId = $env:GITHUB_RUN_ID
+            runAttempt = $env:GITHUB_RUN_ATTEMPT
+            webView2Sdk = $env:SANMU_WEBVIEW2_VERSION
+            platform = 'Windows x64'
+            signatureStatus = 'unsigned'
+            hostValidation = 'pending'
+          } | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $output 'source-version.json')
+
+      - name: 准备 WebView2 SDK 并构建 VST3 内测压缩包
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $output = Join-Path $env:RUNNER_TEMP "sanmu-artifacts\$env:SANMU_PRODUCT"
+          $logs = Join-Path $env:RUNNER_TEMP "sanmu-logs\$env:SANMU_PRODUCT"
+          $sdkRoot = Join-Path $env:RUNNER_TEMP 'sanmu-webview2'
+          Start-Transcript -Path (Join-Path $logs 'build.log') -Force
+          try {
+            $scriptPath = Join-Path $env:GITHUB_WORKSPACE 'packaging\windows\build_sanmu_windows.ps1'
+            $tokens = $null
+            $parseErrors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($scriptPath, [ref]$tokens, [ref]$parseErrors) | Out-Null
+            if ($parseErrors.Count -gt 0) {
+              $parseErrors | Format-List | Out-String | Write-Host
+              throw 'Windows 构建脚本存在语法错误。'
+            }
+            if (-not (Get-Command nuget -ErrorAction SilentlyContinue)) {
+              throw '构建机器缺少 NuGet CLI。'
+            }
+            cmake --version
+            node --version
+            npm.cmd --version
+            git submodule status --recursive
+            if ($LASTEXITCODE -ne 0) { throw '读取子模块版本失败。' }
+
+            # 只安装开发用 SDK。用户电脑需要的是 WebView2 Runtime，二者不同。
+            nuget install Microsoft.Web.WebView2 `
+              -Version $env:SANMU_WEBVIEW2_VERSION `
+              -OutputDirectory $sdkRoot `
+              -Source 'https://api.nuget.org/v3/index.json' `
+              -NonInteractive
+            if ($LASTEXITCODE -ne 0) { throw '下载指定版本的 WebView2 SDK 失败。' }
+
+            & $scriptPath `
+              -Root $env:GITHUB_WORKSPACE `
+              -Products $env:SANMU_PRODUCT `
+              -Output $output `
+              -WebView2PackageLocation $sdkRoot
+          } finally {
+            Stop-Transcript
+          }
+
+      - name: 保留 CMake 诊断记录
+        if: always()
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $logs = Join-Path $env:RUNNER_TEMP "sanmu-logs\$env:SANMU_PRODUCT"
+          New-Item -ItemType Directory -Force -Path $logs | Out-Null
+          $buildDir = Join-Path $env:GITHUB_WORKSPACE "windows-build\$env:SANMU_PRODUCT"
+          if (Test-Path $buildDir) {
+            Get-ChildItem $buildDir -Recurse -File -Include CMakeConfigureLog.yaml, CMakeError.log, CMakeOutput.log |
+              ForEach-Object {
+                $relative = $_.FullName.Substring($buildDir.Length).TrimStart('\', '/')
+                $destination = Join-Path $logs $relative
+                New-Item -ItemType Directory -Force -Path (Split-Path -Parent $destination) | Out-Null
+                Copy-Item $_.FullName $destination
+              }
+          }
+
+      - name: 保存该插件内测包和校验记录
+        if: success()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: SanMu-${{ matrix.product }}-Windows-x64-VST3-${{ github.run_id }}
+          path: ${{ runner.temp }}/sanmu-artifacts/${{ matrix.product }}/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+
+      - name: 保存该插件构建日志
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: SanMu-${{ matrix.product }}-Windows-build-logs-${{ github.run_id }}
+          path: ${{ runner.temp }}/sanmu-logs/${{ matrix.product }}/
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: 写入测试提示
+        if: success()
+        run: |
+          @"
+          ## $env:SANMU_PRODUCT Windows VST3 候选包
+
+          - 源码提交：$env:GITHUB_SHA
+          - 构建结果与 SHA256 已随候选包保存。
+          - 本任务不包含 AAX、PACE 签名、Windows 代码签名或网站发布。
+          - 构建成功后仍需在 Windows 11 与实际宿主中安装、扫描及试听。
+          "@ | Add-Content -Encoding utf8 $env:GITHUB_STEP_SUMMARY

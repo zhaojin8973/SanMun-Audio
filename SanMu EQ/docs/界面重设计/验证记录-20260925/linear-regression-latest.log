@@ -1,0 +1,113 @@
+==================================================================
+Starting SanMu EQ M0 & Parameter Contract Regression Tests
+==================================================================
+[运行] 频段变更检测与非默认频率初始化
+[运行] 单声道处理内核的动态衰减
+[运行] 线性相位混合 L/R/M/S 路由、顺序与延迟
+路由 1/3，块长 64，实测 1.74036/-0.504835，目标 1.74041/-0.504856
+路由 3/1，块长 64，实测 0.972165/0.123197，目标 0.972168/0.123223
+路由 2/4，块长 64，实测 0.781143/-0.279942，目标 0.781132/-0.279948
+路由 4/2，块长 64，实测 1.622/-0.617336，目标 1.62204/-0.617356
+路由 3/4，块长 64，实测 1.19067/0.305724，目标 1.19069/0.305757
+路由 0/2，块长 64，实测 1.99519/-0.353128，目标 1.99526/-0.353134
+路由 1/3，块长 257，实测 1.74036/-0.504835，目标 1.74041/-0.504856
+路由 3/1，块长 257，实测 0.972165/0.123197，目标 0.972168/0.123223
+路由 2/4，块长 257，实测 0.781143/-0.279942，目标 0.781132/-0.279948
+路由 4/2，块长 257，实测 1.622/-0.617336，目标 1.62204/-0.617356
+路由 3/4，块长 257，实测 1.19067/0.305724，目标 1.19069/0.305757
+路由 0/2，块长 257，实测 1.99519/-0.353128，目标 1.99526/-0.353134
+[运行] 线性相位动态 EQ 的检测、重建与衰减
+  线性相位动态中心频率增益: -5.99885 dB，动态表: 5.99989 dB
+[运行] 四路滤波核整组替换与有符号核对称
+[运行] 线性相位时间轴、突发动态、旁通和监听恢复
+  尾部实际衰减 0.0461757 dB
+  块长 257，相对 64 样本逐样本最大误差 0
+  尾部实际衰减 0.0461757 dB
+  块长 1024，相对 64 样本逐样本最大误差 0
+  尾部实际衰减 0.0461757 dB
+[运行] 旧工程线性动态保护、显式升级、撤销和重开
+[运行] 线性动态五种声道位置、三种滤波形状和自动阈值
+[运行] 前三种模式参数自动化的采样时间一致性
+  模式 0，块长 257，最大偏差 0
+  模式 0，块长 1024，最大偏差 0
+  模式 1，块长 257，最大偏差 0
+  模式 1，块长 1024，最大偏差 0
+  模式 2，块长 257，最大偏差 0
+  模式 2，块长 1024，最大偏差 0
+[运行] 非默认预设重新初始化和高频中心增益
+  48000 Hz，10 kHz / +6 dB 实测 5.99988 dB
+  96000 Hz，10 kHz / +6 dB 实测 5.99989 dB
+  44100 Hz，10 kHz / +6 dB 实测 5.99994 dB
+[运行] 自动补偿对左右和中侧位置的对称性
+  模式 0，L/R/M/S 电平 1.5677/1.5677/1.10046/1.09373 dB
+  模式 1，L/R/M/S 电平 1.5665/1.5665/1.08908/1.09557 dB
+[RUN] Testing Parameter Layout Contract (226 params, first 58 identical)...
+  [PASS] Parameter layout verified successfully.
+[RUN] Testing R01 (Linear Phase Stereo Placement Routing)...
+  Left Gain: 5.99276 dB (expected ~+6.0 dB), Right Gain: -1.03544e-06 dB (expected ~0.0 dB)
+  [PASS] R01 verified: Left channel boosted +6dB, Right channel untouched.
+[RUN] Testing R02 (Linear Phase Bypass Latency Consistency)...
+  Normal Linear Phase Peak Sample: 5120 (expected 5120)
+  Bypassed Linear Phase Peak Sample: 5120 (expected 5120)
+  [PASS] R02 verified: Latency strictly preserved across bypass transitions.
+[RUN] Testing R03 (Spectrum Out-of-Phase Cancellation Immunity)...
+  Out-of-phase Measured Peak dBFS: -20.7751 (expected ~-20 dBFS, old code had -90 dBFS)
+  [PASS] R03 verified: No phase cancellation in spectrum analysis.
+[RUN] Testing R04 (Spectrum Absolute dBFS Calibration Accuracy)...
+  Calibrated -20 dBFS Sine Peak Display: -20.7283 dBFS (expected ~-20.0 dBFS, old had -11.1 dBFS)
+  [PASS] R04 verified: Absolute spectrum calibration is exact.
+[RUN] Testing R05 (Solo on Disabled/Absent Band)...
+  Output Max Amplitude: 0.609399 (expected 0.5, not 0.0)
+  [PASS] R05 verified: Disabled solo band does not cause unwanted muting.
+[RUN] Testing R07 (PresetData Sound Snapshot Completeness)...
+  [PASS] R07 verified: Factory preset completely defines full sound state.
+[RUN] Testing R08 (State Schema Versioning & Legacy 6-Band Migration)...
+  [PASS] R08 verified: Legacy 6-band states seamlessly migrate to 24-slot architecture.
+[RUN] Testing dynamic band detector and reduction meter...
+  [PASS] Dynamic reduction meter responds to on-band signal.
+[运行] 动态 EQ 的频段选择、立体声联动与块长一致性
+44100 Hz: 目标频段 -6.00001 dB，右声道 -6.00001 dB，衰减表 5.99979 dB
+48000 Hz: 目标频段 -5.99858 dB，右声道 -5.99858 dB，衰减表 5.99977 dB
+96000 Hz: 目标频段 -5.99913 dB，右声道 -5.99913 dB，衰减表 5.99954 dB
+[运行] 音色谐波、完整旁通、新增参数保存与旧状态恢复
+音色 0 谐波幅度 1.60604e-09
+音色 1 谐波幅度 0.0120631
+音色 2 谐波幅度 0.000501216
+[运行] 双轨频谱、低频插值与校准
+60 Hz -> 58.88 Hz, 输入 -20.4319 dBFS, 输出 -26.4525 dBFS
+1000 Hz -> 1005.62 Hz, 输入 -20.7751 dBFS, 输出 -26.7957 dBFS
+10000 Hz -> 10009.9 Hz, 输入 -20.6263 dBFS, 输出 -26.6469 dBFS
+[运行] 四档分析窗口的真实分辨率与校准
+2048 点：峰值 -20.1205 dBFS，谱峰宽度 32
+4096 点：峰值 -20.2444 dBFS，谱峰宽度 16
+8192 点：峰值 -20.5035 dBFS，谱峰宽度 8
+16384 点：峰值 -115.073 dBFS，谱峰宽度 4
+[运行] 临时监听声道路由与分级输入音色测量
+输入 -24 dBFS，模式 0，二至八次谐波总失真 9.16653e-07 %，基频电平变化 -6.81661e-08 dB
+输入 -24 dBFS，模式 1，二至八次谐波总失真 0.325412 %，基频电平变化 -0.0033758 dB
+输入 -24 dBFS，模式 2，二至八次谐波总失真 0.00160706 %，基频电平变化 -0.000418596 dB
+输入 -18 dBFS，模式 0，二至八次谐波总失真 1.15894e-06 %，基频电平变化 -1.30457e-07 dB
+输入 -18 dBFS，模式 1，二至八次谐波总失真 0.649483 %，基频电平变化 -0.0134281 dB
+输入 -18 dBFS，模式 2，二至八次谐波总失真 0.00639257 %，基频电平变化 -0.00166575 dB
+输入 -12 dBFS，模式 0，二至八次谐波总失真 6.57678e-07 %，基频电平变化 -1.91269e-08 dB
+输入 -12 dBFS，模式 1，二至八次谐波总失真 1.29752 %，基频电平变化 -0.0532694 dB
+输入 -12 dBFS，模式 2，二至八次谐波总失真 0.0254334 %，基频电平变化 -0.00662791 dB
+输入 -6 dBFS，模式 0，二至八次谐波总失真 7.71921e-07 %，基频电平变化 -1.94954e-08 dB
+输入 -6 dBFS，模式 1，二至八次谐波总失真 2.60281 %，基频电平变化 -0.209126 dB
+输入 -6 dBFS，模式 2，二至八次谐波总失真 0.101023 %，基频电平变化 -0.0263367 dB
+输入 0 dBFS，模式 0，二至八次谐波总失真 6.19744e-07 %，基频电平变化 -6.18526e-08 dB
+输入 0 dBFS，模式 1，二至八次谐波总失真 5.31856 %，基频电平变化 -0.789356 dB
+输入 0 dBFS，模式 2，二至八次谐波总失真 0.398585 %，基频电平变化 -0.104067 dB
+[运行] 自动阈值的电平适应、突发响应、静音和手动恢复
+44100 Hz，输入 -48 dBFS，自动阈值 -53.0325 dB，稳态衰减 3.09586 dB
+44100 Hz，输入 -24 dBFS，自动阈值 -28.9679 dB，稳态衰减 3.04735 dB
+44100 Hz，输入 -6 dBFS，自动阈值 -10.9268 dB，稳态衰减 3.0169 dB
+48000 Hz，输入 -48 dBFS，自动阈值 -53.0376 dB，稳态衰减 3.10217 dB
+48000 Hz，输入 -24 dBFS，自动阈值 -28.9707 dB，稳态衰减 3.05195 dB
+48000 Hz，输入 -6 dBFS，自动阈值 -10.9245 dB，稳态衰减 3.01757 dB
+96000 Hz，输入 -48 dBFS，自动阈值 -53.0353 dB，稳态衰减 3.09685 dB
+96000 Hz，输入 -24 dBFS，自动阈值 -29.0376 dB，稳态衰减 3.09863 dB
+96000 Hz，输入 -6 dBFS，自动阈值 -10.9407 dB，稳态衰减 3.02603 dB
+==================================================================
+ALL REGRESSION TESTS PASSED (0 FAILURES, EFFECTIVE ASSERTIONS)
+==================================================================

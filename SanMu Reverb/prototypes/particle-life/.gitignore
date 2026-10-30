@@ -1,0 +1,6 @@
+node_modules/
+dist/
+test-results/
+public/audio/hall-dsp.js
+public/audio/hall-dsp.wasm
+public/audio/hall-build.json
