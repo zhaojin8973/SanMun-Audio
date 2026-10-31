@@ -42,6 +42,20 @@ $npm = Get-Command npm.cmd -ErrorAction SilentlyContinue
 if (-not $npm) { throw '未找到 npm.cmd；请安装 Node.js LTS。' }
 $script:NpmCommand = $npm.Source
 
+# 检测 Inno Setup 编译器 (iscc)
+$iscc = Get-Command iscc.exe -ErrorAction SilentlyContinue
+if (-not $iscc) {
+  $defaultIscc = Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'
+  if (Test-Path $defaultIscc) {
+    $iscc = [PSCustomObject]@{ Source = $defaultIscc }
+  }
+}
+if ($iscc) {
+  Write-Host "找到 Inno Setup 编译器：$($iscc.Source)"
+} else {
+  Write-Host "未检测到 Inno Setup；将仅生成绿色便携 ZIP 包（如需 .exe 安装器请安装 Inno Setup 6）。"
+}
+
 $allProducts = @(
   @{ Slug='EQ6'; Project='SanMu EQ'; Target='SanMuQ6'; Name='SanMu EQ6' },
   @{ Slug='Comp'; Project='SanMu Comp'; Target='SanMuComp'; Name='SanMu Comp' },
@@ -149,7 +163,35 @@ $(if ($BuildAax) { 'AAX 仅为未签名的构建产物，须先完成 Windows PA
   $results.Add([ordered]@{ product=$product.Slug; version=$version; sourceCommit=$sourceCommit;
     file=[IO.Path]::GetFileName($archive); sha256=$hash; architecture='x64'; includesAax=$BuildAax.IsPresent;
     paceSigned=$false; authenticodeSigned=$false; hostVerified=$false })
-  Write-Host "已生成：$archive"
+  Write-Host "已生成绿色便携包：$archive"
+
+  # 如果检测到 Inno Setup，生成双击安装向导 (.exe)
+  $installerScript = Join-Path $Root 'packaging\windows\installer.iss'
+  $licenseFile = Join-Path $Root 'LICENSE'
+  $installerBaseName = "SanMu_$($product.Slug)_v${version}_Windows_x64_Installer"
+  if ($iscc -and (Test-Path $installerScript -PathType Leaf)) {
+    Write-Host "正在使用 Inno Setup 生成 Windows 安装向导 ($installerBaseName.exe)..."
+    $isccArgs = @(
+      "/DMyAppName=$($product.Name)",
+      "/DMyAppVersion=$version",
+      "/DMyProductSlug=$($product.Slug)",
+      "/DMySourceVst3Dir=$vst3",
+      "/DMyOutputDir=$Output",
+      "/DMyOutputBaseFilename=$installerBaseName",
+      "/DMyLicenseFile=$licenseFile",
+      $installerScript
+    )
+    Invoke-Checked -File $iscc.Source -Arguments $isccArgs
+    $installerExe = Join-Path $Output "$installerBaseName.exe"
+    if (Test-Path $installerExe) {
+      $exeHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $installerExe).Hash.ToLowerInvariant()
+      $checksums.Add("$exeHash  $installerBaseName.exe")
+      $results.Add([ordered]@{ product=$product.Slug; version=$version; sourceCommit=$sourceCommit;
+        file="$installerBaseName.exe"; sha256=$exeHash; type='installer_exe'; architecture='x64';
+        paceSigned=$false; authenticodeSigned=$false; hostVerified=$false })
+      Write-Host "已生成双击安装程序：$installerExe"
+    }
+  }
 }
 
 $checksums | Set-Content -Encoding ASCII (Join-Path $Output 'SHA256SUMS.txt')

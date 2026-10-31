@@ -58,6 +58,10 @@ jobs:
           architecture: x64
           package-manager-cache: false
 
+      - name: 准备 Inno Setup 6 安装器编译器
+        run: |
+          choco install innosetup --no-progress -y
+
       - name: 建立产物和日志目录
         run: |
           $ErrorActionPreference = 'Stop'
@@ -77,7 +81,7 @@ jobs:
             hostValidation = 'pending'
           } | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $output 'source-version.json')
 
-      - name: 准备 WebView2 SDK 并构建 VST3 内测压缩包
+      - name: 准备 WebView2 SDK 并构建 VST3 安装程序与压缩包
         run: |
           $ErrorActionPreference = 'Stop'
           $output = Join-Path $env:RUNNER_TEMP "sanmu-artifacts\$env:SANMU_PRODUCT"
@@ -159,10 +163,76 @@ jobs:
         if: success()
         run: |
           @"
-          ## $env:SANMU_PRODUCT Windows VST3 候选包
+          ## $env:SANMU_PRODUCT Windows VST3 安装包与便携包
 
           - 源码提交：$env:GITHUB_SHA
-          - 构建结果与 SHA256 已随候选包保存。
-          - 本任务不包含 AAX、PACE 签名、Windows 代码签名或网站发布。
-          - 构建成功后仍需在 Windows 11 与实际宿主中安装、扫描及试听。
+          - 已生成双击一键安装向导 (.exe) 与绿色便携包 (.zip)。
+          - 构建结果与 SHA256 已随产物保存。
           "@ | Add-Content -Encoding utf8 $env:GITHUB_STEP_SUMMARY
+
+  suite:
+    name: SanMu Audio 4合1 Windows 安装包
+    needs: vst3
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: 获取源码及许可
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+
+      - name: 准备 Inno Setup 6 安装器编译器
+        run: |
+          choco install innosetup --no-progress -y
+
+      - name: 下载四款插件构建产物
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ runner.temp }}/downloaded-artifacts
+
+      - name: 编译四合一安装程序
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $output = Join-Path $env:RUNNER_TEMP 'sanmu-suite-output'
+          New-Item -ItemType Directory -Force -Path $output | Out-Null
+
+          $stage = Join-Path $env:RUNNER_TEMP 'suite-stage'
+          New-Item -ItemType Directory -Force -Path $stage | Out-Null
+
+          Get-ChildItem -Path (Join-Path $env:RUNNER_TEMP 'downloaded-artifacts') -Recurse -Filter '*.zip' | ForEach-Object {
+            Expand-Archive -Path $_.FullName -DestinationPath (Join-Path $stage $_.BaseName) -Force
+          }
+
+          $eq6Vst3 = (Get-ChildItem -Path $stage -Recurse -Directory -Filter 'SanMu EQ6.vst3')[0].FullName
+          $compVst3 = (Get-ChildItem -Path $stage -Recurse -Directory -Filter 'SanMu Comp.vst3')[0].FullName
+          $delayVst3 = (Get-ChildItem -Path $stage -Recurse -Directory -Filter 'SanMu Delay.vst3')[0].FullName
+          $reverbVst3 = (Get-ChildItem -Path $stage -Recurse -Directory -Filter 'SanMu Reverb.vst3')[0].FullName
+
+          $iscc = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
+          $suiteIss = Join-Path $env:GITHUB_WORKSPACE 'packaging\windows\suite_installer.iss'
+          $license = Join-Path $env:GITHUB_WORKSPACE 'LICENSE'
+
+          & $iscc `
+            "/DMyAppVersion=1.0.0" `
+            "/DMyOutputDir=$output" `
+            "/DMyEq6Dir=$eq6Vst3" `
+            "/DMyCompDir=$compVst3" `
+            "/DMyDelayDir=$delayVst3" `
+            "/DMyReverbDir=$reverbVst3" `
+            "/DMyLicenseFile=$license" `
+            $suiteIss
+
+          $suiteExe = Join-Path $output 'SanMu_Audio_Suite_v1.0.0_Windows_x64_Installer.exe'
+          $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $suiteExe).Hash.ToLowerInvariant()
+          "$hash  SanMu_Audio_Suite_v1.0.0_Windows_x64_Installer.exe" | Set-Content -Encoding ASCII (Join-Path $output 'SHA256SUMS.txt')
+
+      - name: 保存四合一安装包
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: SanMu-Audio-Suite-Windows-Installer-x64-${{ github.run_id }}
+          path: ${{ runner.temp }}/sanmu-suite-output/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
