@@ -50,14 +50,11 @@ PrivilegesRequired=admin
 WizardStyle=modern
 
 [Languages]
-Name: "chinesesimp"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
 Source: "{#MySourceVst3Dir}\*"; DestDir: "{app}\{#MyAppName}.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Messages]
-chinesesimp.WelcomeLabel1=欢迎使用 [name] 安装向导
-chinesesimp.WelcomeLabel2=此向导将在您的计算机上安装 [name] 64位 VST3 音频效果器插件。%n%n建议在安装前关闭所有正在运行的音频宿主（如 Cubase、FL Studio、Studio One、Reaper 等）。%n%n点击“下一步”继续。
 english.WelcomeLabel1=Welcome to the [name] Setup Wizard
-english.WelcomeLabel2=This wizard will install [name] 64-bit VST3 audio plug-in on your computer.%n%nIt is recommended that you close your DAW applications before continuing.%n%nClick Next to continue.
+english.WelcomeLabel2=This wizard will install [name] 64-bit VST3 audio plug-in on your computer.%n%nIt is recommended that you close your DAW applications (e.g. Cubase, FL Studio, Studio One, Reaper) before continuing.%n%nClick Next to continue.

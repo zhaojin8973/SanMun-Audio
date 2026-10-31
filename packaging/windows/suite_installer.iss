@@ -47,18 +47,17 @@ PrivilegesRequired=admin
 WizardStyle=modern
 
 [Languages]
-Name: "chinesesimp"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Types]
-Name: "full"; Description: "完整安装（包含全部四款插件）"
-Name: "custom"; Description: "自定义选择安装"
+Name: "full"; Description: "Full Installation (all 4 plug-ins)"
+Name: "custom"; Description: "Custom Installation"
 
 [Components]
-Name: "eq6"; Description: "SanMu EQ6 (6 频段动态/静态均衡器)"; Types: full custom; Flags: checkablealone
-Name: "comp"; Description: "SanMu Comp (四模式专业母带压缩器)"; Types: full custom; Flags: checkablealone
-Name: "delay"; Description: "SanMu Delay (四引擎立体声延迟)"; Types: full custom; Flags: checkablealone
-Name: "reverb"; Description: "SanMu Reverb (四空间算法混响)"; Types: full custom; Flags: checkablealone
+Name: "eq6"; Description: "SanMu EQ6 (Dynamic / Static Equalizer)"; Types: full custom; Flags: checkablealone
+Name: "comp"; Description: "SanMu Comp (Master Bus & Vocal Compressor)"; Types: full custom; Flags: checkablealone
+Name: "delay"; Description: "SanMu Delay (Stereo Multi-Engine Delay)"; Types: full custom; Flags: checkablealone
+Name: "reverb"; Description: "SanMu Reverb (Algorithmic Spatial Reverb)"; Types: full custom; Flags: checkablealone
 
 [Files]
 Source: "{#MyEq6Dir}\*"; DestDir: "{app}\SanMu EQ6.vst3"; Components: eq6; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -67,7 +66,5 @@ Source: "{#MyDelayDir}\*"; DestDir: "{app}\SanMu Delay.vst3"; Components: delay;
 Source: "{#MyReverbDir}\*"; DestDir: "{app}\SanMu Reverb.vst3"; Components: reverb; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Messages]
-chinesesimp.WelcomeLabel1=欢迎使用 SanMu Audio 效果器套件安装向导
-chinesesimp.WelcomeLabel2=此向导将在您的计算机上安装 SanMu Audio 64位 VST3 音频效果器套件（EQ6、Comp、Delay、Reverb）。%n%n建议在安装前关闭所有正在运行的音频宿主（如 Cubase、FL Studio、Studio One、Reaper 等）。%n%n点击“下一步”继续。
 english.WelcomeLabel1=Welcome to the SanMu Audio Plugin Suite Setup Wizard
 english.WelcomeLabel2=This wizard will install SanMu Audio 64-bit VST3 plug-in suite (EQ6, Comp, Delay, Reverb) on your computer.%n%nIt is recommended that you close your DAW applications before continuing.%n%nClick Next to continue.

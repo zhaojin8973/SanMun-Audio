@@ -191,6 +191,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ${{ runner.temp }}/downloaded-artifacts
+          pattern: 'SanMu-*-Windows-x64-VST3-*'
 
       - name: 编译四合一安装程序
         run: |
@@ -205,10 +206,17 @@ jobs:
             Expand-Archive -Path $_.FullName -DestinationPath (Join-Path $stage $_.BaseName) -Force
           }
 
-          $eq6Vst3 = (Get-ChildItem -Path $stage -Recurse -Directory -Filter 'SanMu EQ6.vst3')[0].FullName
-          $compVst3 = (Get-ChildItem -Path $stage -Recurse -Directory -Filter 'SanMu Comp.vst3')[0].FullName
-          $delayVst3 = (Get-ChildItem -Path $stage -Recurse -Directory -Filter 'SanMu Delay.vst3')[0].FullName
-          $reverbVst3 = (Get-ChildItem -Path $stage -Recurse -Directory -Filter 'SanMu Reverb.vst3')[0].FullName
+          $eq6 = @(Get-ChildItem -Path $stage -Recurse -Directory -Filter 'SanMu EQ6.vst3')
+          $comp = @(Get-ChildItem -Path $stage -Recurse -Directory -Filter 'SanMu Comp.vst3')
+          $delay = @(Get-ChildItem -Path $stage -Recurse -Directory -Filter 'SanMu Delay.vst3')
+          $reverb = @(Get-ChildItem -Path $stage -Recurse -Directory -Filter 'SanMu Reverb.vst3')
+          if (-not $eq6 -or -not $comp -or -not $delay -or -not $reverb) {
+            throw "解压产物中未能完整找到四款插件的 VST3 目录。"
+          }
+          $eq6Vst3 = $eq6[0].FullName
+          $compVst3 = $comp[0].FullName
+          $delayVst3 = $delay[0].FullName
+          $reverbVst3 = $reverb[0].FullName
 
           $iscc = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
           $suiteIss = Join-Path $env:GITHUB_WORKSPACE 'packaging\windows\suite_installer.iss'
