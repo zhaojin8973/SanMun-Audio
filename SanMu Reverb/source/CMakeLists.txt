@@ -41,6 +41,7 @@ juce_add_plugin(SanMuReverb
     PRODUCT_NAME             "SanMu Reverb"
     COMPANY_NAME             "SanMuAudio"
     AAX_CATEGORY             Reverb
+    VST3_CATEGORIES          "Fx" "Reverb"
     IS_SYNTH                 FALSE
     NEEDS_MIDI_INPUT         FALSE
     NEEDS_MIDI_OUTPUT        FALSE

@@ -44,6 +44,7 @@ juce_add_plugin(SanMuDelay
     PRODUCT_NAME             "SanMu Delay"
     COMPANY_NAME             "SanMuAudio"
     AAX_CATEGORY             Delay
+    VST3_CATEGORIES          "Fx" "Delay"
     IS_SYNTH                 FALSE
     NEEDS_MIDI_INPUT         FALSE
     NEEDS_MIDI_OUTPUT        FALSE

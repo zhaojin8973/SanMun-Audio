@@ -45,6 +45,7 @@ juce_add_plugin(SanMuComp
     PRODUCT_NAME             "SanMu Comp"
     COMPANY_NAME             "SanMuAudio"
     AAX_CATEGORY             Dynamics
+    VST3_CATEGORIES          "Fx" "Dynamics"
     IS_SYNTH                 FALSE
     NEEDS_MIDI_INPUT         FALSE
     NEEDS_MIDI_OUTPUT        FALSE

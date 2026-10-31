@@ -44,6 +44,7 @@ juce_add_plugin(SanMuQ6
     PRODUCT_NAME             "SanMu EQ6"
     COMPANY_NAME             "SanMuAudio"
     AAX_CATEGORY             EQ
+    VST3_CATEGORIES          "Fx" "EQ"
     IS_SYNTH                 FALSE
     NEEDS_MIDI_INPUT         FALSE
     NEEDS_MIDI_OUTPUT        FALSE
