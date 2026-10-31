@@ -1,0 +1,132 @@
+{
+  "generated": "2026-10-02",
+  "count": 18,
+  "items": [
+    {
+      "site_path": "/images/music-capture/comp-dark.png",
+      "source": "网站重建素材包/03-插件实图/音乐实录-2026-09-27/修缮裁切/comp-dark.png",
+      "dimensions": "1836×1264",
+      "sha256": "abc8d3c8c43e0a8e2dbd6085b0c8e30de600ad1aeb1602db8175465523102cea",
+      "kind": "真实音乐播放界面截图"
+    },
+    {
+      "site_path": "/images/music-capture/comp-light.png",
+      "source": "网站重建素材包/03-插件实图/音乐实录-2026-09-27/修缮裁切/comp-light.png",
+      "dimensions": "1836×1264",
+      "sha256": "8c892e5d19b4ca113f481814baeec4347495975aeeeb0815c613cae70a1e2e64",
+      "kind": "真实音乐播放界面截图"
+    },
+    {
+      "site_path": "/images/music-capture/delay-dark.png",
+      "source": "网站重建素材包/03-插件实图/音乐实录-2026-09-27/修缮裁切/delay-dark.png",
+      "dimensions": "1740×1206",
+      "sha256": "0d75008ea8df6610013deb9b0d45fa9b24c9b0d434ed037b238e39092ebf9b70",
+      "kind": "真实音乐播放界面截图"
+    },
+    {
+      "site_path": "/images/music-capture/delay-light.png",
+      "source": "网站重建素材包/03-插件实图/音乐实录-2026-09-27/修缮裁切/delay-light.png",
+      "dimensions": "1730×1258",
+      "sha256": "454ac42e3995ffc10c6a0b8a9331f7d0bc3abd75387e124bd6cb80c2d21f2b2c",
+      "kind": "真实音乐播放界面截图"
+    },
+    {
+      "site_path": "/images/music-capture/eq6-dark.png",
+      "source": "网站重建素材包/03-插件实图/音乐实录-2026-09-27/修缮裁切/eq6-dark.png",
+      "dimensions": "1836×1264",
+      "sha256": "4f30047220684f69c86b398fcedb924c7946ea3746dc905f21be7b3c4c8db490",
+      "kind": "真实音乐播放界面截图"
+    },
+    {
+      "site_path": "/images/music-capture/eq6-light.png",
+      "source": "网站重建素材包/03-插件实图/音乐实录-2026-09-27/修缮裁切/eq6-light.png",
+      "dimensions": "1836×1264",
+      "sha256": "5b72304b6babe21164f877105df07f67550af09d920c221ffd925a5faeaa7a9f",
+      "kind": "真实音乐播放界面截图"
+    },
+    {
+      "site_path": "/images/music-capture/reverb-dark.png",
+      "source": "网站重建素材包/03-插件实图/音乐实录-2026-09-27/修缮裁切/reverb-dark.png",
+      "dimensions": "2152×1458",
+      "sha256": "21e8f2ea1ef0743f5512de18e307e158703b221acb3952abea13636268f0b803",
+      "kind": "真实音乐播放界面截图"
+    },
+    {
+      "site_path": "/images/music-capture/reverb-light.png",
+      "source": "网站重建素材包/03-插件实图/音乐实录-2026-09-27/修缮裁切/reverb-light.png",
+      "dimensions": "2152×1458",
+      "sha256": "14cebfdf6c0d7f2f7990c3273a19aa7e87dd11f3995860ff613a45939e5a345c",
+      "kind": "真实音乐播放界面截图"
+    },
+    {
+      "site_path": "/images/promo/real-response-2026-09-27/comp-dark.png",
+      "source": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/comp-dark.png",
+      "dimensions": "1800×1200",
+      "sha256": "d9a1065c917b6afb697c2aaa7985a6b14547f7b28d4976ebcc25d2473af32db4",
+      "kind": "正式数字产品包装图（真实 DAW UI 等比贴入盒面）"
+    },
+    {
+      "site_path": "/images/promo/real-response-2026-09-27/comp-light.png",
+      "source": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/comp-light.png",
+      "dimensions": "1800×1200",
+      "sha256": "46f1e874b2d524fcd54df8b4a97e68ce8e14c2b1fc599ca624ae1614ccca5e2d",
+      "kind": "正式数字产品包装图（真实 DAW UI 等比贴入盒面）"
+    },
+    {
+      "site_path": "/images/promo/real-response-2026-09-27/delay-dark.png",
+      "source": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/delay-dark.png",
+      "dimensions": "1800×1200",
+      "sha256": "ad08b94677ac1f17c832b70c4e6abf3d0238eda0461bb2a09589e6fb77974f9e",
+      "kind": "正式数字产品包装图（真实 DAW UI 等比贴入盒面）"
+    },
+    {
+      "site_path": "/images/promo/real-response-2026-09-27/delay-light.png",
+      "source": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/delay-light.png",
+      "dimensions": "1800×1200",
+      "sha256": "32fdb0d11ae47a8e22b3870344b5a0509dac7de8260bf4659ad1ece47e214d89",
+      "kind": "正式数字产品包装图（真实 DAW UI 等比贴入盒面）"
+    },
+    {
+      "site_path": "/images/promo/real-response-2026-09-27/eq6-dark.png",
+      "source": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/eq6-dark.png",
+      "dimensions": "1800×1200",
+      "sha256": "fd09fdb7e5ff42e21d541020b9fc95002bedfd3590120ceb3a9a1655583bb087",
+      "kind": "正式数字产品包装图（真实 DAW UI 等比贴入盒面）"
+    },
+    {
+      "site_path": "/images/promo/real-response-2026-09-27/eq6-light.png",
+      "source": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/eq6-light.png",
+      "dimensions": "1800×1200",
+      "sha256": "e1449ac14ffb4fc7f31160d4bee4eb2d7ecc0f883ad134aac4f6545a05dff480",
+      "kind": "正式数字产品包装图（真实 DAW UI 等比贴入盒面）"
+    },
+    {
+      "site_path": "/images/promo/real-response-2026-09-27/reverb-dark.png",
+      "source": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/reverb-dark.png",
+      "dimensions": "1800×1200",
+      "sha256": "b736ee2422fa4bbbae511f50fd173577c126863f4bf69600d47a9c19275ac21e",
+      "kind": "正式数字产品包装图（真实 DAW UI 等比贴入盒面）"
+    },
+    {
+      "site_path": "/images/promo/real-response-2026-09-27/reverb-light.png",
+      "source": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/reverb-light.png",
+      "dimensions": "1800×1200",
+      "sha256": "c47aaed2dab276c5d4e39d20a6c08e4c9bafae1b2a9e07e306213a0641ff0383",
+      "kind": "正式数字产品包装图（真实 DAW UI 等比贴入盒面）"
+    },
+    {
+      "site_path": "/images/promo/real-response-2026-09-27/suite-dark.png",
+      "source": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/suite-dark.png",
+      "dimensions": "1800×1200",
+      "sha256": "2d8e895a47a87138eba4246cdcbd8624e933fbd2f913c4c5392d5b5c1c2edc13",
+      "kind": "正式数字产品包装图（真实 DAW UI 等比贴入盒面）"
+    },
+    {
+      "site_path": "/images/promo/real-response-2026-09-27/suite-light.png",
+      "source": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/suite-light.png",
+      "dimensions": "1800×1200",
+      "sha256": "7260c1fd944c3ddc05a5121d1df5ab985fb9f8112449f298893d3e2f44ba6a17",
+      "kind": "正式数字产品包装图（真实 DAW UI 等比贴入盒面）"
+    }
+  ]
+}

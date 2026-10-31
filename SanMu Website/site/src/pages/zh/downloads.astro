@@ -1,0 +1,58 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import BetaDownloadCenter from '../../components/BetaDownloadCenter';
+import { internalBeta } from '../../data/releases';
+import '../../styles/support-pages.css';
+
+const readingDocuments = internalBeta.documents.slice(0, 3);
+const documentDescriptions = ['了解四款插件的功能、模式与适用场景。', '查看参数说明、安装步骤与操作方式。', '阅读 AGPLv3 开源授权与官方签名安装包的授权条款。'];
+---
+
+<Base lang="zh" title="下载 — SanMu Audio" description="获取 SanMu Audio 官方签名安装包与开源源码，阅读产品说明、用户手册与授权条款。">
+  <Nav lang="zh" />
+  <main class="sm-support-page">
+    <header class="sm-support-hero">
+      <p class="sm-support-eyebrow">SanMu Audio 开源正式版</p>
+      <h1>下载与文档</h1>
+      <p class="sm-support-subtitle">GitHub 源码免费开源 · 官网提供经代码签名的一键安装包。</p>
+      <p class="sm-support-hero-note">最新发布 {internalBeta.date} · {internalBeta.betaEndsAt}</p>
+      <div class="sm-support-actions">
+        <a class="button button-dark" href="#downloads">获取安装包</a>
+        <a class="button button-outline" href="#documents">阅读文档</a>
+      </div>
+    </header>
+
+    <section class="sm-support-downloads" id="downloads" aria-labelledby="sm-downloads-title">
+      <div class="sm-support-section-heading">
+        <h2 id="sm-downloads-title">选择你的插件。</h2>
+        <p>macOS 与 Windows 的开放状态分别列出。macOS Universal 2 签名安装包已就绪；Windows x64 安装包可通过仓库脚本或 GitHub Actions 构建。</p>
+      </div>
+      <div class="sm-support-version-list" aria-label="当前正式版本">
+        {internalBeta.products.map((product) => <span><strong>{product.name}</strong><small>v{product.version}</small></span>)}
+      </div>
+      <BetaDownloadCenter client:load lang="zh" releaseId={internalBeta.id} />
+      <p class="sm-support-release-link"><a class="text-link" href="/zh/release">查看平台说明、版本与校验记录 ↗</a></p>
+    </section>
+
+    <section class="sm-support-band" id="documents" aria-labelledby="sm-documents-title">
+      <div class="sm-support-band-inner">
+        <div class="sm-support-section-heading">
+          <h2 id="sm-documents-title">使用之前，先了解它。</h2>
+          <p>以下文档无需注册即可阅读。对应 {internalBeta.date} 正式发布。</p>
+        </div>
+        <div class="sm-support-doc-grid">
+          {readingDocuments.map((document, index) => <a class="sm-support-doc" href={`/docs/${internalBeta.id}/${document.zhPath}`} target="_blank" rel="noopener">
+            <span class="sm-support-doc-index">0{index + 1}</span>
+            <h3>{document.zh}</h3>
+            <p>{documentDescriptions[index]}</p>
+            <span class="sm-support-doc-link">阅读文档 <span aria-hidden="true">↗</span></span>
+          </a>)}
+        </div>
+        <p class="sm-support-doc-footer">当前版本已移除内测期限限制，可永久正常使用。使用中的问题可通过<a class="text-link" href="/zh/about">反馈与联系</a>提交。</p>
+      </div>
+    </section>
+  </main>
+  <Footer lang="zh" />
+</Base>

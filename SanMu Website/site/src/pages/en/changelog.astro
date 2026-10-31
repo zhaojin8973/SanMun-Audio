@@ -1,0 +1,45 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Base
+  lang="en"
+  title="Changelog — SanMu Audio"
+  description="Product status and development direction for the four SanMu Audio plug-ins."
+>
+  <Nav lang="en" current="faq" />
+
+  <header class="page-hero wrap">
+    <div class="hero-eyebrow t-eyebrow reveal"><span class="dot"></span>SANMU AUDIO · UPDATES</div>
+    <h1 class="t-display reveal">Changelog</h1>
+    <p class="hero-prop reveal">Current feature notes for four products</p>
+  </header>
+
+  <main>
+    <section class="wrap" style="padding-top:32px;">
+      <div class="changelog reveal">
+        <div class="cl-entry">
+          <div class="ver">EQ6<small>0.1.5 · Open Source</small></div>
+          <ul><li>Up to 24 band slots with Pre/Post, improved hover peak-grab focus and Mid/Side</li><li>Zero Latency and Linear Phase in Settings; Clean, Tube and Discrete keep separate identities</li></ul>
+        </div>
+        <div class="cl-entry">
+          <div class="ver">Comp<small>0.1.17 · Open Source</small></div>
+          <ul><li>Four independent compression behaviours: LEV, VCA, FET and Opto</li><li>Expanded GR + IN/OUT dual-plot view with 6s default time window (6s / 10s / 2s switchable) and five-second LISTEN measurement</li></ul>
+        </div>
+        <div class="cl-entry">
+          <div class="ver">Delay<small>0.1.5 · Open Source</small></div>
+          <ul><li>Modern, Tape, BBD and Diffused engines connected to one Echo time editor</li><li>Independent, Ping-Pong and Cross routing with SYNC, BPM, FREE and Ducking</li></ul>
+        </div>
+        <div class="cl-entry">
+          <div class="ver">Reverb<small>1.0.4 · Open Source</small></div>
+          <ul><li>Four spatial entry points: Hall, Plate, Room and Chamber</li><li>Predelay, Decay, Damping, Diffusion, Modulation and Output EQ grouped by purpose</li></ul>
+        </div>
+      </div>
+      <p class="t-meta reveal" style="margin-top:28px;">This 2026-10-31 AGPLv3 open-source release removes all beta time limits. Platform status and documents are listed on the <a class="text-link" href="/en/release">releases page</a>.</p>
+    </section>
+  </main>
+
+  <Footer lang="en" />
+</Base>

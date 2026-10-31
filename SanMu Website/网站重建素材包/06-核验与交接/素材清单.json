@@ -1,0 +1,77 @@
+[
+  {
+    "path": "网站重建设备包/03-插件实图/Comp/Comp-dark.png",
+    "dimensions": "2200×1500",
+    "sha256": "892ea772788b8368b18848c94760006c63c8db2c0b4301f5cb9cc3b50836e9b8"
+  },
+  {
+    "path": "网站重建设备包/03-插件实图/Comp/Comp-light.png",
+    "dimensions": "2200×1500",
+    "sha256": "6d76b629c35ec6db7aab810e0a8bd71f1aeb8ff8c8475b4332bbf487300212e4"
+  },
+  {
+    "path": "网站重建设备包/03-插件实图/Delay/Delay-dark.png",
+    "dimensions": "1100×750",
+    "sha256": "2c3d8bb96af1e04628efdd53de682f13c71d1ef243bd48dfeb4582667df02f88"
+  },
+  {
+    "path": "网站重建设备包/03-插件实图/Delay/Delay-light.png",
+    "dimensions": "1100×750",
+    "sha256": "2962b703c63a96d0ea8a3152dc3ee8d1995b11f1aee1b82298176fa0437a1e0f"
+  },
+  {
+    "path": "网站重建设备包/03-插件实图/EQ6/EQ6-dark.png",
+    "dimensions": "3300×2250",
+    "sha256": "60aca507dd9c04219b6b273c510310fc461742edf2a69406620167bbad254b62"
+  },
+  {
+    "path": "网站重建设备包/03-插件实图/EQ6/EQ6-light.png",
+    "dimensions": "3300×2250",
+    "sha256": "3df7d05fa732d91ff309778d3be4a84ebed1d1278fa58262282502ef5a6ca920"
+  },
+  {
+    "path": "网站重建设备包/03-插件实图/Reverb/Reverb-cathedral.png",
+    "dimensions": "980×580",
+    "sha256": "8f2719464e1378180d643c9835b9bfc4aecd855342c2fa08d9e013eb47c730d8"
+  },
+  {
+    "path": "网站重建设备包/03-插件实图/Reverb/Reverb-plate.png",
+    "dimensions": "980×580",
+    "sha256": "30c01310a89ac82009b677dfc7f16753bde393fc4f3aad41b4937cba2bf456c0"
+  },
+  {
+    "path": "网站重建设备包/04-包装宣传图/包装图总览.png",
+    "dimensions": "792×888",
+    "sha256": "da32737d9f0e9ebd0a1330aa368685f0a52c0f019645f2a4c3ab71de0de2cf9b"
+  },
+  {
+    "path": "网站重建设备包/04-包装宣传图/浅色纸面/SanMu-Suite-Light.png",
+    "dimensions": "1536×1024",
+    "sha256": "a3808e2449294396b2cb5759e245dc4d826da37ff0489409630ceced88916527"
+  },
+  {
+    "path": "网站重建设备包/04-包装宣传图/浅色纸面/单品/Comp.png",
+    "dimensions": "1536×1024",
+    "sha256": "830c3e40343685add1273415e4f09cfa313dac2f2c5e801f5797d9f01f799a4d"
+  },
+  {
+    "path": "网站重建设备包/04-包装宣传图/浅色纸面/单品/Delay.png",
+    "dimensions": "1536×1024",
+    "sha256": "1345ef32a5d504019215722b0da8e8b63c06e20f70e3193f49a7446046c63352"
+  },
+  {
+    "path": "网站重建设备包/04-包装宣传图/浅色纸面/单品/EQ6.png",
+    "dimensions": "1536×1024",
+    "sha256": "9169364301e189d19f8caa4b9b1f4a152851c89cc2f4f676f7d1531e688b60c5"
+  },
+  {
+    "path": "网站重建设备包/04-包装宣传图/浅色纸面/单品/Reverb.png",
+    "dimensions": "1536×1024",
+    "sha256": "b1a364bd8c6e9414dbe277e9709fd14966a588c11d09f959a3a629cbe41b6650"
+  },
+  {
+    "path": "网站重建设备包/04-包装宣传图/深色夜间/套装/SanMu-Suite-Dark.png",
+    "dimensions": "1536×1024",
+    "sha256": "9d3a50536afa59003f25f35149a815d28d31f6b9555d29e8a0a0bd09c444b16a"
+  }
+]

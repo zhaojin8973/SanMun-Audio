@@ -1,0 +1,13 @@
+---
+interface Props { lang: 'zh' | 'en'; }
+const { lang } = Astro.props;
+const base = `/${lang}`;
+const t = lang === 'zh' ? { studio:'SanMu 个人工作室 · 协同 AI 开源开发', download:'获取安装包与源码', release:'版本与资料', faq:'支持', about:'工作室', privacy:'隐私政策', changelog:'更新日志' } : { studio:'An independent studio, open-sourced with AI', download:'Installers & Source', release:'Releases & documents', faq:'Support', about:'Studio', privacy:'Privacy', changelog:'Changelog' };
+---
+<footer class="site-footer">
+  <div class="footer-main">
+    <div><a class="site-brand footer-site-brand" href={`${base}/`} aria-label="SanMu Audio"><strong class="site-brand-wordmark">SanMu</strong><span class="site-brand-audio" aria-hidden="true"><span>A</span><span>u</span><span>d</span><span>i</span><span>o</span></span></a><p>{t.studio}</p></div>
+    <div class="footer-actions"><a class="button button-dark" href={`${base}/downloads`}>{t.download}<span aria-hidden="true">↓</span></a><a class="button button-outline" href={`${base}/release`}>{t.release}<span aria-hidden="true">↗</span></a></div>
+  </div>
+  <div class="footer-bottom"><span>© {new Date().getFullYear()} SanMu Audio</span><div class="footer-links"><a href={`${base}/about`}>{t.about}</a><a href={`${base}/faq`}>{t.faq}</a><a href={`${base}/changelog`}>{t.changelog}</a><a href={`${base}/privacy`}>{t.privacy}</a><a href="mailto:contact@sanmuaudio.com">contact@sanmuaudio.com</a></div></div>
+</footer>

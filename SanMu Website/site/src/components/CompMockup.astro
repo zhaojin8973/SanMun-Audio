@@ -1,0 +1,120 @@
+---
+import { mockupPalettes as palettes } from './mockup-theme';
+interface Props {
+  variant?: 'small' | 'full';
+  theme?: 'light' | 'dark';
+  mode?: 0 | 1 | 2 | 3;
+}
+const { variant = 'small', theme = 'light', mode = 0 } = Astro.props;
+const p = palettes[theme];
+const gid = (n: string) => n + '-' + variant + '-' + theme;
+const U = (n: string) => 'url(#' + n + '-' + variant + '-' + theme + ')';
+
+// 模式色（四大经典建模：VOX / VCA / FET / Opto）
+const modes = [
+  { name: 'VOX',  bg: '#1E88E5', bgSoft: 'rgba(30,136,229,0.14)', edge: 'rgba(30,136,229,0.5)' },
+  { name: 'VCA',  bg: '#2058A8', bgSoft: 'rgba(32,88,168,0.14)', edge: 'rgba(32,88,168,0.5)' },
+  { name: 'FET',  bg: '#E64A19', bgSoft: 'rgba(230,74,25,0.12)', edge: 'rgba(230,74,25,0.5)' },
+  { name: 'Opto', bg: '#D49947', bgSoft: 'rgba(212,153,71,0.14)', edge: 'rgba(212,153,71,0.5)' },
+];
+const currentMode = modes[mode] || modes[0];
+const smallKnobX = [70, 185, 300, 415, 530];
+const fullKnobX = [110, 255, 410, 565, 710];
+---
+
+{variant === 'small' ? (
+  <svg viewBox="0 0 600 417" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SanMu Comp" class="comp-svg">
+    <defs>
+      <linearGradient id={gid('cbg')} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color={p.bg1} /><stop offset="1" stop-color={p.bg2} /></linearGradient>
+      <linearGradient id={gid('cmeter')} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#34D399" /><stop offset="1" stop-color="#0f766e" /></linearGradient>
+      <linearGradient id={gid('aeqSheen')} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity="0" /><stop offset="0.5" stop-color="#ffffff" stop-opacity="0.55" /><stop offset="1" stop-color="#ffffff" stop-opacity="0" /></linearGradient>
+    </defs>
+    <rect x="1" y="1" width="598" height="415" rx="14" fill={U('cbg')} stroke={p.edge} />
+    <rect class="aeq-sheen" x="-240" y="1" width="190" height="415" fill={U('aeqSheen')} opacity="0" />
+    <text x="26" y="34" font-family="Figtree,-apple-system,'PingFang SC',sans-serif" font-size="17" font-weight="800" fill={p.ink}>SanMu Comp</text>
+    <text x="26" y="52" font-family="Figtree,-apple-system,'PingFang SC',sans-serif" font-size="10" fill={p.ink2}>四模式独立电路物理建模 · VOX / VCA / FET / Opto</text>
+    <g font-family="Figtree,-apple-system,'PingFang SC',sans-serif">
+      <text x="26" y="78" font-size="9" fill={p.ink2}>IN</text>
+      <rect x="46" y="70" width="150" height="8" rx="4" fill={p.track} />
+      <rect x="46" y="70" width="104" height="8" rx="4" fill={U('cmeter')} class="aeq-meter aeq-meter-l" />
+      <text x="226" y="78" font-size="9" fill={p.ink2}>GR</text>
+      <rect x="246" y="70" width="150" height="8" rx="4" fill={p.track} />
+      <rect x="246" y="70" width="62" height="8" rx="4" fill="#e8c547" class="aeq-meter aeq-meter-r" />
+      <text x="426" y="78" font-size="9" fill={p.ink2}>OUT</text>
+      <rect x="446" y="70" width="128" height="8" rx="4" fill={p.track} />
+      <rect x="446" y="70" width="90" height="8" rx="4" fill={U('cmeter')} class="aeq-meter aeq-meter-l" />
+      <circle cx="580" cy="74" r="3.5" fill="#ff7875" />
+      {modes.map((m, i) => {
+        const isActive = i === mode;
+        return (
+          <g class="comp-mode-pill" data-mode={i} style="cursor:pointer;">
+            <rect x={26 + i * 140} y="104" width="130" height="34" rx="17" fill={isActive ? m.bg : m.bgSoft} stroke={isActive ? 'none' : m.edge} />
+            <text x={91 + i * 140} y="125" font-size="12" font-weight="600" fill={isActive ? '#ffffff' : m.bg} text-anchor="middle">{m.name}</text>
+          </g>
+        );
+      })}
+      {smallKnobX.map((cx, i) => (
+        <g>
+          <circle cx={cx} cy="235" r="26" fill="none" stroke={p.pillEdge} stroke-width="3" />
+          <path d={`M ${cx - 18} 217 A 26 26 0 0 1 ${cx + 15} ${i % 2 === 0 ? '248' : '227'}`} fill="none" stroke={currentMode.bg} stroke-width="4.5" stroke-linecap="round" class={`aeq-knob aeq-knob-${i} comp-knob-arc`} />
+          <text x={cx} y="240" font-size="9.5" font-weight="600" fill={currentMode.bg} text-anchor="middle" class="comp-knob-val">{['−18', '4:1', '12ms', '180ms', '+3.0'][i]}</text>
+          <text x={cx} y="196" font-size="8.5" fill={p.ink2} text-anchor="middle">{['Threshold', 'Ratio', 'Attack', 'Release', 'Makeup'][i]}</text>
+        </g>
+      ))}
+      <rect x="26" y="330" width="120" height="26" rx="13" fill="rgba(52,211,153,0.12)" stroke="rgba(52,211,153,0.5)" />
+      <text x="86" y="347" font-size="10" font-weight="600" fill="#0f766e" text-anchor="middle">STEREO LINK</text>
+      <rect x="156" y="330" width="120" height="26" rx="13" fill={p.toolBg} />
+      <text x="216" y="347" font-size="10" fill={p.ink2} text-anchor="middle">AUTO GAIN</text>
+      <text x="500" y="348" font-size="9" fill={p.ink2}>Bypass</text>
+      <rect x="548" y="336" width="26" height="12" rx="6" fill={p.track} />
+    </g>
+  </svg>
+) : (
+  <svg viewBox="0 0 820 570" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SanMu Comp" class="comp-svg">
+    <defs>
+      <linearGradient id={gid('cbg2')} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color={p.bg1} /><stop offset="1" stop-color={p.bg2} /></linearGradient>
+      <linearGradient id={gid('cmeter2')} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#34D399" /><stop offset="1" stop-color="#0f766e" /></linearGradient>
+      <linearGradient id={gid('aeqSheen')} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity="0" /><stop offset="0.5" stop-color="#ffffff" stop-opacity="0.55" /><stop offset="1" stop-color="#ffffff" stop-opacity="0" /></linearGradient>
+    </defs>
+    <rect x="1" y="1" width="818" height="568" rx="18" fill={U('cbg2')} stroke={p.edge} />
+    <rect class="aeq-sheen" x="-240" y="1" width="220" height="568" fill={U('aeqSheen')} opacity="0" />
+    <text x="30" y="42" font-family="Figtree,-apple-system,'PingFang SC',sans-serif" font-size="20" font-weight="800" fill={p.ink}>SanMu Comp</text>
+    <text x="30" y="64" font-family="Figtree,-apple-system,'PingFang SC',sans-serif" font-size="11" fill={p.ink2}>四模式独立电路物理建模 · VOX / VCA / FET / Opto</text>
+    <g font-family="Figtree,-apple-system,'PingFang SC',sans-serif">
+      <text x="30" y="108" font-size="11" fill={p.ink2}>IN</text>
+      <rect x="58" y="98" width="220" height="11" rx="5.5" fill={p.track} />
+      <rect x="58" y="98" width="154" height="11" rx="5.5" fill={U('cmeter2')} class="aeq-meter aeq-meter-l" />
+      <text x="318" y="108" font-size="11" fill={p.ink2}>GR</text>
+      <rect x="346" y="98" width="220" height="11" rx="5.5" fill={p.track} />
+      <rect x="346" y="98" width="92" height="11" rx="5.5" fill="#e8c547" class="aeq-meter aeq-meter-r" />
+      <text x="606" y="108" font-size="11" fill={p.ink2}>OUT</text>
+      <rect x="634" y="98" width="160" height="11" rx="5.5" fill={p.track} />
+      <rect x="634" y="98" width="112" height="11" rx="5.5" fill={U('cmeter2')} class="aeq-meter aeq-meter-l" />
+      <circle cx="800" cy="103.5" r="4.5" fill="#ff7875" />
+      {modes.map((m, i) => {
+        const isActive = i === mode;
+        return (
+          <g class="comp-mode-pill" data-mode={i} style="cursor:pointer;">
+            <rect x={30 + i * 192} y="140" width="180" height="46" rx="23" fill={isActive ? m.bg : m.bgSoft} stroke={isActive ? 'none' : m.edge} />
+            <text x={120 + i * 192} y="168" font-size="15" font-weight="600" fill={isActive ? '#ffffff' : m.bg} text-anchor="middle">{m.name}</text>
+          </g>
+        );
+      })}
+      {fullKnobX.map((cx, i) => (
+        <g>
+          <circle cx={cx} cy="355" r="50" fill="none" stroke={p.pillEdge} stroke-width="4.5" />
+          <path d={`M ${cx - 35} 325 A 50 50 0 0 1 ${cx + 29} ${i % 2 === 0 ? '385' : '345'}`} fill="none" stroke={currentMode.bg} stroke-width="7" stroke-linecap="round" class={`aeq-knob aeq-knob-${i} comp-knob-arc`} />
+          <text x={cx} y="367" font-size="13" font-weight="600" fill={currentMode.bg} text-anchor="middle" class="comp-knob-val">{['−18', '4:1', '12ms', '180ms', '+3.0'][i]}</text>
+          <text x={cx} y="295" font-size="11" fill={p.ink2} text-anchor="middle">{['Threshold', 'Ratio', 'Attack', 'Release', 'Makeup'][i]}</text>
+        </g>
+      ))}
+      <rect x="30" y="480" width="170" height="34" rx="17" fill="rgba(52,211,153,0.12)" stroke="rgba(52,211,153,0.5)" />
+      <text x="115" y="502" font-size="12" font-weight="600" fill="#0f766e" text-anchor="middle">STEREO LINK</text>
+      <rect x="212" y="480" width="170" height="34" rx="17" fill={p.toolBg} />
+      <text x="297" y="502" font-size="12" fill={p.ink2} text-anchor="middle">AUTO GAIN</text>
+      <text x="680" y="502" font-size="11" fill={p.ink2}>Bypass</text>
+      <rect x="738" y="490" width="34" height="16" rx="8" fill={p.track} />
+    </g>
+  </svg>
+)}
+

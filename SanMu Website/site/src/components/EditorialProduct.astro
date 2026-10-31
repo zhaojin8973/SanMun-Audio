@@ -1,0 +1,166 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from './Nav.astro';
+import Footer from './Footer.astro';
+import CommentSection from './CommentSection.astro';
+import PluginDetail from './PluginDetail.astro';
+import { getProduct, type Lang } from '../data/products';
+import { internalBeta } from '../data/releases';
+import '../styles/product-detail.css';
+
+const { slug, lang } = Astro.props as { slug: string; lang: Lang };
+const product = getProduct(slug);
+const copy = product[lang];
+const base = '/' + lang;
+const release = internalBeta.products.find((item) => item.slug === product.slug);
+const version = release?.version ?? product.version;
+const manual = internalBeta.documents.find((item) => item.zhPath === 'user-manual-zh.md');
+const manualPath = manual ? (lang === 'zh' ? manual.zhPath : manual.enPath) : 'user-manual-' + lang + '.md';
+const manualHref = '/docs/' + internalBeta.id + '/' + manualPath;
+const t = lang === 'zh'
+  ? { download: '获取安装包与源码', manual: '用户手册', light: '浅色界面', dark: '深色界面', themes: '切换插件界面主题', capture: '真实音乐播放中的插件界面', beta: '正式版本', until: '授权状态', detail: '功能介绍', release: '版本与下载', releaseBody: '官方签名安装包、GitHub 开源源码说明、系统要求与用户手册集中放在下载中心。平台状态与校验记录可以在发布资料中查看。', records: '查看发布资料', feedback: '使用反馈', back: '查看全部插件' }
+  : { download: 'Get installer & source', manual: 'User manual', light: 'Light interface', dark: 'Dark interface', themes: 'Switch plug-in interface theme', capture: 'Plug-in interface captured during music playback', beta: 'Release version', until: 'License', detail: 'Features', release: 'Version and downloads', releaseBody: 'The download centre brings together signed installers, open-source repository details, system requirements and the user manual. Platform status and checksums are listed in the release documents.', records: 'Release documents', feedback: 'User feedback', back: 'View all plug-ins' };
+
+// 保留全部功能说明，再按实际视野组织曲线、控制条和参数细节。
+const featureContent = {
+  eq6: {
+    zh: [
+      { title: '频谱与频段，在同一个工作区。', body: '在频谱上查看音乐的频率分布，并调整频点、增益和带宽。最多 24 个频段槽位，频段的颜色与下方参数保持对应。', theme: 'light' },
+      { title: '按声音变化调整动态范围。', body: '动态频段提供 Threshold 与 Range 控制，触发状态和增益衰减读数在界面下方显示。切除滤波器不启用动态处理。', theme: 'dark' },
+      { title: '音色与声道设置分别处理。', body: 'Clean、Tube、Discrete 提供三种音色选择。Pre/Post、Mid/Side 和设置区中的相位选项，用于不同的频率处理需要。', theme: 'light' },
+    ],
+    en: [
+      { title: 'Spectrum and bands in one workspace.', body: 'See the frequency distribution of your music and adjust frequency, gain and bandwidth. Up to 24 band slots use matching colours for the graph and controls.', theme: 'light' },
+      { title: 'Dynamic control follows the signal.', body: 'Dynamic bands expose Threshold and Range controls, with trigger and gain-reduction readings below the graph. Cut filters do not run dynamic processing.', theme: 'dark' },
+      { title: 'Separate choices for character and channels.', body: 'Clean, Tube and Discrete offer three character choices. Pre/Post, Mid/Side and phase settings support different frequency-processing needs.', theme: 'light' },
+    ],
+  },
+  comp: {
+    zh: [
+      { title: '四种模式，分别处理不同的动态。', body: 'LEV 用于电平平准，VCA 用于总线压缩，FET 用于快速瞬态，Opto 用于光电压缩。切换模式后，工作区显示对应的参数。', theme: 'dark' },
+      { title: '从阈值到释放，参数直接可见。', body: 'VCA 工作区集中排列 Threshold、Ratio、Attack、Release 与 Makeup。Sidechain HP、Stereo link 和 Mix 在下方设置。', theme: 'light' },
+      { title: '查看压缩量，也查看输入与输出。', body: '输入、输出和增益衰减在时间曲线与电平表中分别显示。浅色实录展示 VCA，深色实录展示 LEV，便于了解两种工作区。', theme: 'dark' },
+    ],
+    en: [
+      { title: 'Four modes for different dynamics.', body: 'LEV handles levelling, VCA bus compression, FET fast transients and Opto optical compression. The workspace changes to show the controls for each mode.', theme: 'dark' },
+      { title: 'Threshold to release, directly accessible.', body: 'The VCA workspace brings together Threshold, Ratio, Attack, Release and Makeup. Sidechain HP, Stereo link and Mix sit below the main controls.', theme: 'light' },
+      { title: 'Read the compression alongside the signal.', body: 'Input, output and gain reduction have separate history traces and meters. The light capture shows VCA and the dark capture shows LEV.', theme: 'dark' },
+    ],
+  },
+  delay: {
+    zh: [
+      { title: '四种延迟引擎，共用时间编辑器。', body: 'Modern、Tape、BBD 和 Diffused 共用 Echo time editor。左右声道的时间节点、LINK 和 SYNC / BPM / FREE 放在同一处调整。', theme: 'light' },
+      { title: '左右独立，或让回声来回传递。', body: 'Independent、Ping-Pong、Cross 提供三种路由。Feedback 和 Mix 分别调整重复量与干湿比例，右侧衰减图展示重复次数的参数模型。', theme: 'dark' },
+      { title: '为回声设置滤波、调制与闪避。', body: 'Low Cut、High Cut 和调制参数改变回声的频率与时间变化。Ducking 区域提供 Threshold、Amount、Release，以及内部或外部触发选择。', theme: 'light' },
+    ],
+    en: [
+      { title: 'Four engines, one time editor.', body: 'Modern, Tape, BBD and Diffused share the Echo time editor. Set the left and right timing nodes, LINK and SYNC / BPM / FREE in one place.', theme: 'light' },
+      { title: 'Independent echoes or stereo exchanges.', body: 'Independent, Ping-Pong and Cross provide three routings. Feedback and Mix control repeats and dry/wet balance; the decay graph models the repeat count.', theme: 'dark' },
+      { title: 'Filter, modulate and duck the repeats.', body: 'Low Cut, High Cut and modulation controls shape the repeats. Ducking provides Threshold, Amount and Release, with internal or external triggering.', theme: 'light' },
+    ],
+  },
+  reverb: {
+    zh: [
+      { title: '从四类空间开始设置混响。', body: 'Plate、Room、Hall、Chamber 提供四类空间。当前实录为 Plate / Modern Silk，主控制区排列 Pre-delay、Decay、Size、Attack 和 Mix。', theme: 'light' },
+      { title: '把阻尼、扩散与调制分开调整。', body: 'Damping、Diffusion、Modulation 和 Output EQ 分区排列。低频与高频衰减、早晚扩散，以及输出滤波可以分别设置。', theme: 'dark' },
+      { title: '在声场视图中查看干声与混响。', body: 'Dry、Wet、Mix 可切换声场显示，输入输出电平表保留在右侧。浅色水波和深色粒子是两种主题中的实际响应画面。', theme: 'light' },
+    ],
+    en: [
+      { title: 'Start with one of four spaces.', body: 'Plate, Room, Hall and Chamber provide four space types. These captures show Plate / Modern Silk, with Pre-delay, Decay, Size, Attack and Mix in the main control area.', theme: 'light' },
+      { title: 'Adjust damping, diffusion and modulation separately.', body: 'Damping, Diffusion, Modulation and Output EQ are grouped by function. Set low- and high-frequency decay, early and late diffusion, and output filtering separately.', theme: 'dark' },
+      { title: 'See the dry signal and reverb in the sound field.', body: 'Dry, Wet and Mix switch the sound-field display, with input and output meters on the right. The light ripples and dark particles are actual response views from the two themes.', theme: 'light' },
+    ],
+  },
+} as const;
+const featurePresentation = {
+  eq6: [
+    { index: 0, detail: 'eq-spectrum', layout: 'wide' },
+    { index: 1, detail: 'eq-dynamics', layout: 'strip' },
+    { index: 2, detail: 'eq-character', layout: 'controls' },
+  ],
+  comp: [
+    { index: 2, detail: 'comp-history', layout: 'wide' },
+    { index: 0, detail: 'comp-modes', layout: 'strip' },
+    { index: 1, detail: 'comp-controls', layout: 'controls' },
+  ],
+  delay: [
+    { index: 0, detail: 'delay-time', layout: 'wide' },
+    { index: 1, detail: 'delay-routing', layout: 'strip' },
+    { index: 2, detail: 'delay-ducking', layout: 'controls' },
+  ],
+  reverb: [
+    { index: 2, detail: 'reverb-field', layout: 'wide' },
+    { index: 0, detail: 'reverb-time', layout: 'strip' },
+    { index: 1, detail: 'reverb-controls', layout: 'controls' },
+  ],
+} as const;
+const features = featurePresentation[product.slug].map((presentation) => ({
+  ...featureContent[product.slug][lang][presentation.index],
+  ...presentation,
+}));
+const darkAlt = product.name + ' · ' + t.dark + ' · ' + t.capture;
+const lightAlt = product.name + ' · ' + t.light + ' · ' + t.capture;
+---
+
+<Base lang={lang} title={product.name + ' — SanMu Audio'} description={copy.body}>
+  <Nav lang={lang} current="products" />
+  <main class="sm-product-page">
+    <header class="sm-product-hero">
+      <h1>{product.name}</h1>
+      <p class="sm-product-subtitle">{copy.short}</p>
+      <div class="sm-product-actions">
+        <a class="button sm-product-primary" href={base + '/downloads'}>{t.download}</a>
+        <a class="button sm-product-secondary" href={manualHref} download>{t.manual}</a>
+      </div>
+      <p class="sm-product-version">{t.beta} {version} <span aria-hidden="true">·</span> {t.until} {internalBeta.betaEndsAt}</p>
+    </header>
+
+    <section class="sm-product-preview" data-sm-product-preview aria-label={product.name}>
+      <div class="sm-product-theme-switch" role="group" aria-label={t.themes}>
+        <button type="button" class="sm-product-theme-button" aria-pressed="false" data-sm-product-theme="light" data-image={product.image} data-width={product.imageWidth} data-height={product.imageHeight} data-alt={lightAlt}>{t.light}</button>
+        <button type="button" class="sm-product-theme-button" aria-pressed="true" data-sm-product-theme="dark" data-image={product.darkImage} data-width={product.darkImageWidth} data-height={product.darkImageHeight} data-alt={darkAlt}>{t.dark}</button>
+      </div>
+      <figure class="sm-product-interface">
+        <img data-sm-product-image src={product.darkImage} alt={darkAlt} width={product.darkImageWidth} height={product.darkImageHeight} fetchpriority="high" />
+        <figcaption aria-live="polite"><span data-sm-product-theme-label>{t.dark}</span> <span aria-hidden="true">·</span> {t.capture}</figcaption>
+      </figure>
+    </section>
+
+    <section class="sm-product-features" id="details" aria-label={t.detail}>
+      {features.map((feature) => (
+        <article class={`sm-product-feature sm-product-feature-${feature.layout}`}>
+          {feature.layout !== 'strip' && <PluginDetail detail={feature.detail} lang={lang} class="sm-product-feature-visual" />}
+          <div class="sm-product-feature-copy"><h2>{feature.title}</h2><p>{feature.body}</p></div>
+          {feature.layout === 'strip' && <PluginDetail detail={feature.detail} lang={lang} class="sm-product-feature-visual" />}
+        </article>
+      ))}
+    </section>
+
+    <section class="sm-product-release" id="download">
+      <div><h2>{t.release}</h2><p class="sm-product-release-version">{t.beta} {version}</p></div>
+      <div><p>{t.releaseBody}</p><div class="sm-product-actions"><a class="button sm-product-primary" href={base + '/downloads'}>{t.download}</a><a class="sm-product-records" href={base + '/release'}>{t.records} <span aria-hidden="true">↗</span></a></div></div>
+    </section>
+    <CommentSection lang={lang} productId={product.slug} title={t.feedback} samples={[]} />
+    <div class="sm-product-back"><a href={base + '/'}>{t.back} <span aria-hidden="true">↗</span></a></div>
+  </main>
+  <Footer lang={lang} />
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-sm-product-preview]').forEach((preview) => {
+    const image = preview.querySelector<HTMLImageElement>('[data-sm-product-image]');
+    const label = preview.querySelector<HTMLElement>('[data-sm-product-theme-label]');
+    const buttons = preview.querySelectorAll<HTMLButtonElement>('[data-sm-product-theme]');
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        if (!image || !button.dataset.image) return;
+        image.src = button.dataset.image;
+        image.width = Number(button.dataset.width);
+        image.height = Number(button.dataset.height);
+        image.alt = button.dataset.alt ?? '';
+        if (label) label.textContent = button.textContent;
+        buttons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+      });
+    });
+  });
+</script>

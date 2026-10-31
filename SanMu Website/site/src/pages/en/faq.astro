@@ -1,0 +1,52 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Base
+  lang="en"
+  title="FAQ — SanMu Audio"
+  description="SanMu Audio FAQ: product status, plug-in formats, host compatibility and feedback."
+>
+  <Nav lang="en" current="faq" />
+
+  <header class="page-hero wrap">
+    <div class="hero-eyebrow t-eyebrow reveal"><span class="dot"></span>SANMU AUDIO · SUPPORT</div>
+    <h1 class="t-display reveal">FAQ</h1>
+    <p class="hero-prop reveal">Product status and support information</p>
+  </header>
+
+  <main>
+    <section class="wrap" style="padding-top:32px;">
+      <div class="faq reveal">
+        <details open>
+          <summary><span class="plus">+</span>What is the difference between the GitHub source code and official installers?</summary>
+          <p>SanMu Audio's core source code is freely available on GitHub under the GNU AGPLv3 license so developers can build VST3 and AU from source. Official installers on this site are pre-compiled and Developer ID signed for musicians and mix engineers who want a ready-to-use setup.</p>
+        </details>
+        <details>
+          <summary><span class="plus">+</span>Which plug-in formats are planned?</summary>
+          <p>The current projects target VST3, AU and AAX. Final systems, hosts and formats will be listed against signed, tested public builds.</p>
+        </details>
+        <details>
+          <summary><span class="plus">+</span>Which hosts can use them?</summary>
+          <p>The products are intended for mainstream hosts that load VST3, AU or AAX, including REAPER, Cubase, Logic Pro, Pro Tools and Ableton Live. Verified coverage will be recorded separately by format and operating system before release.</p>
+        </details>
+        <details>
+          <summary><span class="plus">+</span>The plug-in does not appear in my host. What should I do?</summary>
+          <p>Once downloads open, confirm that you installed the matching format, restart the host and run a plug-in rescan. If it is still missing, email the OS version, host version, plug-in format and scan log.</p>
+        </details>
+        <details>
+          <summary><span class="plus">+</span>How do I report a bug or request a feature?</summary>
+          <p>Email contact@sanmuaudio.com with the product, version, OS, host, reproduction steps and any useful screenshots or audio. That gives us enough context to investigate a report.</p>
+        </details>
+        <details>
+          <summary><span class="plus">+</span>How will updates be delivered?</summary>
+          <p>After public release, each product page will list its version, changes and installer. Save your projects before updating and keep the previous build until existing sessions have been checked.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <Footer lang="en" />
+</Base>

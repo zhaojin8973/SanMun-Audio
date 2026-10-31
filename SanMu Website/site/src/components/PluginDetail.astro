@@ -1,0 +1,19 @@
+---
+import { getDetail, type DetailKey } from '../data/product-details';
+import type { Lang } from '../data/products';
+interface Props { detail:DetailKey; lang:Lang; caption?:boolean; class?:string; }
+const { detail, lang, caption=false, class:className='' }=Astro.props;
+const region=getDetail(detail,lang);
+const style=`--detail-ratio:${region.width}/${region.height};--detail-width:${region.sourceWidth/region.width*100}%;--detail-left:${-region.x/region.width*100}%;--detail-top:${-region.y/region.height*100}%`;
+---
+<figure class={`sm-ui-detail ${className}`}>
+  <div class="sm-detail-window" style={style}><img src={region.src} width={region.sourceWidth} height={region.sourceHeight} alt={`${region.name} · ${region.label} · ${lang==='zh'?'真实界面局部':'actual interface detail'}`} loading="lazy" /></div>
+  {caption && <figcaption>{region.name}<span>{region.label}</span></figcaption>}
+</figure>
+<style is:global>
+  .sm-ui-detail { margin:0; min-width:0; }
+  .sm-detail-window { position:relative; aspect-ratio:var(--detail-ratio); overflow:hidden; }
+  .sm-detail-window img { position:absolute; top:var(--detail-top); left:var(--detail-left); width:var(--detail-width); max-width:none; height:auto; }
+  .sm-ui-detail figcaption { display:flex; justify-content:space-between; gap:12px; margin:12px 0 0; color:var(--ink-soft); font-size:12px; line-height:1.6; }
+  .sm-ui-detail figcaption span { color:var(--muted); }
+</style>

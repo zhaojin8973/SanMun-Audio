@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import '../../styles/support-pages.css';
+---
+
+<Base lang="zh" title="关于 — SanMu Audio" description="SanMu Audio 是个人工作室与 AI 协同开发的音频插件项目，专注于均衡、压缩、延迟与混响。">
+  <Nav lang="zh" current="about" />
+  <main class="sm-support-page">
+    <header class="sm-support-hero">
+      <p class="sm-support-eyebrow">关于工作室</p>
+      <h1>SanMu Audio</h1>
+      <p class="sm-support-subtitle">个人工作室，与 AI 一起开发音频工具。</p>
+      <div class="sm-support-actions">
+        <a class="button button-dark" href="/zh/#products">查看插件</a>
+        <a class="button button-outline" href="/zh/downloads">获取安装包与源码</a>
+      </div>
+    </header>
+
+    <section class="sm-support-story" aria-labelledby="sm-about-project">
+      <h2 id="sm-about-project">从日常录音和混音开始。</h2>
+      <div class="sm-support-prose">
+        <p>SanMu Audio 由 SanMu 个人工作室制作。目前有四款插件：EQ6、Comp、Delay 和 Reverb，分别用于频率调整、动态控制、延迟与混响。</p>
+        <p>AI 参与代码实现、界面迭代与文档整理。产品方向、声音判断和真实 DAW 中的测试由 SanMu 负责。全部核心源码以 AGPLv3 协议公开分享，同时提供官方签名安装包。</p>
+        <p>插件采用一致的界面布局与操作方式。网站展示的界面来自插件在音乐播放时的实际响应，便于在下载之前了解它们的功能和使用方式。</p>
+      </div>
+    </section>
+
+    <section class="sm-support-band" aria-labelledby="sm-about-feedback">
+      <div class="sm-support-band-inner sm-support-contact">
+        <div>
+          <p class="sm-support-eyebrow">参与开发</p>
+          <h2 id="sm-about-feedback">使用反馈，是下一次更新的依据。</h2>
+          <p>欢迎分享使用体验、问题报告，或提出文档与交互的改进建议。报告问题时，请附上操作系统、DAW、插件版本和复现步骤；声音问题可以补充音频片段。</p>
+          <a class="text-link" href="mailto:contact@sanmuaudio.com">contact@sanmuaudio.com ↗</a>
+        </div>
+        <div class="sm-support-contact-note">
+          <h3>下载前可以先阅读</h3>
+          <p>产品说明、用户手册与开源授权条款已集中在下载中心。平台是否开放，以对应版本的状态为准。</p>
+          <a class="button button-outline" href="/zh/downloads">打开下载中心</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer lang="zh" />
+</Base>

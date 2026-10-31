@@ -1,0 +1,52 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Base
+  lang="zh"
+  title="FAQ — SanMu Audio"
+  description="SanMu Audio 常见问题：产品状态、插件格式、宿主兼容与反馈渠道。"
+>
+  <Nav lang="zh" current="faq" />
+
+  <header class="page-hero wrap">
+    <div class="hero-eyebrow t-eyebrow reveal"><span class="dot"></span>SANMU AUDIO · 支持</div>
+    <h1 class="t-display reveal">FAQ</h1>
+    <p class="hero-prop reveal">产品状态与支持信息</p>
+  </header>
+
+  <main>
+    <section class="wrap" style="padding-top:32px;">
+      <div class="faq reveal">
+        <details open>
+          <summary><span class="plus">+</span>开源源码与官方安装包有什么区别？</summary>
+          <p>SanMu Audio 核心源码以 GNU AGPLv3 协议在 GitHub 免费开源，懂 C++ / CMake 的开发者可自行编译 VST3 与 AU。官网下载中心则提供已完成 Apple Developer ID 签名的一键安装包，方便不熟悉编译环境的混音师与音乐人直接安装使用。</p>
+        </details>
+        <details>
+          <summary><span class="plus">+</span>支持哪些插件格式？</summary>
+          <p>当前工程目标包含 VST3、AU 和 AAX。最终支持的系统、宿主和格式以经过签名、安装验证并公开的构建为准。</p>
+        </details>
+        <details>
+          <summary><span class="plus">+</span>可以在哪些宿主中使用？</summary>
+          <p>产品面向支持 VST3、AU 或 AAX 的主流音频宿主，包括 REAPER、Cubase、Logic Pro、Pro Tools 和 Ableton Live。正式发布前会按格式和系统分别记录已验证范围。</p>
+        </details>
+        <details>
+          <summary><span class="plus">+</span>安装后在宿主里找不到插件怎么办？</summary>
+          <p>下载开放后，请先确认安装了对应格式，重启宿主并执行插件扫描。若仍然找不到，请邮件发送系统版本、宿主版本、插件格式和扫描日志。</p>
+        </details>
+        <details>
+          <summary><span class="plus">+</span>如何反馈 Bug 或功能需求？</summary>
+          <p>请发送邮件至 contact@sanmuaudio.com，并附上产品名称、版本、系统、宿主、复现步骤和必要的截图或音频片段。这样比只描述“无法使用”更容易定位问题。</p>
+        </details>
+        <details>
+          <summary><span class="plus">+</span>更新会怎样发布？</summary>
+          <p>正式下载开放后，官网产品页会记录版本号、变更内容和对应安装包。更新前请保存工程并保留旧版本，直到确认现有项目可以正常打开。</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <Footer lang="zh" />
+</Base>

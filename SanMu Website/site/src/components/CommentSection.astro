@@ -1,0 +1,40 @@
+---
+import CommentWidget from './comments/CommentWidget';
+import { supabaseConfigured } from '../lib/supabase';
+
+interface Sample {
+  who: string;
+  type: string;
+  status: string;
+  time: string;
+  body: string;
+  votes: number;
+  reply?: string;
+}
+interface Props {
+  lang: 'zh' | 'en';
+  productId: 'eq6' | 'comp' | 'reverb' | 'delay';
+  title: string;
+  samples: Sample[];
+}
+const { lang, productId, title, samples } = Astro.props;
+---
+
+{
+  supabaseConfigured ? (
+    <section class="wrap" id="comments">
+      <div class="sec-head reveal"><span class="idx">07</span><h2 class="t-title">{title}</h2></div>
+      <div class="comments reveal">
+        <CommentWidget client:load lang={lang} productId={productId} />
+      </div>
+    </section>
+  ) : (
+    <section class="wrap" id="comments">
+      <div class="sec-head reveal"><span class="idx">07</span><h2 class="t-title">{title}</h2></div>
+      <div class="comments reveal">
+        <p class="t-meta" style="margin:0;">{lang === 'zh' ? '反馈请附上插件版本、系统、宿主，以及具体的复现步骤。当前内测可直接通过邮件联系。' : 'Please include the plug-in version, operating system, DAW and steps to reproduce the issue. Email us for this beta.'}</p>
+        <a class="mail" href="mailto:contact@sanmuaudio.com">contact@sanmuaudio.com</a>
+      </div>
+    </section>
+  )
+}

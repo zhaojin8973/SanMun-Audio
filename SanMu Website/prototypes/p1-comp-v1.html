@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SanMu Comp — 四模式物理建模压缩器 | SanMu Audio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@100..900&display=block" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: #fff;
+    font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: geometricPrecision;
+  }
+
+  :root {
+    --dp: 1;
+    --fs-display : 55.7px;
+    --fs-title   : calc(var(--dp) * 20);
+    --fs-heading : calc(var(--dp) * 17);
+    --fs-body    : 16.1px;
+    --fs-eyebrow : calc(var(--dp) * 15.8);
+    --fs-ui      : 15px;
+    --fs-meta    : calc(var(--dp) * 14.3);
+    --fs-item    : calc(var(--dp) * 12.9);
+    --fs-caption : calc(var(--dp) * 12.2);
+    --fs-wordmark: 17.1px;
+    --fs-sup     : 11.4px;
+
+    --fw-light : 388; --fw-regular : 470; --fw-medium : 500;
+    --fw-semibold : 511; --fw-bold : 577; --fw-black : 783;
+
+    --tr-display : -0.0572em; --tr-title : -0.0570em; --tr-heading : -0.0200em;
+    --tr-body : -0.0475em; --tr-eyebrow : -0.0293em; --tr-ui : -0.0080em;
+    --tr-cta : -0.0200em; --tr-meta : -0.0447em; --tr-item : -0.0287em;
+    --tr-caption : -0.0295em; --tr-wordmark : -0.0075em;
+
+    --lh-display : 61px; --lh-body : 20px; --lh-flat : 1;
+
+    --c-ink : #000000; --c-ink-soft : #2e2e2e; --c-muted : #b8b8b8;
+    --c-on-dark : #ffffff; --c-surface-nav : #000000;
+    --c-surface-card : #f6f8f7; --c-surface-panel : #ffffff; --c-border-row : #ededed;
+    --c-accent : #34D399; --c-accent-deep : #0f766e;
+
+    --ease-reveal : cubic-bezier(.22, 1, .36, 1);
+    --ease-settle : cubic-bezier(.16, 1, .30, 1);
+  }
+
+  .t-display { font-size: var(--fs-display); font-weight: var(--fw-regular); letter-spacing: var(--tr-display); line-height: var(--lh-display); color: var(--c-ink); }
+  .t-title   { font-size: var(--fs-title); font-weight: var(--fw-light); letter-spacing: var(--tr-title); line-height: var(--lh-flat); color: var(--c-ink); }
+  .t-heading { font-size: var(--fs-heading); font-weight: var(--fw-semibold); letter-spacing: var(--tr-heading); line-height: var(--lh-flat); color: var(--c-ink); }
+  .t-body    { font-size: var(--fs-body); font-weight: var(--fw-regular); letter-spacing: var(--tr-body); line-height: var(--lh-body); color: var(--c-ink); }
+  .t-eyebrow { font-size: var(--fs-eyebrow); font-weight: var(--fw-light); letter-spacing: var(--tr-eyebrow); line-height: var(--lh-flat); color: var(--c-ink); }
+  .t-meta    { font-size: var(--fs-meta); font-weight: var(--fw-regular); letter-spacing: var(--tr-meta); line-height: 1.55; color: var(--c-ink-soft); }
+  .t-item    { font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); line-height: var(--lh-flat); color: var(--c-ink); }
+  .t-caption { font-size: var(--fs-caption); font-weight: var(--fw-light); letter-spacing: var(--tr-caption); line-height: var(--lh-flat); color: var(--c-muted); }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+
+  .nav {
+    position: sticky; top: 16px; z-index: 50;
+    left: 0; width: 880px; max-width: calc(100% - 32px); height: 52px; margin: 16px auto 0;
+    background: var(--c-surface-nav); border-radius: 26px;
+    display: flex; align-items: center;
+  }
+  .logo { margin-left: 9px; flex: none; }
+  .wordmark { margin-left: 6px; display: flex; align-items: center; white-space: nowrap; font-size: var(--fs-wordmark); font-weight: var(--fw-black); letter-spacing: var(--tr-wordmark); color: var(--c-on-dark); line-height: var(--lh-flat); }
+  .wordmark sup { font-size: var(--fs-sup); font-weight: var(--fw-regular); letter-spacing: 0.10em; text-transform: uppercase; position: relative; top: -6px; left: 2px; color: var(--c-accent); }
+  .nav a.link { margin-left: 34px; display: flex; align-items: center; height: 52px; font-size: var(--fs-ui); font-weight: var(--fw-medium); letter-spacing: var(--tr-ui); color: var(--c-on-dark); text-decoration: none; white-space: nowrap; line-height: var(--lh-flat); }
+  .nav a.link:hover { color: var(--c-accent); }
+  .nav a.link:first-of-type { margin-left: 42px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 0; border-radius: 17px; height: 34px; padding: 0 22px;
+    font-family: inherit; font-size: var(--fs-ui); letter-spacing: var(--tr-cta);
+    line-height: var(--lh-flat); white-space: nowrap; cursor: pointer; text-decoration: none;
+  }
+  .btn--nav { margin-left: auto; margin-right: 9px; background: #fff; color: #000; font-weight: var(--fw-bold); }
+  .btn--nav:hover { background: var(--c-accent); }
+  .btn--dark { background: #000; color: #fff; font-weight: var(--fw-medium); }
+  .btn--dark:hover { background: var(--c-accent-deep); }
+  .btn--ghost { background: none; color: var(--c-ink); font-weight: var(--fw-medium); border: 1px solid var(--c-border-row); }
+  .btn--ghost:hover { border-color: var(--c-accent); color: var(--c-accent-deep); }
+
+  .burger { display: none; flex-direction: column; justify-content: center; gap: 5px; margin-left: auto; margin-right: 9px; width: 34px; height: 34px; padding: 0 7px; background: none; border: 0; border-radius: 17px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .burger__bar { display: block; height: 2px; width: 100%; background: #fff; border-radius: 1px; transition: transform .22s ease, opacity .22s ease; }
+  .nav.is-open .burger__bar:nth-child(1) { transform: translateY(3.5px) rotate(45deg); }
+  .nav.is-open .burger__bar:nth-child(2) { transform: translateY(-3.5px) rotate(-45deg); }
+  .navmenu { display: flex; flex-direction: column; position: absolute; top: calc(100% + 8px); right: 0; min-width: 216px; padding: 10px; background: #000; border-radius: 20px; opacity: 0; transform: translateY(-6px); transition: opacity .2s ease, transform .2s ease; pointer-events: none; }
+  .navmenu[hidden] { display: flex; }
+  .nav.is-open .navmenu { opacity: 1; transform: none; pointer-events: auto; }
+  .navmenu__link { padding: 11px 14px; border-radius: 12px; font-size: var(--fs-ui); font-weight: var(--fw-medium); letter-spacing: var(--tr-ui); color: #fff; text-decoration: none; line-height: 1; }
+  .navmenu__link:hover { background: rgba(255,255,255,0.1); }
+
+  .reveal { opacity: 0; translate: 0 14px; transition: opacity .62s var(--ease-settle), translate .62s var(--ease-settle); }
+  .reveal.is-in { opacity: 1; translate: 0 0; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; translate: 0 0; transition: none; }
+    * { transition: none !important; }
+  }
+
+  .hero { display: flex; align-items: center; gap: 56px; padding: 88px 0 72px; }
+  .hero-text { flex: 1 1 46%; min-width: 0; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
+  .hero-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-accent); }
+  .hero h1 { margin: 0; }
+  .hero-prop { margin: 14px 0 0; font-size: var(--fs-title); font-weight: var(--fw-light); letter-spacing: var(--tr-title); line-height: 1.35; color: var(--c-ink); }
+  .hero-sub { margin: 16px 0 0; max-width: 46ch; }
+  .hero-sub strong { font-weight: var(--fw-semibold); }
+  .hero-cta { display: flex; align-items: center; gap: 14px; margin-top: 30px; }
+  .hero-visual { flex: 1 1 54%; min-width: 0; filter: drop-shadow(0 30px 50px rgba(2,72,105,0.16)); }
+  .hero-visual svg { display: block; width: 100%; height: auto; }
+  .hero-visual figcaption { margin-top: 10px; text-align: center; }
+
+  section { padding: 72px 0; border-top: 1px solid var(--c-border-row); }
+  .sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 36px; }
+  .sec-head .idx { font-size: var(--fs-caption); font-weight: var(--fw-medium); letter-spacing: var(--tr-caption); color: var(--c-accent-deep); }
+  .sec-head h2 { margin: 0; }
+
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .feature {
+    background: var(--c-surface-panel); border: 1px solid var(--c-border-row); border-radius: 14px;
+    padding: 24px 22px; transition: translate .25s var(--ease-settle), box-shadow .25s var(--ease-settle), border-color .25s var(--ease-settle);
+  }
+  .feature:hover { translate: 0 -2px; border-color: rgba(52,211,153,0.55); box-shadow: 0 14px 30px rgba(2,72,105,0.07); }
+  .feature .fdot { width: 10px; height: 10px; border-radius: 50%; background: var(--c-accent); margin-bottom: 14px; }
+  .feature h3 { margin: 0 0 8px; font-size: var(--fs-ui); font-weight: var(--fw-medium); letter-spacing: var(--tr-ui); color: var(--c-ink); line-height: var(--lh-flat); }
+  .feature p { margin: 0; font-size: var(--fs-meta); font-weight: var(--fw-regular); letter-spacing: var(--tr-meta); line-height: 1.6; color: var(--c-ink-soft); }
+
+  .ui-showcase {
+    background: linear-gradient(180deg, rgba(52,211,153,0.09), rgba(15,118,110,0.05));
+    border-radius: 22px; padding: 56px 48px 48px; text-align: center;
+  }
+  .ui-showcase .frame { max-width: 820px; margin: 0 auto; filter: drop-shadow(0 26px 48px rgba(2,72,105,0.20)); }
+  .ui-showcase .frame svg { display: block; width: 100%; height: auto; }
+
+  .specs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 48px; max-width: 760px; }
+  .spec { display: flex; gap: 12px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--c-border-row); }
+  .spec .sdot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--c-accent); margin-top: 6px; }
+  .spec b { display: block; font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); color: var(--c-ink); line-height: 1.4; }
+
+  .changelog { max-width: 680px; }
+  .cl-entry { display: flex; gap: 24px; padding: 20px 0; border-bottom: 1px solid var(--c-border-row); }
+  .cl-entry .ver { flex: none; width: 110px; font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); color: var(--c-ink); }
+  .cl-entry .ver small { display: block; margin-top: 3px; font-weight: var(--fw-light); color: var(--c-muted); }
+  .cl-entry ul { margin: 0; padding-left: 18px; font-size: var(--fs-meta); font-weight: var(--fw-regular); letter-spacing: var(--tr-meta); line-height: 1.7; color: var(--c-ink-soft); }
+
+  .quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .quote { background: var(--c-surface-card); border-radius: 14px; padding: 26px 24px; }
+  .quote p { margin: 0 0 16px; font-size: var(--fs-body); font-weight: var(--fw-regular); letter-spacing: var(--tr-body); line-height: 1.55; color: var(--c-ink); }
+  .quote .who { font-size: var(--fs-caption); font-weight: var(--fw-light); letter-spacing: var(--tr-caption); color: var(--c-muted); }
+
+  .faq { max-width: 680px; }
+  .faq details { border-bottom: 1px solid var(--c-border-row); }
+  .faq summary {
+    cursor: pointer; list-style: none; padding: 18px 4px;
+    font-size: var(--fs-ui); font-weight: var(--fw-medium); letter-spacing: var(--tr-ui); color: var(--c-ink);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary .plus { flex: none; color: var(--c-accent-deep); font-weight: var(--fw-light); transition: transform .2s ease; }
+  .faq details[open] summary .plus { transform: rotate(45deg); }
+  .faq details p { margin: 0 0 18px 26px; max-width: 60ch; font-size: var(--fs-meta); font-weight: var(--fw-regular); letter-spacing: var(--tr-meta); line-height: 1.7; color: var(--c-ink-soft); }
+
+  .band-cta { border-top: none; padding: 0; }
+  .band-cta .inner {
+    background: radial-gradient(60% 100% at 30% 0%, rgba(255,255,255,0.22), transparent 60%), linear-gradient(135deg, #34D399 0%, #0f766e 100%);
+    border-radius: 22px; padding: 64px 48px; text-align: center;
+  }
+  .band-cta h2 { margin: 0; color: #fff; }
+  .band-cta .sub { margin: 12px auto 0; max-width: 52ch; font-size: var(--fs-body); font-weight: var(--fw-regular); letter-spacing: var(--tr-body); line-height: var(--lh-body); color: rgba(255,255,255,0.92); }
+  .band-cta .row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 30px; flex-wrap: wrap; }
+  .btn--white { background: #fff; color: #000; font-weight: var(--fw-bold); }
+  .btn--white:hover { background: rgba(255,255,255,0.85); }
+  .band-cta .note { margin-top: 14px; font-size: var(--fs-caption); font-weight: var(--fw-light); letter-spacing: var(--tr-caption); color: rgba(255,255,255,0.75); }
+
+  .comments { background: var(--c-surface-card); border-radius: 22px; padding: 48px; }
+  .comments .signin {
+    display: flex; align-items: center; gap: 10px; padding: 14px 18px;
+    background: var(--c-surface-panel); border: 1px solid var(--c-border-row); border-radius: 12px;
+    font-size: var(--fs-meta); font-weight: var(--fw-regular); letter-spacing: var(--tr-meta); color: var(--c-ink-soft);
+  }
+  .comments .signin b { font-weight: var(--fw-semibold); color: var(--c-ink); }
+  .comment-form { margin-top: 18px; background: var(--c-surface-panel); border: 1px solid var(--c-border-row); border-radius: 14px; padding: 20px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .chip { padding: 6px 14px; border-radius: 999px; border: 1px solid var(--c-border-row); background: #fff; font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); color: var(--c-ink-soft); cursor: pointer; }
+  .chip.is-on { border-color: var(--c-accent); background: rgba(52,211,153,0.12); color: var(--c-accent-deep); }
+  .comment-form textarea {
+    width: 100%; min-height: 92px; padding: 14px; border: 1px solid var(--c-border-row); border-radius: 10px;
+    font-family: inherit; font-size: var(--fs-meta); color: var(--c-ink); resize: vertical;
+  }
+  .comment-form textarea:focus { outline: 2px solid var(--c-accent); outline-offset: -1px; border-color: transparent; }
+  .comment-form .row { display: flex; justify-content: flex-end; margin-top: 12px; }
+  .c-item { margin-top: 18px; background: var(--c-surface-panel); border: 1px solid var(--c-border-row); border-radius: 14px; padding: 20px 22px; }
+  .c-item .head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .c-item .who { font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); color: var(--c-ink); }
+  .badge { padding: 2px 10px; border-radius: 999px; font-size: var(--fs-caption); font-weight: var(--fw-medium); letter-spacing: var(--tr-caption); }
+  .badge.type { background: rgba(52,211,153,0.12); color: var(--c-accent-deep); }
+  .badge.status { background: rgba(52,211,153,0.12); color: var(--c-accent-deep); }
+  .c-item .time { margin-left: auto; font-size: var(--fs-caption); font-weight: var(--fw-light); letter-spacing: var(--tr-caption); color: var(--c-muted); }
+  .c-item .body { margin: 10px 0 0; font-size: var(--fs-meta); font-weight: var(--fw-regular); letter-spacing: var(--tr-meta); line-height: 1.7; color: var(--c-ink-soft); }
+  .c-item .foot { display: flex; align-items: center; gap: 18px; margin-top: 12px; }
+  .vote { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); color: var(--c-ink-soft); cursor: pointer; }
+  .vote:hover { color: var(--c-accent-deep); }
+  .c-item .reply {
+    margin: 12px 0 0 22px; padding: 12px 16px; border-left: 2px solid var(--c-accent); background: var(--c-surface-card);
+    border-radius: 0 10px 10px 0; font-size: var(--fs-meta); font-weight: var(--fw-regular); letter-spacing: var(--tr-meta);
+    line-height: 1.7; color: var(--c-ink-soft);
+  }
+  .c-item .reply b { font-weight: var(--fw-semibold); color: var(--c-accent-deep); }
+
+  footer { border-top: 1px solid var(--c-border-row); padding: 44px 0 56px; }
+  footer .inner { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  footer .links { display: flex; gap: 20px; }
+  footer a { font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); color: var(--c-ink-soft); text-decoration: none; }
+  footer a:hover { color: var(--c-accent-deep); }
+  footer .copy { margin-left: auto; font-size: var(--fs-caption); font-weight: var(--fw-light); letter-spacing: var(--tr-caption); color: var(--c-muted); }
+
+  @media (max-width: 939.98px) {
+    .wrap { padding: 0 20px; }
+    .nav { width: 100%; max-width: none; margin-top: 12px; }
+    .nav a.link, .nav .btn--nav { display: none; }
+    .burger { display: flex; }
+    .hero { flex-direction: column; gap: 40px; padding: 56px 0 48px; }
+    .hero-text, .hero-visual { flex: none; width: 100%; }
+    .features, .quotes { grid-template-columns: 1fr; }
+    .specs { grid-template-columns: 1fr; }
+    .ui-showcase, .comments { padding: 32px 20px; }
+    .band-cta .inner { padding: 48px 24px; }
+    .cl-entry { flex-direction: column; gap: 6px; }
+    footer .copy { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="主导航">
+  <svg class="logo" width="26" height="25" viewBox="0 0 26 25" fill="none" aria-label="SanMu">
+    <rect x="4" y="8" width="4" height="13" rx="2" fill="#34D399"/>
+    <rect x="11" y="3" width="4" height="18" rx="2" fill="#34D399"/>
+    <rect x="18" y="10" width="4" height="11" rx="2" fill="#34D399"/>
+  </svg>
+  <span class="wordmark">SanMu<sup>Audio</sup></span>
+  <a class="link" href="#">产品</a>
+  <a class="link" href="#">关于</a>
+  <a class="link" href="#">FAQ</a>
+  <a class="link" href="#">EN</a>
+  <a class="btn btn--nav" href="#download">立即下载</a>
+  <button class="burger" id="burger" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-menu">
+    <span class="burger__bar"></span><span class="burger__bar"></span>
+  </button>
+  <div class="navmenu" id="nav-menu" hidden>
+    <a class="navmenu__link" href="#">产品</a>
+    <a class="navmenu__link" href="#">关于</a>
+    <a class="navmenu__link" href="#">FAQ</a>
+    <a class="navmenu__link" href="#">EN</a>
+    <a class="navmenu__link" href="#">登录</a>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="hero-text reveal">
+    <div class="hero-eyebrow t-eyebrow"><span class="dot"></span>SANMU AUDIO · 插件</div>
+    <h1 class="t-display">SanMu Comp</h1>
+    <p class="hero-prop">四模式物理建模压缩器：Clean / VCA / FET / Opto</p>
+    <p class="hero-sub t-body">从透明数字到总线胶水，再到 1176 式激进与 LA-2A 式温暖——<strong>检测拓扑、增益结构、时间常数逐模式物理建模</strong>，一台压缩器，四种性格。</p>
+    <div class="hero-cta">
+      <a class="btn btn--dark" href="#download">免费试用</a>
+      <a class="btn btn--ghost" href="#specs">系统需求</a>
+    </div>
+  </div>
+  <figure class="hero-visual reveal">
+    <svg viewBox="0 0 600 417" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SanMu Comp 界面示意图">
+      <defs>
+        <linearGradient id="cbg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#FBFDFC"/><stop offset="1" stop-color="#EEF3F1"/>
+        </linearGradient>
+        <linearGradient id="cmeter" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#0f766e"/>
+        </linearGradient>
+      </defs>
+      <rect x="1" y="1" width="598" height="415" rx="14" fill="url(#cbg)" stroke="rgba(148,163,184,0.35)"/>
+      <text x="26" y="34" font-family="Figtree,-apple-system,'PingFang SC',sans-serif" font-size="17" font-weight="600" fill="#1F2937">SanMu Comp</text>
+      <text x="26" y="52" font-family="Figtree,-apple-system,'PingFang SC',sans-serif" font-size="10" fill="#64748B">四模式压缩器 · Clean / VCA / FET / Opto</text>
+      <!-- 三表 -->
+      <g font-family="Figtree,-apple-system,'PingFang SC',sans-serif">
+        <text x="26" y="78" font-size="9" fill="#64748B">IN</text>
+        <rect x="46" y="70" width="150" height="8" rx="4" fill="#E8EEEC"/>
+        <rect x="46" y="70" width="104" height="8" rx="4" fill="url(#cmeter)"/>
+        <text x="226" y="78" font-size="9" fill="#64748B">GR</text>
+        <rect x="246" y="70" width="150" height="8" rx="4" fill="#E8EEEC"/>
+        <rect x="246" y="70" width="62" height="8" rx="4" fill="#e8c547"/>
+        <text x="426" y="78" font-size="9" fill="#64748B">OUT</text>
+        <rect x="446" y="70" width="128" height="8" rx="4" fill="#E8EEEC"/>
+        <rect x="446" y="70" width="90" height="8" rx="4" fill="url(#cmeter)"/>
+        <circle cx="580" cy="74" r="3.5" fill="#ff7875"/>
+        <!-- 模式按钮 -->
+        <rect x="26" y="104" width="130" height="34" rx="17" fill="#1E88E5"/>
+        <text x="91" y="125" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle">Clean</text>
+        <rect x="166" y="104" width="130" height="34" rx="17" fill="rgba(32,88,168,0.14)" stroke="rgba(32,88,168,0.5)"/>
+        <text x="231" y="125" font-size="12" font-weight="600" fill="#2058A8" text-anchor="middle">VCA</text>
+        <rect x="306" y="104" width="130" height="34" rx="17" fill="rgba(230,74,25,0.12)" stroke="rgba(230,74,25,0.5)"/>
+        <text x="371" y="125" font-size="12" font-weight="600" fill="#E64A19" text-anchor="middle">FET</text>
+        <rect x="446" y="104" width="130" height="34" rx="17" fill="rgba(212,153,71,0.14)" stroke="rgba(212,153,71,0.5)"/>
+        <text x="511" y="125" font-size="12" font-weight="600" fill="#D49947" text-anchor="middle">Opto</text>
+        <!-- 旋钮 -->
+        <circle cx="90" cy="240" r="44" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="4"/>
+        <path d="M 59 209 A 44 44 0 0 1 122 262" fill="none" stroke="#1E88E5" stroke-width="7" stroke-linecap="round"/>
+        <text x="90" y="252" font-size="11" font-weight="600" fill="#1E88E5" text-anchor="middle">−18</text>
+        <text x="90" y="200" font-size="9" fill="#64748B" text-anchor="middle">Threshold</text>
+        <circle cx="205" cy="240" r="44" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="4"/>
+        <path d="M 174 209 A 44 44 0 0 1 226 226" fill="none" stroke="#1E88E5" stroke-width="7" stroke-linecap="round"/>
+        <text x="205" y="252" font-size="11" font-weight="600" fill="#1E88E5" text-anchor="middle">4:1</text>
+        <text x="205" y="200" font-size="9" fill="#64748B" text-anchor="middle">Ratio</text>
+        <circle cx="320" cy="240" r="44" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="4"/>
+        <path d="M 289 209 A 44 44 0 0 1 345 252" fill="none" stroke="#1E88E5" stroke-width="7" stroke-linecap="round"/>
+        <text x="320" y="252" font-size="11" font-weight="600" fill="#1E88E5" text-anchor="middle">12ms</text>
+        <text x="320" y="200" font-size="9" fill="#64748B" text-anchor="middle">Attack</text>
+        <circle cx="435" cy="240" r="44" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="4"/>
+        <path d="M 404 209 A 44 44 0 0 1 443 240" fill="none" stroke="#1E88E5" stroke-width="7" stroke-linecap="round"/>
+        <text x="435" y="252" font-size="11" font-weight="600" fill="#1E88E5" text-anchor="middle">180ms</text>
+        <text x="435" y="200" font-size="9" fill="#64748B" text-anchor="middle">Release</text>
+        <circle cx="550" cy="240" r="44" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="4"/>
+        <path d="M 519 209 A 44 44 0 0 1 580 240" fill="none" stroke="#1E88E5" stroke-width="7" stroke-linecap="round"/>
+        <text x="550" y="252" font-size="11" font-weight="600" fill="#1E88E5" text-anchor="middle">+3.0</text>
+        <text x="550" y="200" font-size="9" fill="#64748B" text-anchor="middle">Makeup</text>
+        <!-- 底部开关 -->
+        <rect x="26" y="330" width="120" height="26" rx="13" fill="rgba(52,211,153,0.12)" stroke="rgba(52,211,153,0.5)"/>
+        <text x="86" y="347" font-size="10" font-weight="600" fill="#0f766e" text-anchor="middle">STEREO LINK</text>
+        <rect x="156" y="330" width="120" height="26" rx="13" fill="#E8EEEC"/>
+        <text x="216" y="347" font-size="10" fill="#64748B" text-anchor="middle">AUTO GAIN</text>
+        <text x="500" y="348" font-size="9" fill="#64748B">Bypass</text>
+        <rect x="548" y="336" width="26" height="12" rx="6" fill="#E8EEEC"/>
+      </g>
+    </svg>
+    <figcaption class="t-caption">界面示意 · 等 REAPER 实机截图后重绘为可动版（GR 表摆动、旋钮转动、光影流动）</figcaption>
+  </figure>
+</header>
+
+<main>
+  <section class="wrap" id="features">
+    <div class="sec-head reveal"><span class="idx">01</span><h2 class="t-title">特性</h2></div>
+    <div class="features">
+      <div class="feature reveal"><div class="fdot"></div><h3>四模式物理建模</h3><p>Clean 透明数字 · VCA 总线胶水 · FET 1176 式瞬态激进 · Opto LA-2A 式光学温暖，一键切换。</p></div>
+      <div class="feature reveal"><div class="fdot"></div><h3>检测拓扑</h3><p>feedforward 与 feedback 双拓扑逐模式建模，knee 曲线与包络响应数学化还原。</p></div>
+      <div class="feature reveal"><div class="fdot"></div><h3>时间常数</h3><p>Attack / Release 连续可调，时间常数跟随模式特性，手感贴合对应硬件。</p></div>
+      <div class="feature reveal"><div class="fdot"></div><h3>增益结构</h3><p>模式化增益元件建模，谐波染色真实——越暖的模式越有性格。</p></div>
+      <div class="feature reveal"><div class="fdot"></div><h3>IN / GR / OUT 三表</h3><p>实时输入、增益衰减、输出监测；GR 黄条醒目，峰值粉色告警。</p></div>
+      <div class="feature reveal"><div class="fdot"></div><h3>SMT 智能映射</h3><p>跨模式切换自动等效映射参数，换模式不跳手感、不跳响度。</p></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="showcase">
+    <div class="sec-head reveal"><span class="idx">02</span><h2 class="t-title">界面</h2></div>
+    <div class="ui-showcase reveal">
+      <div class="frame">
+        <svg viewBox="0 0 820 570" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SanMu Comp 全界面示意">
+          <defs>
+            <linearGradient id="cbg2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FBFDFC"/><stop offset="1" stop-color="#EEF3F1"/>
+            </linearGradient>
+            <linearGradient id="cmeter2" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#0f766e"/>
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="818" height="568" rx="18" fill="url(#cbg2)" stroke="rgba(148,163,184,0.35)"/>
+          <text x="30" y="42" font-family="Figtree,-apple-system,'PingFang SC',sans-serif" font-size="20" font-weight="600" fill="#1F2937">SanMu Comp</text>
+          <text x="30" y="64" font-family="Figtree,-apple-system,'PingFang SC',sans-serif" font-size="11" fill="#64748B">四模式压缩器 · Clean / VCA / FET / Opto · 物理建模</text>
+          <g font-family="Figtree,-apple-system,'PingFang SC',sans-serif">
+            <text x="30" y="108" font-size="11" fill="#64748B">IN</text>
+            <rect x="58" y="98" width="220" height="11" rx="5.5" fill="#E8EEEC"/>
+            <rect x="58" y="98" width="154" height="11" rx="5.5" fill="url(#cmeter2)"/>
+            <text x="318" y="108" font-size="11" fill="#64748B">GR</text>
+            <rect x="346" y="98" width="220" height="11" rx="5.5" fill="#E8EEEC"/>
+            <rect x="346" y="98" width="92" height="11" rx="5.5" fill="#e8c547"/>
+            <text x="606" y="108" font-size="11" fill="#64748B">OUT</text>
+            <rect x="634" y="98" width="160" height="11" rx="5.5" fill="#E8EEEC"/>
+            <rect x="634" y="98" width="112" height="11" rx="5.5" fill="url(#cmeter2)"/>
+            <circle cx="800" cy="103.5" r="4.5" fill="#ff7875"/>
+            <rect x="30" y="140" width="180" height="46" rx="23" fill="#1E88E5"/>
+            <text x="120" y="168" font-size="15" font-weight="600" fill="#ffffff" text-anchor="middle">Clean</text>
+            <rect x="222" y="140" width="180" height="46" rx="23" fill="rgba(32,88,168,0.14)" stroke="rgba(32,88,168,0.5)"/>
+            <text x="312" y="168" font-size="15" font-weight="600" fill="#2058A8" text-anchor="middle">VCA</text>
+            <rect x="414" y="140" width="180" height="46" rx="23" fill="rgba(230,74,25,0.12)" stroke="rgba(230,74,25,0.5)"/>
+            <text x="504" y="168" font-size="15" font-weight="600" fill="#E64A19" text-anchor="middle">FET</text>
+            <rect x="606" y="140" width="180" height="46" rx="23" fill="rgba(212,153,71,0.14)" stroke="rgba(212,153,71,0.5)"/>
+            <text x="696" y="168" font-size="15" font-weight="600" fill="#D49947" text-anchor="middle">Opto</text>
+            <circle cx="130" cy="360" r="66" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="5"/>
+            <path d="M 83 313 A 66 66 0 0 1 178 393" fill="none" stroke="#1E88E5" stroke-width="9" stroke-linecap="round"/>
+            <text x="130" y="376" font-size="14" font-weight="600" fill="#1E88E5" text-anchor="middle">−18</text>
+            <text x="130" y="300" font-size="11" fill="#64748B" text-anchor="middle">Threshold</text>
+            <circle cx="300" cy="360" r="66" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="5"/>
+            <path d="M 253 313 A 66 66 0 0 1 331 340" fill="none" stroke="#1E88E5" stroke-width="9" stroke-linecap="round"/>
+            <text x="300" y="376" font-size="14" font-weight="600" fill="#1E88E5" text-anchor="middle">4:1</text>
+            <text x="300" y="300" font-size="11" fill="#64748B" text-anchor="middle">Ratio</text>
+            <circle cx="470" cy="360" r="66" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="5"/>
+            <path d="M 423 313 A 66 66 0 0 1 508 378" fill="none" stroke="#1E88E5" stroke-width="9" stroke-linecap="round"/>
+            <text x="470" y="376" font-size="14" font-weight="600" fill="#1E88E5" text-anchor="middle">12ms</text>
+            <text x="470" y="300" font-size="11" fill="#64748B" text-anchor="middle">Attack</text>
+            <circle cx="640" cy="360" r="66" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="5"/>
+            <path d="M 593 313 A 66 66 0 0 1 652 360" fill="none" stroke="#1E88E5" stroke-width="9" stroke-linecap="round"/>
+            <text x="640" y="376" font-size="14" font-weight="600" fill="#1E88E5" text-anchor="middle">180ms</text>
+            <text x="640" y="300" font-size="11" fill="#64748B" text-anchor="middle">Release</text>
+            <circle cx="770" cy="360" r="66" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="5"/>
+            <path d="M 723 313 A 66 66 0 0 1 812 360" fill="none" stroke="#1E88E5" stroke-width="9" stroke-linecap="round"/>
+            <text x="770" y="376" font-size="14" font-weight="600" fill="#1E88E5" text-anchor="middle">+3.0</text>
+            <text x="770" y="300" font-size="11" fill="#64748B" text-anchor="middle">Makeup</text>
+            <rect x="30" y="480" width="170" height="34" rx="17" fill="rgba(52,211,153,0.12)" stroke="rgba(52,211,153,0.5)"/>
+            <text x="115" y="502" font-size="12" font-weight="600" fill="#0f766e" text-anchor="middle">STEREO LINK</text>
+            <rect x="212" y="480" width="170" height="34" rx="17" fill="#E8EEEC"/>
+            <text x="297" y="502" font-size="12" fill="#64748B" text-anchor="middle">AUTO GAIN</text>
+            <text x="680" y="502" font-size="11" fill="#64748B">Bypass</text>
+            <rect x="738" y="490" width="34" height="16" rx="8" fill="#E8EEEC"/>
+          </g>
+        </svg>
+      </div>
+      <p class="t-caption" style="margin:22px 0 0;">演示动画占位：GR 表随信号摆动 · 模式切换变色 · 旋钮自动演示转动（等截图后实现）</p>
+    </div>
+  </section>
+
+  <section class="wrap" id="specs">
+    <div class="sec-head reveal"><span class="idx">03</span><h2 class="t-title">系统需求</h2></div>
+    <div class="specs reveal">
+      <div class="spec"><span class="sdot"></span><div><b>macOS</b><span class="t-meta">Apple Silicon 原生 + Intel，10.15 及以上</span></div></div>
+      <div class="spec"><span class="sdot"></span><div><b>Windows</b><span class="t-meta">Windows 10 / 11（64-bit）</span></div></div>
+      <div class="spec"><span class="sdot"></span><div><b>插件格式</b><span class="t-meta">VST3 · AU · AAX</span></div></div>
+      <div class="spec"><span class="sdot"></span><div><b>宿主兼容</b><span class="t-meta">REAPER · Cubase · Logic Pro · Pro Tools · Ableton Live 等主流 DAW</span></div></div>
+      <div class="spec"><span class="sdot"></span><div><b>采样率</b><span class="t-meta">44.1 / 48 / 88.2 / 96 kHz</span></div></div>
+      <div class="spec"><span class="sdot"></span><div><b>界面</b><span class="t-meta">820×570 起，窗口自由缩放（700×480 – 1800×1300）</span></div></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="changelog">
+    <div class="sec-head reveal"><span class="idx">04</span><h2 class="t-title">版本历史</h2></div>
+    <div class="changelog reveal">
+      <div class="cl-entry">
+        <div class="ver">v1.0.0<small>2026-08</small></div>
+        <ul><li>首个公开版本：Clean / VCA / FET / Opto 四模式物理建模</li><li>IN / GR / OUT 三表与 SMT 跨模式智能映射</li></ul>
+      </div>
+      <div class="cl-entry">
+        <div class="ver">v0.9.0<small>2026-07</small></div>
+        <ul><li>内测版本：检测拓扑与时间常数听感打磨</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="quotes">
+    <div class="sec-head reveal"><span class="idx">05</span><h2 class="t-title">用户评价</h2></div>
+    <div class="quotes">
+      <div class="quote reveal"><p>「VCA 模式挂总线上，鼓组立刻粘在一起，比我用过的很多总线压缩都自然。」</p><div class="who">混音师 · 示例评价</div></div>
+      <div class="quote reveal"><p>「FET 模式抓军鼓瞬态那股冲劲很对味，Attack 拧到最快也不糊。」</p><div class="who">制作人 · 示例评价</div></div>
+      <div class="quote reveal"><p>「Opto 模式压人声的温暖感太舒服了，GR 黄条看着就想多压 2dB。」</p><div class="who">母带工程师 · 示例评价</div></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="faq">
+    <div class="sec-head reveal"><span class="idx">06</span><h2 class="t-title">FAQ</h2></div>
+    <div class="faq reveal">
+      <details open>
+        <summary><span class="plus">+</span>四个模式怎么选？</summary>
+        <p>Clean 透明干净，适合不需要染色的数字控制；VCA 稳而聚，适合总线；FET 快而冲，适合鼓组与瞬态；Opto 慢而暖，适合人声与贝斯。拿不准就换着听，SMT 会帮你保持参数等效。</p>
+      </details>
+      <details>
+        <summary><span class="plus">+</span>试用期多久？如何购买？</summary>
+        <p>免费试用 15 天，功能与正式版一致。购买环节即将上线，届时官网内完成支付并获得授权码。</p>
+      </details>
+      <details>
+        <summary><span class="plus">+</span>支持哪些 DAW 与格式？</summary>
+        <p>VST3 / AU / AAX 三种格式，REAPER、Cubase、Logic Pro、Pro Tools、Ableton Live 等主流宿主均可用。</p>
+      </details>
+      <details>
+        <summary><span class="plus">+</span>遇到问题去哪里反馈？</summary>
+        <p>本页底部留言区：选「Bug」类型发帖，我会尽快确认并回复；功能需求选「需求」，其他用户可以投票。</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="wrap band-cta" id="download">
+    <div class="inner reveal">
+      <h2 class="t-title" style="font-size:32px;">免费试用 15 天</h2>
+      <p class="sub">下载安装包，立即在你的宿主里试试四种性格的 SanMu Comp。购买环节即将上线，试用与购买版本功能一致。</p>
+      <div class="row">
+        <a class="btn btn--white" href="#">下载 macOS 版</a>
+        <a class="btn btn--white" href="#">下载 Windows 版</a>
+      </div>
+      <p class="note">版本 v1.0.0 · 安装包由 GitHub Releases 提供 · 无需注册即可试用</p>
+    </div>
+  </section>
+
+  <section class="wrap" id="comments">
+    <div class="sec-head reveal"><span class="idx">07</span><h2 class="t-title">留言区</h2></div>
+    <div class="comments reveal">
+      <div class="signin">🔐 <span>注册后可留言 · <b>邮箱 + 密码</b>，无需验证码 · 首条留言审核后公开，之后免审</span></div>
+      <div class="comment-form">
+        <div class="chips">
+          <span class="chip is-on">💡 需求</span><span class="chip">🐛 Bug</span><span class="chip">👍 反馈</span><span class="chip">💬 闲聊</span>
+        </div>
+        <textarea placeholder="说说你在混音里想解决的问题…"></textarea>
+        <div class="row"><button class="btn btn--dark" type="button">发布（需登录）</button></div>
+      </div>
+      <div class="c-item">
+        <div class="head">
+          <span class="who">混音师老K</span><span class="badge type">💡 需求</span><span class="badge status">已采纳</span>
+          <span class="time">3 天前</span>
+        </div>
+        <p class="body">希望 Opto 模式加一个 sidechain HPF，压人声时低频就不抽了。</p>
+        <div class="foot">
+          <span class="vote">▲ 9</span>
+          <div class="reply"><b>SanMu 官方回复：</b>已排进 v1.1 计划，感谢！</div>
+        </div>
+      </div>
+      <div class="c-item">
+        <div class="head">
+          <span class="who">阿伟</span><span class="badge type">🐛 Bug</span><span class="badge status">已修复</span>
+          <span class="time">上周</span>
+        </div>
+        <p class="body">FET 模式切换 Ratio 挡位时偶尔有一下爆音。</p>
+        <div class="foot"><span class="vote">▲ 4</span></div>
+      </div>
+      <p class="t-caption" style="margin:18px 0 0;">以上留言为界面示意（虚构示例），真实留言功能 P3 上线。</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap inner">
+    <svg class="logo" width="26" height="25" viewBox="0 0 26 25" fill="none" aria-label="SanMu">
+      <rect x="4" y="8" width="4" height="13" rx="2" fill="#34D399"/>
+      <rect x="11" y="3" width="4" height="18" rx="2" fill="#34D399"/>
+      <rect x="18" y="10" width="4" height="11" rx="2" fill="#34D399"/>
+    </svg>
+    <div class="links">
+      <a href="#">产品</a><a href="#">关于</a><a href="#">FAQ</a><a href="#">隐私政策</a>
+    </div>
+    <div class="copy">© 2026 SanMu Audio · contact@sanmuaudio.com</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var els = document.querySelectorAll('.reveal');
+  if (mq.matches || !('IntersectionObserver' in window)) {
+    els.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(function (el) { io.observe(el); });
+  }
+
+  var burger = document.getElementById('burger');
+  var nav = document.querySelector('.nav');
+  var menu = document.getElementById('nav-menu');
+  function closeMenu() {
+    nav.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+    menu.hidden = true;
+  }
+  burger.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var open = nav.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded', String(open));
+    menu.hidden = !open;
+  });
+  document.addEventListener('click', function (e) { if (!nav.contains(e.target)) closeMenu(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) closeMenu(); });
+})();
+</script>
+</body>
+</html>

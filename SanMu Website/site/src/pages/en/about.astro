@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import '../../styles/support-pages.css';
+---
+
+<Base lang="en" title="About — SanMu Audio" description="SanMu Audio is an independent studio developing audio plug-ins with AI, covering equalization, compression, delay and reverb.">
+  <Nav lang="en" current="about" />
+  <main class="sm-support-page">
+    <header class="sm-support-hero">
+      <p class="sm-support-eyebrow">About the studio</p>
+      <h1>SanMu Audio</h1>
+      <p class="sm-support-subtitle">An independent studio, building audio tools with AI.</p>
+      <div class="sm-support-actions">
+        <a class="button button-dark" href="/en/#products">Explore plug-ins</a>
+        <a class="button button-outline" href="/en/downloads">Installers & Source</a>
+      </div>
+    </header>
+
+    <section class="sm-support-story" aria-labelledby="sm-about-project">
+      <h2 id="sm-about-project">Starting with everyday recording and mixing.</h2>
+      <div class="sm-support-prose">
+        <p>SanMu Audio is made by SanMu, an independent studio. The current range includes EQ6, Comp, Delay and Reverb, covering frequency shaping, dynamics, delay and reverb.</p>
+        <p>AI contributes to implementation, interface iteration and documentation. SanMu is responsible for product decisions, listening and testing in real DAWs. Full source code is shared under AGPLv3 alongside official signed installers.</p>
+        <p>The plug-ins share a consistent layout and approach to controls. The interfaces shown on this site were captured while the plug-ins were responding to music, so you can see their features before downloading.</p>
+      </div>
+    </section>
+
+    <section class="sm-support-band" aria-labelledby="sm-about-feedback">
+      <div class="sm-support-band-inner sm-support-contact">
+        <div>
+          <p class="sm-support-eyebrow">Take part</p>
+          <h2 id="sm-about-feedback">Your feedback helps shape the next update.</h2>
+          <p>Share your experience, report a problem, or suggest an improvement to the documentation or controls. For a bug report, include your operating system, DAW, plug-in version and steps to reproduce it. Audio examples help with sound-related issues.</p>
+          <a class="text-link" href="mailto:contact@sanmuaudio.com">contact@sanmuaudio.com ↗</a>
+        </div>
+        <div class="sm-support-contact-note">
+          <h3>Read before downloading</h3>
+          <p>The download center includes product notes, user manuals and open-source license details. Availability is shown for each platform and release.</p>
+          <a class="button button-outline" href="/en/downloads">Open downloads</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer lang="en" />
+</Base>

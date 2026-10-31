@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import AdminApp from '../components/admin/AdminApp';
+---
+
+<Base lang="zh" title="管理后台 — SanMu Audio" description="SanMu 官网留言区管理后台。">
+  <Nav lang="zh" />
+
+  <header class="page-hero wrap">
+    <div class="hero-eyebrow t-eyebrow reveal"><span class="dot"></span>SANMU AUDIO · ADMIN</div>
+    <h1 class="t-display reveal">管理后台</h1>
+    <p class="hero-prop reveal">留言审核 · 状态标记 · 置顶 · 导出</p>
+  </header>
+
+  <main>
+    <section class="wrap" style="padding-top:24px;">
+      <div class="comments reveal">
+        <AdminApp client:load />
+      </div>
+    </section>
+  </main>
+</Base>

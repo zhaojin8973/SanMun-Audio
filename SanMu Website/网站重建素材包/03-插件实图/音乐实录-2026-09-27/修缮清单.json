@@ -1,0 +1,10 @@
+[
+  {"id":"eq6-light","original":"原始截图/eq6-light.png","processed":"修缮裁切/eq6-light.png","crop":"1836x1264+130+190","sha256":"5b72304b6babe21164f877105df07f67550af09d920c221ffd925a5faeaa7a9f","changes":["去宿主外框","去轨道名 32楼的飞行"]},
+  {"id":"eq6-dark","original":"原始截图/eq6-dark.png","processed":"修缮裁切/eq6-dark.png","crop":"1836x1264+130+190","sha256":"4f30047220684f69c86b398fcedb924c7946ea3746dc905f21be7b3c4c8db490","changes":["去宿主外框","去轨道名 32楼的飞行","去 1763 Hz 悬停提示"]},
+  {"id":"reverb-light","original":"原始截图/reverb-light.png","processed":"修缮裁切/reverb-light.png","crop":"2152x1458+165+190","sha256":"14cebfdf6c0d7f2f7990c3273a19aa7e87dd11f3995860ff613a45939e5a345c","changes":["去宿主外框"]},
+  {"id":"reverb-dark","original":"原始截图/reverb-dark.png","processed":"修缮裁切/reverb-dark.png","crop":"2152x1458+165+190","sha256":"21e8f2ea1ef0743f5512de18e307e158703b221acb3952abea13636268f0b803","changes":["去宿主外框"]},
+  {"id":"delay-light","original":"原始截图/delay-light.png","processed":"修缮裁切/delay-light.png","crop":"1730x1258+84+184","sha256":"454ac42e3995ffc10c6a0b8a9331f7d0bc3abd75387e124bd6cb80c2d21f2b2c","changes":["去宿主外框"]},
+  {"id":"delay-dark","original":"原始截图/delay-dark.png","processed":"修缮裁切/delay-dark.png","crop":"1740x1206+124+204","sha256":"0d75008ea8df6610013deb9b0d45fa9b24c9b0d434ed037b238e39092ebf9b70","changes":["去宿主外框"]},
+  {"id":"comp-light","original":"原始截图/comp-light.png","processed":"修缮裁切/comp-light.png","crop":"1836x1264+130+190","sha256":"8c892e5d19b4ca113f481814baeec4347495975aeeeb0815c613cae70a1e2e64","changes":["去宿主外框"]},
+  {"id":"comp-dark","original":"原始截图/comp-dark.png","processed":"修缮裁切/comp-dark.png","crop":"1836x1264+130+190","sha256":"abc8d3c8c43e0a8e2dbd6085b0c8e30de600ad1aeb1602db8175465523102cea","changes":["去宿主外框","去 Adjust the level after levelling. 悬停提示"]}
+]

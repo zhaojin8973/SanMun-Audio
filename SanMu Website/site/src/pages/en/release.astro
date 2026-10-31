@@ -1,0 +1,64 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import { internalBeta } from '../../data/releases';
+---
+
+<Base lang="en" title="Releases & Documents — SanMu Audio" description="Platform status, documents and signed installers for the SanMu Audio open-source release.">
+  <Nav lang="en" />
+  <main class="release-page">
+    <header class="page-hero wrap">
+      <div class="hero-eyebrow t-eyebrow reveal"><span class="dot"></span>SANMU AUDIO · OPEN SOURCE RELEASE</div>
+      <h1 class="t-display reveal">Releases & documents</h1>
+      <p class="hero-prop reveal">Four plug-ins · Released {internalBeta.date} · {internalBeta.betaEndsAt}</p>
+    </header>
+
+    <section class="wrap release-overview reveal">
+      <div>
+        <p class="eyebrow">Current status</p>
+        <h2>macOS Universal 2 signed installers are ready; Windows builds via script or CI.</h2>
+        <p>The macOS packages are Universal 2 builds for Intel macOS 10.15+ and Apple silicon macOS 11.0+, including VST3, AU and AAX formats, signed with Developer ID Application & Installer certificates and validated with Apple `auval`. Full source code is released under GNU AGPLv3 so developers can build from source, while producers can grab ready-to-use signed installers.</p>
+      </div>
+      <div class="release-callout">
+        <strong>Open-Core Distribution</strong>
+        <span>Full C++20 / JUCE 8 / WebView2 source code is hosted on GitHub (building VST3 and AU out of the box), while pre-compiled signed installers are provided here.</span>
+      </div>
+    </section>
+
+    <section class="wrap release-section">
+      <div class="section-label"><span>01</span><h2>Versions and platforms</h2></div>
+      <div class="table-wrap reveal">
+        <table class="table-audio release-table">
+          <thead><tr><th>Product</th><th>Version</th><th>macOS</th><th>Windows</th></tr></thead>
+          <tbody>
+            {internalBeta.products.map((product) => <tr>
+              <td><strong>{product.name}</strong></td>
+              <td>{product.version}</td>
+              <td><span class="release-status release-status--ready">Universal 2 · Developer ID Signed</span><small>{product.packageName}</small></td>
+              <td><span class="release-status release-status--pending">Script / CI Build Ready</span><small>Windows 10/11 x64 · VST3</small></td>
+            </tr>)}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="wrap release-section">
+      <div class="section-label"><span>02</span><h2>Release documents</h2></div>
+      <div class="release-doc-grid reveal">
+        {internalBeta.documents.map((document) => <a class="release-doc" href={`/docs/${internalBeta.id}/${document.enPath}`} download>
+          <span class="release-doc__label">Document</span><strong>{document.en}</strong><small>{document.enPath}</small><span class="release-doc__arrow">↗</span>
+        </a>)}
+      </div>
+    </section>
+
+    <section class="wrap release-section release-section--last">
+      <div class="release-callout release-callout--wide reveal">
+        <strong>Permanent License & Feedback</strong>
+        <span>All beta expiration limits have been removed. Please open an issue on GitHub or email <a class="text-link" href="mailto:contact@sanmuaudio.com">contact@sanmuaudio.com</a> with your host, OS, plug-in format and reproduction steps.</span>
+        <a class="button button-dark" href="/en/about">Contact ↗</a>
+      </div>
+    </section>
+  </main>
+  <Footer lang="en" />
+</Base>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SanMu Reverb — 即将发布 | SanMu Audio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@100..900&display=block" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0; background: #fff; min-height: 100dvh;
+    display: flex; flex-direction: column;
+    font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: geometricPrecision;
+  }
+  :root {
+    --fs-display : 55.7px; --fs-title : 20px; --fs-body : 16.1px; --fs-eyebrow : 15.8px;
+    --fs-ui : 15px; --fs-meta : 14.3px; --fs-item : 12.9px; --fs-caption : 12.2px;
+    --fs-wordmark : 17.1px; --fs-sup : 11.4px;
+    --fw-light : 388; --fw-regular : 470; --fw-medium : 500; --fw-semibold : 511; --fw-bold : 577; --fw-black : 783;
+    --tr-display : -0.0572em; --tr-title : -0.0570em; --tr-body : -0.0475em; --tr-eyebrow : -0.0293em;
+    --tr-ui : -0.0080em; --tr-cta : -0.0200em; --tr-meta : -0.0447em; --tr-item : -0.0287em;
+    --tr-caption : -0.0295em; --tr-wordmark : -0.0075em;
+    --lh-display : 61px; --lh-body : 20px; --lh-flat : 1;
+    --c-ink : #000000; --c-ink-soft : #2e2e2e; --c-muted : #b8b8b8; --c-on-dark : #ffffff;
+    --c-surface-nav : #000000; --c-border-row : #ededed; --c-accent : #34D399; --c-accent-deep : #0f766e;
+    --ease-reveal : cubic-bezier(.22, 1, .36, 1); --ease-settle : cubic-bezier(.16, 1, .30, 1);
+    /* 产品色（JS 切换覆盖） */
+    --ph1: #93c5fd; --ph2: #64748b;
+  }
+  .t-display { font-size: var(--fs-display); font-weight: var(--fw-regular); letter-spacing: var(--tr-display); line-height: var(--lh-display); color: var(--c-ink); }
+  .t-title   { font-size: var(--fs-title); font-weight: var(--fw-light); letter-spacing: var(--tr-title); line-height: var(--lh-flat); color: var(--c-ink); }
+  .t-body    { font-size: var(--fs-body); font-weight: var(--fw-regular); letter-spacing: var(--tr-body); line-height: var(--lh-body); color: var(--c-ink); }
+  .t-eyebrow { font-size: var(--fs-eyebrow); font-weight: var(--fw-light); letter-spacing: var(--tr-eyebrow); line-height: var(--lh-flat); color: var(--c-ink); }
+  .t-meta    { font-size: var(--fs-meta); font-weight: var(--fw-regular); letter-spacing: var(--tr-meta); line-height: 1.55; color: var(--c-ink-soft); }
+  .t-item    { font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); line-height: var(--lh-flat); color: var(--c-ink); }
+  .t-caption { font-size: var(--fs-caption); font-weight: var(--fw-light); letter-spacing: var(--tr-caption); line-height: var(--lh-flat); color: var(--c-muted); }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 40px; width: 100%; }
+
+  .nav {
+    position: sticky; top: 16px; z-index: 50;
+    width: 880px; max-width: calc(100% - 32px); height: 52px; margin: 16px auto 0;
+    background: var(--c-surface-nav); border-radius: 26px; display: flex; align-items: center;
+  }
+  .logo { margin-left: 9px; flex: none; }
+  .wordmark { margin-left: 6px; display: flex; align-items: center; white-space: nowrap; font-size: var(--fs-wordmark); font-weight: var(--fw-black); letter-spacing: var(--tr-wordmark); color: var(--c-on-dark); line-height: var(--lh-flat); }
+  .wordmark sup { font-size: var(--fs-sup); font-weight: var(--fw-regular); letter-spacing: 0.10em; text-transform: uppercase; position: relative; top: -6px; left: 2px; color: var(--c-accent); }
+  .nav a.link { margin-left: 34px; display: flex; align-items: center; height: 52px; font-size: var(--fs-ui); font-weight: var(--fw-medium); letter-spacing: var(--tr-ui); color: var(--c-on-dark); text-decoration: none; white-space: nowrap; line-height: var(--lh-flat); }
+  .nav a.link:hover { color: var(--c-accent); }
+  .nav a.link:first-of-type { margin-left: 42px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 17px; height: 34px; padding: 0 22px; font-family: inherit; font-size: var(--fs-ui); letter-spacing: var(--tr-cta); line-height: var(--lh-flat); white-space: nowrap; cursor: pointer; text-decoration: none; }
+  .btn--nav { margin-left: auto; margin-right: 9px; background: #fff; color: #000; font-weight: var(--fw-bold); }
+  .btn--nav:hover { background: var(--c-accent); }
+  .btn--dark { background: #000; color: #fff; font-weight: var(--fw-medium); height: 46px; border-radius: 23px; padding: 0 30px; }
+  .btn--dark:hover { background: var(--c-accent-deep); }
+
+  .hero { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 96px 0 72px; }
+  .badge-soon {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 18px; border-radius: 999px; border: 1px solid rgba(52,211,153,0.5);
+    background: rgba(52,211,153,0.08);
+    font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: 0.06em; color: var(--c-accent-deep);
+  }
+  .badge-soon .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--c-accent); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+  @media (prefers-reduced-motion: reduce) { .badge-soon .pulse { animation: none; } }
+  .hero h1 { margin: 26px 0 0; }
+  .hero .prop { margin: 12px 0 0; font-size: var(--fs-title); font-weight: var(--fw-light); letter-spacing: var(--tr-title); line-height: 1.4; color: var(--c-ink); }
+  .hero .desc { margin: 16px auto 0; max-width: 52ch; }
+  .orb {
+    width: 320px; height: 320px; border-radius: 50%; margin: 56px auto 0;
+    background:
+      radial-gradient(circle at 34% 30%, rgba(255,255,255,0.95), transparent 46%),
+      radial-gradient(circle at 30% 30%, var(--ph1), transparent 66%),
+      radial-gradient(circle at 68% 72%, var(--ph2), transparent 62%),
+      linear-gradient(160deg, var(--ph1), var(--ph2));
+    filter: drop-shadow(0 30px 60px rgba(2,72,105,0.18));
+  }
+  .hints { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 48px; }
+  .hint { padding: 9px 20px; border-radius: 999px; border: 1px solid var(--c-border-row); background: #fff; font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); color: var(--c-ink-soft); }
+  .subscribe { display: flex; gap: 10px; margin-top: 44px; flex-wrap: wrap; justify-content: center; }
+  .subscribe input {
+    width: 320px; max-width: 78vw; height: 46px; padding: 0 20px; border: 1px solid var(--c-border-row); border-radius: 23px;
+    font-family: inherit; font-size: var(--fs-ui); color: var(--c-ink); background: #fff;
+  }
+  .subscribe input:focus { outline: 2px solid var(--c-accent); outline-offset: -1px; border-color: transparent; }
+  .sub-note { margin-top: 14px; }
+
+  footer { border-top: 1px solid var(--c-border-row); padding: 36px 0 44px; }
+  footer .inner { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  footer a { font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); color: var(--c-ink-soft); text-decoration: none; margin-right: 20px; }
+  footer a:hover { color: var(--c-accent-deep); }
+  footer .copy { margin-left: auto; font-size: var(--fs-caption); font-weight: var(--fw-light); letter-spacing: var(--tr-caption); color: var(--c-muted); }
+
+  /* 原型专用：Reverb/Delay 切换器 */
+  .switcher {
+    position: fixed; right: 20px; bottom: 20px; z-index: 60;
+    display: flex; background: #000; border-radius: 999px; padding: 4px;
+  }
+  .switcher button {
+    border: 0; background: none; color: rgba(255,255,255,0.65); padding: 8px 16px; border-radius: 999px;
+    font-family: inherit; font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); cursor: pointer;
+  }
+  .switcher button.is-on { background: #fff; color: #000; }
+  .switcher-label { position: fixed; right: 20px; bottom: 62px; z-index: 60; font-size: 10px; color: var(--c-muted); letter-spacing: 0.04em; }
+
+  @media (max-width: 939.98px) {
+    .wrap { padding: 0 20px; }
+    .nav { width: 100%; max-width: none; margin-top: 12px; }
+    .nav a.link, .nav .btn--nav { display: none; }
+    .hero { padding: 64px 0 56px; }
+    .orb { width: min(72vw, 300px); height: min(72vw, 300px); }
+    footer .copy { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="主导航">
+  <svg class="logo" width="26" height="25" viewBox="0 0 26 25" fill="none" aria-label="SanMu">
+    <rect x="4" y="8" width="4" height="13" rx="2" fill="#34D399"/>
+    <rect x="11" y="3" width="4" height="18" rx="2" fill="#34D399"/>
+    <rect x="18" y="10" width="4" height="11" rx="2" fill="#34D399"/>
+  </svg>
+  <span class="wordmark">SanMu<sup>Audio</sup></span>
+  <a class="link" href="#">产品</a>
+  <a class="link" href="#">关于</a>
+  <a class="link" href="#">FAQ</a>
+  <a class="link" href="#">EN</a>
+  <a class="btn btn--nav" href="#">回到产品页</a>
+</nav>
+
+<main class="hero wrap">
+  <span class="badge-soon"><span class="pulse"></span><span id="so-badge">COMING SOON · 即将发布</span></span>
+  <h1 class="t-display" id="so-name">SanMu Reverb</h1>
+  <p class="prop" id="so-prop">算法混响：自然空间，雾青质感</p>
+  <p class="desc t-body" id="so-desc">RT60 与 Damping 精细控制，自然空间与低 CPU 占用。正在打磨最后的手感，发布第一时间通知你。</p>
+  <div class="orb" id="so-orb" role="presentation"></div>
+  <div class="hints" id="so-hints">
+    <span class="hint">算法混响</span><span class="hint">RT60 / Damping</span><span class="hint">低 CPU</span>
+  </div>
+  <div class="subscribe">
+    <input type="email" id="so-email" placeholder="你的邮箱，上线时提醒你">
+    <button class="btn btn--dark" id="so-btn" type="button">上线提醒我</button>
+  </div>
+  <p class="sub-note t-caption">订阅功能 P3 上线（Supabase 承载），当前为界面示意。</p>
+</main>
+
+<footer>
+  <div class="wrap inner">
+    <svg class="logo" width="26" height="25" viewBox="0 0 26 25" fill="none" aria-label="SanMu">
+      <rect x="4" y="8" width="4" height="13" rx="2" fill="#34D399"/>
+      <rect x="11" y="3" width="4" height="18" rx="2" fill="#34D399"/>
+      <rect x="18" y="10" width="4" height="11" rx="2" fill="#34D399"/>
+    </svg>
+    <div>
+      <a href="#">产品</a><a href="#">关于</a><a href="#">FAQ</a><a href="#">隐私政策</a>
+    </div>
+    <div class="copy">© 2026 SanMu Audio · contact@sanmuaudio.com</div>
+  </div>
+</footer>
+
+<div class="switcher-label">原型查看器</div>
+<div class="switcher" id="switcher" role="group" aria-label="原型变体切换">
+  <button class="is-on" data-p="reverb" type="button">Reverb</button>
+  <button data-p="delay" type="button">Delay</button>
+</div>
+
+<script>
+(function () {
+  var products = {
+    reverb: {
+      badge: 'COMING SOON · 即将发布',
+      name: 'SanMu Reverb',
+      prop: '算法混响：自然空间，雾青质感',
+      desc: 'RT60 与 Damping 精细控制，自然空间与低 CPU 占用。正在打磨最后的手感，发布第一时间通知你。',
+      hints: ['算法混响', 'RT60 / Damping', '低 CPU'],
+      ph1: '#93c5fd', ph2: '#64748b',
+      title: 'SanMu Reverb — 即将发布 | SanMu Audio'
+    },
+    delay: {
+      badge: 'COMING SOON · 四款中唯一免费',
+      name: 'SanMu Delay',
+      prop: '时间纵深：BPM 同步，磁带质感',
+      desc: 'BPM 同步、磁带质感与 Ping-Pong 拓扑。它将是四款插件中唯一免费的一个——发布第一时间通知你。',
+      hints: ['唯一免费', 'BPM 同步', 'Ping-Pong'],
+      ph1: '#c4b5fd', ph2: '#6366f1',
+      title: 'SanMu Delay — 即将发布 | SanMu Audio'
+    }
+  };
+  function apply(key) {
+    var p = products[key];
+    document.getElementById('so-badge').textContent = p.badge;
+    document.getElementById('so-name').textContent = p.name;
+    document.getElementById('so-prop').textContent = p.prop;
+    document.getElementById('so-desc').textContent = p.desc;
+    var hints = document.getElementById('so-hints');
+    hints.innerHTML = '';
+    p.hints.forEach(function (h) {
+      var s = document.createElement('span');
+      s.className = 'hint';
+      s.textContent = h;
+      hints.appendChild(s);
+    });
+    document.getElementById('so-orb').style.setProperty('--ph1', p.ph1);
+    document.getElementById('so-orb').style.setProperty('--ph2', p.ph2);
+    document.documentElement.style.setProperty('--ph1', p.ph1);
+    document.documentElement.style.setProperty('--ph2', p.ph2);
+    document.title = p.title;
+    document.querySelectorAll('.switcher button').forEach(function (b) {
+      b.classList.toggle('is-on', b.dataset.p === key);
+    });
+  }
+  document.getElementById('switcher').addEventListener('click', function (e) {
+    var btn = e.target.closest('button');
+    if (btn) apply(btn.dataset.p);
+  });
+  var saved = null;
+  try { saved = localStorage.getItem('sanmu-so-proto'); } catch (e) {}
+  if (saved && products[saved]) apply(saved);
+  document.getElementById('so-btn').addEventListener('click', function () {
+    var v = document.getElementById('so-email').value.trim();
+    var msg = v ? '订阅功能 P3 上线（演示中）' : '先填个邮箱再点（演示中）';
+    alert(msg);
+  });
+})();
+</script>
+</body>
+</html>

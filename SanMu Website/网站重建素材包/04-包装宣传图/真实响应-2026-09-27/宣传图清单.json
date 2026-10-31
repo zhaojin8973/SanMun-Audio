@@ -1,0 +1,151 @@
+{
+  "title": "SanMu Audio 真实响应包装宣传图",
+  "date": "2026-09-27",
+  "count": 10,
+  "items": [
+    {
+      "file": "comp-dark.png",
+      "path": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/comp-dark.png",
+      "subject": "comp",
+      "theme": "深色杂志主题",
+      "dimensions": "1800×1200",
+      "sha256": "d9a1065c917b6afb697c2aaa7985a6b14547f7b28d4976ebcc25d2473af32db4",
+      "ui_sources": [
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/comp-dark.png"
+      ],
+      "authenticity": "正式数字产品包装图；包装盒正面嵌入真实 DAW 音乐播放响应界面，界面本身仅做等比缩放，未重绘频谱、电平、曲线或参数读数",
+      "packaging": "左侧产品信息与右侧软件盒结构（顶面、侧面、盒面），不以原始截图直接充当海报"
+    },
+    {
+      "file": "comp-light.png",
+      "path": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/comp-light.png",
+      "subject": "comp",
+      "theme": "浅色杂志主题",
+      "dimensions": "1800×1200",
+      "sha256": "46f1e874b2d524fcd54df8b4a97e68ce8e14c2b1fc599ca624ae1614ccca5e2d",
+      "ui_sources": [
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/comp-light.png"
+      ],
+      "authenticity": "正式数字产品包装图；包装盒正面嵌入真实 DAW 音乐播放响应界面，界面本身仅做等比缩放，未重绘频谱、电平、曲线或参数读数",
+      "packaging": "左侧产品信息与右侧软件盒结构（顶面、侧面、盒面），不以原始截图直接充当海报"
+    },
+    {
+      "file": "delay-dark.png",
+      "path": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/delay-dark.png",
+      "subject": "delay",
+      "theme": "深色杂志主题",
+      "dimensions": "1800×1200",
+      "sha256": "ad08b94677ac1f17c832b70c4e6abf3d0238eda0461bb2a09589e6fb77974f9e",
+      "ui_sources": [
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/delay-dark.png"
+      ],
+      "authenticity": "正式数字产品包装图；包装盒正面嵌入真实 DAW 音乐播放响应界面，界面本身仅做等比缩放，未重绘频谱、电平、曲线或参数读数",
+      "packaging": "左侧产品信息与右侧软件盒结构（顶面、侧面、盒面），不以原始截图直接充当海报"
+    },
+    {
+      "file": "delay-light.png",
+      "path": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/delay-light.png",
+      "subject": "delay",
+      "theme": "浅色杂志主题",
+      "dimensions": "1800×1200",
+      "sha256": "32fdb0d11ae47a8e22b3870344b5a0509dac7de8260bf4659ad1ece47e214d89",
+      "ui_sources": [
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/delay-light.png"
+      ],
+      "authenticity": "正式数字产品包装图；包装盒正面嵌入真实 DAW 音乐播放响应界面，界面本身仅做等比缩放，未重绘频谱、电平、曲线或参数读数",
+      "packaging": "左侧产品信息与右侧软件盒结构（顶面、侧面、盒面），不以原始截图直接充当海报"
+    },
+    {
+      "file": "eq6-dark.png",
+      "path": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/eq6-dark.png",
+      "subject": "eq6",
+      "theme": "深色杂志主题",
+      "dimensions": "1800×1200",
+      "sha256": "fd09fdb7e5ff42e21d541020b9fc95002bedfd3590120ceb3a9a1655583bb087",
+      "ui_sources": [
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/eq6-dark.png"
+      ],
+      "authenticity": "正式数字产品包装图；包装盒正面嵌入真实 DAW 音乐播放响应界面，界面本身仅做等比缩放，未重绘频谱、电平、曲线或参数读数",
+      "packaging": "左侧产品信息与右侧软件盒结构（顶面、侧面、盒面），不以原始截图直接充当海报"
+    },
+    {
+      "file": "eq6-light.png",
+      "path": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/eq6-light.png",
+      "subject": "eq6",
+      "theme": "浅色杂志主题",
+      "dimensions": "1800×1200",
+      "sha256": "e1449ac14ffb4fc7f31160d4bee4eb2d7ecc0f883ad134aac4f6545a05dff480",
+      "ui_sources": [
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/eq6-light.png"
+      ],
+      "authenticity": "正式数字产品包装图；包装盒正面嵌入真实 DAW 音乐播放响应界面，界面本身仅做等比缩放，未重绘频谱、电平、曲线或参数读数",
+      "packaging": "左侧产品信息与右侧软件盒结构（顶面、侧面、盒面），不以原始截图直接充当海报"
+    },
+    {
+      "file": "reverb-dark.png",
+      "path": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/reverb-dark.png",
+      "subject": "reverb",
+      "theme": "深色杂志主题",
+      "dimensions": "1800×1200",
+      "sha256": "b736ee2422fa4bbbae511f50fd173577c126863f4bf69600d47a9c19275ac21e",
+      "ui_sources": [
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/reverb-dark.png"
+      ],
+      "authenticity": "正式数字产品包装图；包装盒正面嵌入真实 DAW 音乐播放响应界面，界面本身仅做等比缩放，未重绘频谱、电平、曲线或参数读数",
+      "packaging": "左侧产品信息与右侧软件盒结构（顶面、侧面、盒面），不以原始截图直接充当海报"
+    },
+    {
+      "file": "reverb-light.png",
+      "path": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/reverb-light.png",
+      "subject": "reverb",
+      "theme": "浅色杂志主题",
+      "dimensions": "1800×1200",
+      "sha256": "c47aaed2dab276c5d4e39d20a6c08e4c9bafae1b2a9e07e306213a0641ff0383",
+      "ui_sources": [
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/reverb-light.png"
+      ],
+      "authenticity": "正式数字产品包装图；包装盒正面嵌入真实 DAW 音乐播放响应界面，界面本身仅做等比缩放，未重绘频谱、电平、曲线或参数读数",
+      "packaging": "左侧产品信息与右侧软件盒结构（顶面、侧面、盒面），不以原始截图直接充当海报"
+    },
+    {
+      "file": "suite-dark.png",
+      "path": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/suite-dark.png",
+      "subject": "四款套装",
+      "theme": "深色杂志主题",
+      "dimensions": "1800×1200",
+      "sha256": "2d8e895a47a87138eba4246cdcbd8624e933fbd2f913c4c5392d5b5c1c2edc13",
+      "ui_sources": [
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/eq6-light.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/eq6-dark.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/comp-light.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/comp-dark.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/delay-light.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/delay-dark.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/reverb-light.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/reverb-dark.png"
+      ],
+      "authenticity": "正式数字产品包装图；包装盒正面嵌入真实 DAW 音乐播放响应界面，界面本身仅做等比缩放，未重绘频谱、电平、曲线或参数读数",
+      "packaging": "左侧产品信息与右侧软件盒结构（顶面、侧面、盒面），不以原始截图直接充当海报"
+    },
+    {
+      "file": "suite-light.png",
+      "path": "网站重建素材包/04-包装宣传图/真实响应-2026-09-27/suite-light.png",
+      "subject": "四款套装",
+      "theme": "浅色杂志主题",
+      "dimensions": "1800×1200",
+      "sha256": "7260c1fd944c3ddc05a5121d1df5ab985fb9f8112449f298893d3e2f44ba6a17",
+      "ui_sources": [
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/eq6-light.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/eq6-dark.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/comp-light.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/comp-dark.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/delay-light.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/delay-dark.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/reverb-light.png",
+        "03-插件实图/音乐实录-2026-09-27/修缮裁切/reverb-dark.png"
+      ],
+      "authenticity": "正式数字产品包装图；包装盒正面嵌入真实 DAW 音乐播放响应界面，界面本身仅做等比缩放，未重绘频谱、电平、曲线或参数读数",
+      "packaging": "左侧产品信息与右侧软件盒结构（顶面、侧面、盒面），不以原始截图直接充当海报"
+    }
+  ]
+}

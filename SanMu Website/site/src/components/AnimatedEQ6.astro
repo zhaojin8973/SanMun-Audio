@@ -1,0 +1,93 @@
+---
+import EQ6Mockup from './EQ6Mockup.astro';
+interface Props {
+  variant?: 'small' | 'full';
+  theme?: 'light' | 'dark';
+}
+const { variant = 'small', theme = 'light' } = Astro.props;
+---
+
+<div class:list={['aeq6', `aeq6-${variant}`]} data-theme={theme}>
+  <EQ6Mockup variant={variant} theme={theme} />
+</div>
+
+<style is:global>
+  .aeq6 { width: 100%; height: 100%; }
+  .aeq6 svg { display: block; width: 100%; height: 100%; }
+
+  /* ── 频响曲线三段形态渐变（16s 循环） ── */
+  @keyframes aeq-d-small {
+    0%, 100% { d: path("M26,170 Q116,170 173,170 Q230,170 279,170 Q328,170 374,170 Q420,170 458,170 Q496,170 535,170 Q574,170 574,170"); }
+    33.3%    { d: path("M26,146 Q116,146 173,174 Q230,202 279,178 Q328,154 374,142 Q420,130 458,158 Q496,186 535,162 Q574,138 574,138"); }
+    66.7%    { d: path("M26,194 Q116,194 173,170 Q230,146 279,166 Q328,186 374,190 Q420,194 458,170 Q496,146 535,166 Q574,186 574,186"); }
+  }
+  @keyframes aeq-d-full {
+    0%, 100% { d: path("M30,212 Q138,212 205,212 Q272,212 329,212 Q386,212 439,212 Q492,212 537,212 Q582,212 746,212 Q910,212 910,212"); }
+    33.3%    { d: path("M30,182 Q138,182 205,217 Q272,252 329,222 Q386,192 439,177 Q492,162 537,197 Q582,232 746,202 Q910,172 910,172"); }
+    66.7%    { d: path("M30,242 Q138,242 205,212 Q272,182 329,207 Q386,232 439,237 Q492,242 537,212 Q582,182 746,207 Q910,232 910,232"); }
+  }
+  .aeq6-small .aeq-curve { animation: aeq-d-small 16s ease-in-out infinite; }
+  .aeq6-full .aeq-curve { animation: aeq-d-full 16s ease-in-out infinite; }
+
+  /* ── 频点跟随曲线 ── */
+  @keyframes aeq-cy-small-0 { 0%,100% { cy: 170px; } 33.3% { cy: 146px; } 66.7% { cy: 194px; } }
+  @keyframes aeq-cy-small-1 { 0%,100% { cy: 170px; } 33.3% { cy: 202px; } 66.7% { cy: 146px; } }
+  @keyframes aeq-cy-small-2 { 0%,100% { cy: 170px; } 33.3% { cy: 154px; } 66.7% { cy: 186px; } }
+  @keyframes aeq-cy-small-3 { 0%,100% { cy: 170px; } 33.3% { cy: 130px; } 66.7% { cy: 194px; } }
+  @keyframes aeq-cy-small-4 { 0%,100% { cy: 170px; } 33.3% { cy: 186px; } 66.7% { cy: 146px; } }
+  @keyframes aeq-cy-small-5 { 0%,100% { cy: 170px; } 33.3% { cy: 138px; } 66.7% { cy: 186px; } }
+  @keyframes aeq-cy-full-0 { 0%,100% { cy: 212px; } 33.3% { cy: 182px; } 66.7% { cy: 242px; } }
+  @keyframes aeq-cy-full-1 { 0%,100% { cy: 212px; } 33.3% { cy: 252px; } 66.7% { cy: 182px; } }
+  @keyframes aeq-cy-full-2 { 0%,100% { cy: 212px; } 33.3% { cy: 192px; } 66.7% { cy: 232px; } }
+  @keyframes aeq-cy-full-3 { 0%,100% { cy: 212px; } 33.3% { cy: 162px; } 66.7% { cy: 242px; } }
+  @keyframes aeq-cy-full-4 { 0%,100% { cy: 212px; } 33.3% { cy: 232px; } 66.7% { cy: 182px; } }
+  @keyframes aeq-cy-full-5 { 0%,100% { cy: 212px; } 33.3% { cy: 172px; } 66.7% { cy: 232px; } }
+  .aeq6-small .aeq-dot-0 { animation: aeq-cy-small-0 16s ease-in-out infinite; }
+  .aeq6-small .aeq-dot-1 { animation: aeq-cy-small-1 16s ease-in-out infinite; }
+  .aeq6-small .aeq-dot-2 { animation: aeq-cy-small-2 16s ease-in-out infinite; }
+  .aeq6-small .aeq-dot-3 { animation: aeq-cy-small-3 16s ease-in-out infinite; }
+  .aeq6-small .aeq-dot-4 { animation: aeq-cy-small-4 16s ease-in-out infinite; }
+  .aeq6-small .aeq-dot-5 { animation: aeq-cy-small-5 16s ease-in-out infinite; }
+  .aeq6-full .aeq-dot-0 { animation: aeq-cy-full-0 16s ease-in-out infinite; }
+  .aeq6-full .aeq-dot-1 { animation: aeq-cy-full-1 16s ease-in-out infinite; }
+  .aeq6-full .aeq-dot-2 { animation: aeq-cy-full-2 16s ease-in-out infinite; }
+  .aeq6-full .aeq-dot-3 { animation: aeq-cy-full-3 16s ease-in-out infinite; }
+  .aeq6-full .aeq-dot-4 { animation: aeq-cy-full-4 16s ease-in-out infinite; }
+  .aeq6-full .aeq-dot-5 { animation: aeq-cy-full-5 16s ease-in-out infinite; }
+
+  .aeq6 .aeq-knob { transform-box: fill-box; transform-origin: 50% 50%; }
+  .aeq6 .aeq-knob-0 { animation: aeq-turn 4.2s ease-in-out infinite; }
+  .aeq6 .aeq-knob-1 { animation: aeq-turn 4.8s ease-in-out .4s infinite; }
+  .aeq6 .aeq-knob-2 { animation: aeq-turn 5.4s ease-in-out .8s infinite; }
+  .aeq6 .aeq-knob-3 { animation: aeq-turn 4.5s ease-in-out 1.2s infinite; }
+  .aeq6 .aeq-knob-4 { animation: aeq-turn 5.8s ease-in-out 1.6s infinite; }
+  .aeq6 .aeq-knob-5 { animation: aeq-turn 5.1s ease-in-out 2s infinite; }
+
+  .aeq6 .aeq-meter { transform-box: fill-box; transform-origin: left center; }
+  .aeq6 .aeq-meter-l { animation: aeq-meter 3.3s ease-in-out infinite; }
+  .aeq6 .aeq-meter-r { animation: aeq-meter 3.9s ease-in-out .5s infinite; }
+
+  /* ── 光影扫动 ── */
+  @keyframes aeq-sheen-small {
+    0%   { transform: translateX(0px); opacity: 0; }
+    12%  { opacity: 0.55; }
+    88%  { opacity: 0.55; }
+    100% { transform: translateX(900px); opacity: 0; }
+  }
+  @keyframes aeq-sheen-full {
+    0%   { transform: translateX(0px); opacity: 0; }
+    12%  { opacity: 0.55; }
+    88%  { opacity: 0.55; }
+    100% { transform: translateX(1200px); opacity: 0; }
+  }
+  .aeq6-small .aeq-sheen { animation: aeq-sheen-small 9s linear infinite; }
+  .aeq6-full .aeq-sheen { animation: aeq-sheen-full 9s linear infinite; }
+
+  .aeq6 .aeq-curve-glow { animation: aeq-glow 5s ease-in-out infinite; }
+
+  /* 减弱动效：全部静态（global.css 已兜底，这里再保证一次） */
+  @media (prefers-reduced-motion: reduce) {
+    .aeq6 * { animation: none !important; }
+    .aeq6 .aeq-sheen { opacity: 0; }
+  }
+</style>

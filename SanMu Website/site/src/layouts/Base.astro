@@ -1,0 +1,78 @@
+---
+import '../styles/global.css';
+interface Props {
+  title: string;
+  description: string;
+  lang: 'zh' | 'en';
+  bootScript?: string;
+}
+const { title, description, lang, bootScript = '' } = Astro.props;
+const ogImage = '/og-default.png';
+const umamiId = (import.meta.env.PUBLIC_UMAMI_WEBSITE_ID as string | undefined) ?? '';
+const umamiSrc = (import.meta.env.PUBLIC_UMAMI_SRC as string | undefined) ?? 'https://cloud.umami.is/script.js';
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'SanMu Audio',
+  alternateName: '三牧音频',
+  url: 'https://sanmuaudio.com',
+  logo: 'https://sanmuaudio.com/brand-wordmark.svg',
+  email: 'contact@sanmuaudio.com',
+};
+const webSite = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'SanMu Audio',
+  url: 'https://sanmuaudio.com',
+  inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+};
+const pagePath = Astro.url.pathname.replace(/^\/(zh|en)/, '') || '/';
+const otherLang = lang === 'zh' ? 'en' : 'zh';
+const selfHref = `https://sanmuaudio.com/${lang}${pagePath}`;
+const altHref = `https://sanmuaudio.com/${otherLang}${pagePath}`;
+---
+<!doctype html>
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href={selfHref} />
+    <link rel="alternate" hreflang={lang === 'zh' ? 'zh-CN' : 'en'} href={selfHref} />
+    <link rel="alternate" hreflang={otherLang} href={altHref} />
+    <link rel="alternate" hreflang="x-default" href={`https://sanmuaudio.com/${lang}${pagePath}`} />
+    <script type="application/ld+json" set:html={JSON.stringify(org)} />
+    <script type="application/ld+json" set:html={JSON.stringify(webSite)} />
+    {
+      umamiId && (
+        <script async src={umamiSrc} data-website-id={umamiId} data-domains="sanmuaudio.com" />
+      )
+    }
+    <slot name="head" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">{lang === 'zh' ? '跳到主要内容' : 'Skip to content'}</a>
+    {bootScript && <script is:inline set:html={bootScript} />}
+    <slot />
+    <script>
+      // 不依赖入场动画显示内容，键盘快捷入口统一指向当前页主体。
+      const main = document.querySelector('main');
+      if (main) { main.id = 'main-content'; main.setAttribute('tabindex', '-1'); }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,64 @@
+---
+interface Sample {
+  who: string;
+  type: string;
+  status: string;
+  time: string;
+  body: string;
+  votes: number;
+  reply?: string;
+}
+interface Props {
+  lang: 'zh' | 'en';
+  title: string;
+  samples: Sample[];
+}
+const { lang, title, samples } = Astro.props;
+const t = {
+  zh: {
+    signinPrefix: '🔐 ',
+    signin: ['注册后可留言 · ', '邮箱 + 密码', '，无需验证码 · 首条留言审核后公开，之后免审'],
+    chips: ['💡 需求', '🐛 Bug', '👍 反馈', '💬 闲聊'],
+    placeholder: '说说你在混音里想解决的问题…',
+    publish: '发布（需登录）',
+    replyPrefix: 'SanMu 官方回复：',
+    demoNote: '以上留言为界面示意（虚构示例），真实留言功能 P3 上线。',
+  },
+  en: {
+    signinPrefix: '🔐 ',
+    signin: ['Sign in to comment · ', 'Email + password', ', no verification code · first comment is reviewed, then trusted'],
+    chips: ['💡 Request', '🐛 Bug', '👍 Feedback', '💬 Chat'],
+    placeholder: 'Tell us what you want to solve in your mixes…',
+    publish: 'Publish (sign in required)',
+    replyPrefix: 'SanMu official reply: ',
+    demoNote: 'Sample comments for design preview — the real comment system ships in P3.',
+  },
+}[lang];
+---
+<section class="wrap" id="comments">
+  <div class="sec-head reveal"><span class="idx">07</span><h2 class="t-title">{title}</h2></div>
+  <div class="comments reveal">
+    <div class="signin">{t.signinPrefix}<span>{t.signin[0]}<b>{t.signin[1]}</b>{t.signin[2]}</span></div>
+    <div class="comment-form">
+      <div class="chips">
+        {t.chips.map((c, i) => <span class:list={['chip', { 'is-on': i === 0 }]}>{c}</span>)}
+      </div>
+      <textarea placeholder={t.placeholder}></textarea>
+      <div class="row"><button class="btn btn--dark" type="button">{t.publish}</button></div>
+    </div>
+    {samples.map((s) => (
+      <div class="c-item">
+        <div class="head">
+          <span class="who">{s.who}</span><span class="badge type">{s.type}</span><span class="badge status">{s.status}</span>
+          <span class="time">{s.time}</span>
+        </div>
+        <p class="body">{s.body}</p>
+        <div class="foot">
+          <span class="vote">▲ {s.votes}</span>
+          {s.reply && <div class="reply"><b>{t.replyPrefix}</b>{s.reply}</div>}
+        </div>
+      </div>
+    ))}
+    <p class="t-caption" style="margin:18px 0 0;">{t.demoNote}</p>
+  </div>
+</section>

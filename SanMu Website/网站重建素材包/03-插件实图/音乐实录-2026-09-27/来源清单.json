@@ -1,0 +1,74 @@
+[
+  {
+    "id": "eq6-light",
+    "source": "/Users/zhaojin/Desktop/截屏2026-09-27 16.13.21.png",
+    "saved": "03-插件实图/音乐实录-2026-09-27/原始截图/eq6-light.png",
+    "mode": "Clean · 动态频段 03",
+    "sha256": "004e9193268d376a27e031c11cc9feffc1fa5c94063ba4d01e5fdb500e5ea6f9",
+    "provenance": "用户提供的真实音乐播放宿主截图",
+    "retouch": "待处理：去宿主顶栏及外围，清理悬停提示，保留原始响应与读数"
+  },
+  {
+    "id": "eq6-dark",
+    "source": "/var/folders/vt/mdz5mbss19d4zg18hhp4thx00000gn/T/TemporaryItems/NSIRD_screencaptureui_Fn4gi7/截屏2026-09-27 16.14.17.png",
+    "saved": "03-插件实图/音乐实录-2026-09-27/原始截图/eq6-dark.png",
+    "mode": "Clean · 动态频段 05",
+    "sha256": "c6c71413f939dce28d1d9399c017eb5fd3fcd538695631ca72313f60d3068792",
+    "provenance": "用户提供的真实音乐播放宿主截图",
+    "retouch": "待处理：去宿主顶栏及外围，清理悬停提示，保留原始响应与读数"
+  },
+  {
+    "id": "reverb-light",
+    "source": "/var/folders/vt/mdz5mbss19d4zg18hhp4thx00000gn/T/TemporaryItems/NSIRD_screencaptureui_UsBTo6/截屏2026-09-27 16.15.16.png",
+    "saved": "03-插件实图/音乐实录-2026-09-27/原始截图/reverb-light.png",
+    "mode": "Plate · Modern Silk",
+    "sha256": "0dc7bee49dc859624ebb78c49232ce08c2b6f4c6618f91c58b5a19b59fab0e15",
+    "provenance": "用户提供的真实音乐播放宿主截图",
+    "retouch": "待处理：去宿主顶栏及外围，清理悬停提示，保留原始响应与读数"
+  },
+  {
+    "id": "reverb-dark",
+    "source": "/var/folders/vt/mdz5mbss19d4zg18hhp4thx00000gn/T/TemporaryItems/NSIRD_screencaptureui_6QGrUD/截屏2026-09-27 16.15.32.png",
+    "saved": "03-插件实图/音乐实录-2026-09-27/原始截图/reverb-dark.png",
+    "mode": "Plate · Modern Silk",
+    "sha256": "13b588ced747905b15b966b1701c37b66f2af51d21f99e9e8964ac7e3dc6afd2",
+    "provenance": "用户提供的真实音乐播放宿主截图",
+    "retouch": "待处理：去宿主顶栏及外围，清理悬停提示，保留原始响应与读数"
+  },
+  {
+    "id": "delay-light",
+    "source": "/Users/zhaojin/Desktop/截屏2026-09-27 16.15.51.png",
+    "saved": "03-插件实图/音乐实录-2026-09-27/原始截图/delay-light.png",
+    "mode": "Modern · Independent · SYNC",
+    "sha256": "60d351cc9760ea37eb1d4c7f788e0b07acb049126edcc93f7daf7a8a499228d7",
+    "provenance": "用户提供的真实音乐播放宿主截图",
+    "retouch": "待处理：去宿主顶栏及外围，清理悬停提示，保留原始响应与读数"
+  },
+  {
+    "id": "delay-dark",
+    "source": "/Users/zhaojin/Desktop/截屏2026-09-27 16.15.57.png",
+    "saved": "03-插件实图/音乐实录-2026-09-27/原始截图/delay-dark.png",
+    "mode": "Modern · Independent · SYNC",
+    "sha256": "29eb850c2e2a23b5e47575faf479364f5e5e712433e4ce6c9a5da1ceb8c38b7b",
+    "provenance": "用户提供的真实音乐播放宿主截图",
+    "retouch": "待处理：去宿主顶栏及外围，清理悬停提示，保留原始响应与读数"
+  },
+  {
+    "id": "comp-light",
+    "source": "/var/folders/vt/mdz5mbss19d4zg18hhp4thx00000gn/T/TemporaryItems/NSIRD_screencaptureui_ZW84ze/截屏2026-09-27 16.17.54.png",
+    "saved": "03-插件实图/音乐实录-2026-09-27/原始截图/comp-light.png",
+    "mode": "VCA",
+    "sha256": "a4efb1344e40d2492fa2c49ae021e06530ab6d09cdf4fd174d33d0157391e66a",
+    "provenance": "用户提供的真实音乐播放宿主截图",
+    "retouch": "待处理：去宿主顶栏及外围，清理悬停提示，保留原始响应与读数"
+  },
+  {
+    "id": "comp-dark",
+    "source": "/var/folders/vt/mdz5mbss19d4zg18hhp4thx00000gn/T/TemporaryItems/NSIRD_screencaptureui_5B0PtK/截屏2026-09-27 16.18.13.png",
+    "saved": "03-插件实图/音乐实录-2026-09-27/原始截图/comp-dark.png",
+    "mode": "LEV",
+    "sha256": "a513c2a5aed83ad2d8fe6a103c9f6d2e975bd1154179cf907d53cb9003fc50cb",
+    "provenance": "用户提供的真实音乐播放宿主截图",
+    "retouch": "待处理：去宿主顶栏及外围，清理悬停提示，保留原始响应与读数"
+  }
+]

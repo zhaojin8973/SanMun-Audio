@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SanMu 官网设计方案答卷</title>
+<style>
+  :root {
+    --bg: #F6F8F7;
+    --card: rgba(255,255,255,0.62);
+    --edge: #94a3b8;
+    --green: #34D399;
+    --green-soft: rgba(52,211,153,0.14);
+    --ink: #1F2937;
+    --ink2: #64748B;
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0 0 120px;
+    font-family: -apple-system, "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background:
+      radial-gradient(60% 40% at 15% 0%, rgba(52,211,153,0.10), transparent 70%),
+      radial-gradient(55% 35% at 90% 5%, rgba(96,165,250,0.10), transparent 70%),
+      linear-gradient(180deg, #FBFDFC, #EEF3F1);
+    color: var(--ink);
+    font-size: 15px;
+  }
+  header.hero {
+    max-width: 860px; margin: 0 auto; padding: 44px 20px 8px;
+  }
+  header.hero h1 { font-size: 28px; margin: 0 0 6px; font-weight: 700; }
+  header.hero p { color: var(--ink2); margin: 0 0 14px; line-height: 1.6; }
+  .hint { font-size: 13px; color: var(--ink2); }
+  .hint b { color: var(--ink); }
+
+  main { max-width: 860px; margin: 0 auto; padding: 8px 20px; }
+
+  details.module {
+    background: var(--card);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(148,163,184,0.22);
+    border-radius: var(--radius);
+    margin: 14px 0;
+    box-shadow: 0 3px 10px rgba(36,43,56,0.05);
+    overflow: hidden;
+  }
+  details.module summary {
+    cursor: pointer; list-style: none;
+    padding: 16px 20px;
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600; font-size: 16px;
+  }
+  details.module summary::-webkit-details-marker { display: none; }
+  details.module summary .badge {
+    background: var(--green-soft); color: #0b8a5f;
+    border-radius: 999px; font-size: 12px; padding: 2px 10px; font-weight: 600;
+  }
+  details.module summary .arrow { margin-left: auto; color: var(--ink2); transition: transform .2s; font-size: 12px; }
+  details.module[open] summary .arrow { transform: rotate(90deg); }
+
+  .q { padding: 12px 20px; border-top: 1px solid rgba(148,163,184,0.14); }
+  .q-title { font-weight: 600; margin-bottom: 9px; line-height: 1.5; }
+  .q-title .qid {
+    display: inline-block; background: #eef3f1; color: var(--ink2);
+    border-radius: 6px; font-size: 12px; padding: 1px 7px; margin-right: 8px;
+    font-weight: 600; letter-spacing: .3px;
+  }
+  .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opt {
+    display: inline-flex; align-items: center; gap: 7px;
+    border: 1px solid rgba(148,163,184,0.30);
+    border-radius: 10px; padding: 7px 12px; cursor: pointer;
+    background: rgba(255,255,255,0.45);
+    font-size: 14px; transition: all .15s;
+    user-select: none;
+  }
+  .opt:hover { border-color: var(--green); background: rgba(52,211,153,0.07); }
+  .opt input { accent-color: var(--green); width: 15px; height: 15px; margin: 0; }
+  .opt:has(input:checked) { border-color: var(--green); background: var(--green-soft); font-weight: 500; }
+  .q textarea {
+    width: 100%; margin-top: 9px; border: 1px solid rgba(148,163,184,0.35);
+    border-radius: 10px; padding: 9px 12px; font: inherit; font-size: 14px;
+    background: rgba(255,255,255,0.7); color: var(--ink); resize: vertical;
+  }
+  .q textarea:focus { outline: 2px solid var(--green); outline-offset: -1px; border-color: transparent; }
+  .max-note { font-size: 12px; color: var(--ink2); margin-left: 6px; font-weight: 400; }
+
+  .toolbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    background: rgba(251,253,252,0.85);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    border-top: 1px solid rgba(148,163,184,0.25);
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+    display: flex; align-items: center; gap: 14px; justify-content: center;
+  }
+  .toolbar .prog { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink2); }
+  .track { width: 140px; height: 6px; border-radius: 999px; background: #e8eeec; overflow: hidden; }
+  .fill { height: 100%; width: 0%; background: var(--green); border-radius: 999px; transition: width .25s; }
+  button {
+    border: 1px solid rgba(148,163,184,0.35); background: rgba(255,255,255,0.8);
+    border-radius: 10px; padding: 9px 18px; font: inherit; font-size: 14px;
+    cursor: pointer; color: var(--ink); transition: all .15s;
+  }
+  button:hover { border-color: var(--green); background: var(--green-soft); }
+  button.primary { background: var(--green); border-color: var(--green); color: #06301f; font-weight: 700; }
+  button.primary:hover { filter: brightness(1.06); background: var(--green); }
+  #toast {
+    position: fixed; bottom: 76px; left: 50%; transform: translateX(-50%);
+    background: #1F2937; color: #F6F8F7; border-radius: 999px; padding: 9px 20px;
+    font-size: 14px; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 20;
+  }
+  #toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>SanMu 官网设计方案答卷</h1>
+  <p>全部是选择题，点选即可。答完点底部「复制答卷结果」，把内容粘回对话发给我。<br>
+  <span class="hint">进度<b>自动保存在本浏览器</b>，关掉再打开不会丢。带「限选」的题按标注数量选；有文本框的题可填可不填。</span></p>
+</header>
+
+<main>
+
+<details class="module" open>
+  <summary><span class="badge">A</span> 定位与目标 <span class="arrow">▶</span></summary>
+
+  <div class="q" data-type="checkbox" data-max="2">
+    <div class="q-title"><span class="qid">A1</span>这个网站的首要使命？（限选 2 个最重要）<span class="max-note">限选 2</span></div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="A1" value="品牌门面">品牌门面</label>
+      <label class="opt"><input type="checkbox" name="A1" value="产品宣发">产品宣发</label>
+      <label class="opt"><input type="checkbox" name="A1" value="下载分发">下载分发</label>
+      <label class="opt"><input type="checkbox" name="A1" value="商业化收款">商业化收款</label>
+      <label class="opt"><input type="checkbox" name="A1" value="用户社区">用户社区</label>
+      <label class="opt"><input type="checkbox" name="A1" value="技术支持">技术支持</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">A2</span>期望的上线节奏？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="A2" value="1-2 个月内上线完整版">1-2 个月内上线完整版</label>
+      <label class="opt"><input type="radio" name="A2" value="尽快先出单页">尽快先出单页（留言区后补）</label>
+      <label class="opt"><input type="radio" name="A2" value="做精再上，不设时间压力">做精再上，不设时间压力</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">A3</span>这是「品牌官网」还是「个人作品集」？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="A3" value="品牌官网，主体是 SanMu Audio">品牌官网，主体是 SanMu Audio</label>
+      <label class="opt"><input type="radio" name="A3" value="个人网站，插件是作品">个人网站，插件是作品</label>
+      <label class="opt"><input type="radio" name="A3" value="品牌为主，个人故事有一席之地">品牌为主，个人故事有一席之地</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">A4</span>域名？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="A4" value="已有域名">已有域名</label>
+      <label class="opt"><input type="radio" name="A4" value="有候选">有候选</label>
+      <label class="opt"><input type="radio" name="A4" value="帮我推荐">帮我推荐</label>
+    </div>
+    <textarea name="A4_txt" placeholder="已有或候选的域名写这里（选了「帮我推荐」可留空）"></textarea>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">A5</span>语言策略？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="A5" value="英文为主 + 中文要点摘要">英文为主 + 中文要点摘要</label>
+      <label class="opt"><input type="radio" name="A5" value="中英双语完整切换">中英双语完整切换</label>
+      <label class="opt"><input type="radio" name="A5" value="全英文">全英文</label>
+      <label class="opt"><input type="radio" name="A5" value="全中文">全中文</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="checkbox">
+    <div class="q-title"><span class="qid">A6</span>哪些网站的气质值得参考？（多选）</div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="A6" value="FabFilter 克制专业">FabFilter 克制专业</label>
+      <label class="opt"><input type="checkbox" name="A6" value="Valhalla DSP 极简亲切">Valhalla DSP 极简亲切</label>
+      <label class="opt"><input type="checkbox" name="A6" value="Goodhertz 设计感">Goodhertz 设计感</label>
+      <label class="opt"><input type="checkbox" name="A6" value="Baby Audio 年轻活泼">Baby Audio 年轻活泼</label>
+      <label class="opt"><input type="checkbox" name="A6" value="Tone Projects 硬核专业">Tone Projects 硬核专业</label>
+      <label class="opt"><input type="checkbox" name="A6" value="Softube 硬件叙事">Softube 硬件叙事</label>
+      <label class="opt"><input type="checkbox" name="A6" value="AudioThing 复古亲和">AudioThing 复古亲和</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="checkbox" data-max="3">
+    <div class="q-title"><span class="qid">A7</span>希望访客离开时留下的印象？（限选 3 个词）<span class="max-note">限选 3</span></div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="A7" value="专业">专业</label>
+      <label class="opt"><input type="checkbox" name="A7" value="通透">通透</label>
+      <label class="opt"><input type="checkbox" name="A7" value="克制">克制</label>
+      <label class="opt"><input type="checkbox" name="A7" value="温暖">温暖</label>
+      <label class="opt"><input type="checkbox" name="A7" value="现代">现代</label>
+      <label class="opt"><input type="checkbox" name="A7" value="可靠">可靠</label>
+      <label class="opt"><input type="checkbox" name="A7" value="高级">高级</label>
+      <label class="opt"><input type="checkbox" name="A7" value="亲近">亲近</label>
+      <label class="opt"><input type="checkbox" name="A7" value="技术流">技术流</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">A8</span>网站与插件 UI 的关系？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="A8" value="延续但放宽">延续但放宽（呼应玻璃拟物，网页可用更丰富的渐变光影与滚动动效）</label>
+      <label class="opt"><input type="radio" name="A8" value="严格延续">严格延续（米白底+玻璃板+细线小字完全照搬插件）</label>
+      <label class="opt"><input type="radio" name="A8" value="只配色呼应">只配色呼应（网站独立设计）</label>
+    </div>
+  </div>
+</details>
+
+<details class="module">
+  <summary><span class="badge">B</span> 产品与内容 <span class="arrow">▶</span></summary>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">B1</span>SanMu EQ6 在网站上怎么呈现？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="B1_EQ6" value="正式产品页">正式产品页</label>
+      <label class="opt"><input type="radio" name="B1_EQ6" value="Coming Soon 预告">Coming Soon 预告</label>
+      <label class="opt"><input type="radio" name="B1_EQ6" value="暂不展示">暂不展示</label>
+    </div>
+  </div>
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">B1</span>SanMu Comp 在网站上怎么呈现？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="B1_Comp" value="正式产品页">正式产品页</label>
+      <label class="opt"><input type="radio" name="B1_Comp" value="Coming Soon 预告">Coming Soon 预告</label>
+      <label class="opt"><input type="radio" name="B1_Comp" value="暂不展示">暂不展示</label>
+    </div>
+  </div>
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">B1</span>SanMu Reverb 在网站上怎么呈现？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="B1_Reverb" value="正式产品页">正式产品页</label>
+      <label class="opt"><input type="radio" name="B1_Reverb" value="Coming Soon 预告">Coming Soon 预告</label>
+      <label class="opt"><input type="radio" name="B1_Reverb" value="暂不展示">暂不展示</label>
+    </div>
+  </div>
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">B1</span>SanMu Delay 在网站上怎么呈现？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="B1_Delay" value="正式产品页">正式产品页</label>
+      <label class="opt"><input type="radio" name="B1_Delay" value="Coming Soon 预告">Coming Soon 预告</label>
+      <label class="opt"><input type="radio" name="B1_Delay" value="暂不展示">暂不展示</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="checkbox">
+    <div class="q-title"><span class="qid">B2</span>产品页要包含哪些模块？（多选）</div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="B2" value="Hero 大图">Hero 大图（界面截图）</label>
+      <label class="opt"><input type="checkbox" name="B2" value="一句话价值主张">一句话价值主张</label>
+      <label class="opt"><input type="checkbox" name="B2" value="特性列表">特性列表</label>
+      <label class="opt"><input type="checkbox" name="B2" value="界面动画">界面特写动画</label>
+      <label class="opt"><input type="checkbox" name="B2" value="音频试听">音频试听（A/B 对比）</label>
+      <label class="opt"><input type="checkbox" name="B2" value="视频演示">视频演示</label>
+      <label class="opt"><input type="checkbox" name="B2" value="技术规格表">技术规格表</label>
+      <label class="opt"><input type="checkbox" name="B2" value="系统需求">系统需求</label>
+      <label class="opt"><input type="checkbox" name="B2" value="版本历史">版本历史 / 更新日志</label>
+      <label class="opt"><input type="checkbox" name="B2" value="FAQ">FAQ</label>
+      <label class="opt"><input type="checkbox" name="B2" value="下载购买 CTA">下载 / 购买 CTA</label>
+      <label class="opt"><input type="checkbox" name="B2" value="用户评价区">用户评价区</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">B3</span>音频试听素材？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="B3" value="有现成素材">有现成素材，我来准备</label>
+      <label class="opt"><input type="radio" name="B3" value="你出方案">你出方案（录什么、怎么 A/B）</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">B3b</span>试听播放器形式？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="B3b" value="拖 AB 条实时切换 dry/wet">拖 AB 条实时切换 dry/wet（最直观，开发量最大）</label>
+      <label class="opt"><input type="radio" name="B3b" value="两个并排播放按钮">两个并排播放按钮（简单可靠）</label>
+      <label class="opt"><input type="radio" name="B3b" value="先嵌入第三方">先嵌入 SoundCloud / 视频站，以后再自建</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">B4</span>下载与购买流程？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="B4" value="官网直接下载">官网直接下载安装包</label>
+      <label class="opt"><input type="radio" name="B4" value="留邮箱换下载链接">下载前留邮箱（换下载链接）</label>
+      <label class="opt"><input type="radio" name="B4" value="跳转第三方">跳转第三方（Gumroad / KVR / Itch.io）</label>
+      <label class="opt"><input type="radio" name="B4" value="官网内完成购买">官网内完成购买（需支付接口）</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">B5</span>定价与授权模式？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="B5" value="待定，帮我建议">待定，帮我建议</label>
+      <label class="opt"><input type="radio" name="B5" value="免费">免费</label>
+      <label class="opt"><input type="radio" name="B5" value="免费试用 + 付费解锁">免费试用 + 付费解锁</label>
+      <label class="opt"><input type="radio" name="B5" value="直接买断">直接买断</label>
+      <label class="opt"><input type="radio" name="B5" value="订阅">订阅</label>
+    </div>
+    <textarea name="B5_txt" placeholder="如果已有定价/授权细节（价格、试用时长、iLok 等）写这里"></textarea>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">B6</span>更新日志怎么做？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="B6" value="产品页内版本历史板块">产品页内版本历史板块</label>
+      <label class="opt"><input type="radio" name="B6" value="独立 Changelog / News 页面">独立 Changelog / News 页面</label>
+      <label class="opt"><input type="radio" name="B6" value="不用，插件内看即可">不用，插件内看即可</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="checkbox">
+    <div class="q-title"><span class="qid">B7</span>技术支持渠道？（多选）</div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="B7" value="邮件">邮件</label>
+      <label class="opt"><input type="checkbox" name="B7" value="网站留言区">网站留言区</label>
+      <label class="opt"><input type="checkbox" name="B7" value="FAQ 页">FAQ 页</label>
+      <label class="opt"><input type="checkbox" name="B7" value="外部 Discord 或群">外部 Discord / 群</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="checkbox">
+    <div class="q-title"><span class="qid">B8</span>About 页面放什么？（多选）</div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="B8" value="个人故事">你的个人故事（混音师背景）</label>
+      <label class="opt"><input type="checkbox" name="B8" value="照片头像">照片 / 头像</label>
+      <label class="opt"><input type="checkbox" name="B8" value="联系方式">联系方式</label>
+      <label class="opt"><input type="checkbox" name="B8" value="credits">工作室 / credits</label>
+      <label class="opt"><input type="checkbox" name="B8" value="合作媒体入口">合作 / 媒体联系入口</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="checkbox" data-max="3">
+    <div class="q-title"><span class="qid">B9</span>首屏（Landing）最想放什么？（限选 3）<span class="max-note">限选 3</span></div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="B9" value="品牌大标题">品牌大标题 + 一句话定位</label>
+      <label class="opt"><input type="checkbox" name="B9" value="EQ6 界面大图">EQ6 界面大图</label>
+      <label class="opt"><input type="checkbox" name="B9" value="产品全家福">产品全家福（四款并排）</label>
+      <label class="opt"><input type="checkbox" name="B9" value="试听入口">音频试听入口</label>
+      <label class="opt"><input type="checkbox" name="B9" value="最新动态">最新动态 / 版本发布</label>
+    </div>
+  </div>
+</details>
+
+<details class="module">
+  <summary><span class="badge">C</span> 留言 / 使用体验区（重点） <span class="arrow">▶</span></summary>
+
+  <div class="q" data-type="checkbox">
+    <div class="q-title"><span class="qid">C1</span>留言区的核心目的？（多选）</div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="C1" value="收集反馈建议">收集反馈与建议</label>
+      <label class="opt"><input type="checkbox" name="C1" value="Bug 报告通道">Bug 报告通道</label>
+      <label class="opt"><input type="checkbox" name="C1" value="功能需求投票">功能需求投票</label>
+      <label class="opt"><input type="checkbox" name="C1" value="社区交流">社区交流（用法、preset 分享）</label>
+      <label class="opt"><input type="checkbox" name="C1" value="口碑沉淀">口碑沉淀（好评展示）</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">C2</span>留言区做成什么形态？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="C2" value="产品页底部评论区">每个产品页底部各自评论区（反馈自动归类到产品）</label>
+      <label class="opt"><input type="radio" name="C2" value="全站留言板">全站一个留言板（时间流）</label>
+      <label class="opt"><input type="radio" name="C2" value="分类板块">分类板块（反馈 / Bug / 需求 / 闲聊）</label>
+      <label class="opt"><input type="radio" name="C2" value="论坛式">论坛式（主题帖 + 回复楼层）</label>
+      <label class="opt"><input type="radio" name="C2" value="Giscus 轻量嵌入">Giscus 轻量嵌入（GitHub Discussions 承载）</label>
+      <label class="opt"><input type="radio" name="C2" value="只放外部链接">不做站内留言，只放 Discord 链接</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">C3</span>身份与登录？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="C3" value="昵称 + 邮箱">昵称 + 邮箱（邮箱不公开，用于防滥用）</label>
+      <label class="opt"><input type="radio" name="C3" value="完全匿名">完全匿名（随便起昵称就能发）</label>
+      <label class="opt"><input type="radio" name="C3" value="第三方登录">第三方登录（GitHub / Google）</label>
+      <label class="opt"><input type="radio" name="C3" value="必须注册账号">必须注册账号</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">C4</span>内容审核与反垃圾？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="C4" value="先审后发">先审后发（你批准才公开）</label>
+      <label class="opt"><input type="radio" name="C4" value="即时发布">即时发布 + 事后删除/举报</label>
+      <label class="opt"><input type="radio" name="C4" value="混合">混合：首次发言审核，通过后免审</label>
+      <label class="opt"><input type="radio" name="C4" value="验证码即可">验证码 / 防刷即可，不设人工审核</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="checkbox">
+    <div class="q-title"><span class="qid">C5</span>留言到达后怎么通知你？（多选）</div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="C5" value="邮件通知">邮件通知</label>
+      <label class="opt"><input type="checkbox" name="C5" value="网站后台查看">网站后台查看</label>
+      <label class="opt"><input type="checkbox" name="C5" value="即时通讯推送">即时通讯推送（微信 / Telegram）</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="checkbox">
+    <div class="q-title"><span class="qid">C6</span>你需要哪些管理能力？（多选）</div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="C6" value="删除留言">删除留言</label>
+      <label class="opt"><input type="checkbox" name="C6" value="官方回复">以官方身份回复</label>
+      <label class="opt"><input type="checkbox" name="C6" value="置顶">置顶</label>
+      <label class="opt"><input type="checkbox" name="C6" value="状态标记">状态标记（已收到 / 已修复 / 已采纳）</label>
+      <label class="opt"><input type="checkbox" name="C6" value="导出备份">导出所有留言</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="checkbox">
+    <div class="q-title"><span class="qid">C7</span>互动功能？（多选）</div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="C7" value="点赞">点赞（好建议浮上来）</label>
+      <label class="opt"><input type="checkbox" name="C7" value="需求投票">需求投票</label>
+      <label class="opt"><input type="checkbox" name="C7" value="回复邮件通知">用户收到回复时邮件通知</label>
+      <label class="opt"><input type="checkbox" name="C7" value="都不要，保持最简">都不要，保持最简</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">C8</span>留言数据保留策略？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="C8" value="长期保留">长期保留（公开的经验积累）</label>
+      <label class="opt"><input type="radio" name="C8" value="保留但可删可归档">保留但可删可归档</label>
+      <label class="opt"><input type="radio" name="C8" value="没想好，你建议">没想好，你建议</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">C9</span>留言是否与产品页联动？（例：EQ6 页面显示"最近收到的反馈"）</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="C9" value="要，展示真实用户声音">要，展示真实用户声音</label>
+      <label class="opt"><input type="radio" name="C9" value="不要，各归各">不要，各归各</label>
+    </div>
+  </div>
+</details>
+
+<details class="module">
+  <summary><span class="badge">D</span> 视觉与品牌 <span class="arrow">▶</span></summary>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">D1</span>玻璃拟物的延续程度？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="D1" value="延续但放宽">延续但放宽（呼应气质，网页有更丰富的光影与视差）</label>
+      <label class="opt"><input type="radio" name="D1" value="严格延续">严格延续（米白底、玻璃板、细线小字）</label>
+      <label class="opt"><input type="radio" name="D1" value="仅产品页玻璃">仅产品页用玻璃语言，内容页干净白底</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">D2</span>主题？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="D2" value="Light + Dark 双主题">Light + Dark 双主题（与插件一致）</label>
+      <label class="opt"><input type="radio" name="D2" value="只做 Light">只做 Light（米白 + 薄荷绿）</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">D2b</span>网页主强调色？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="D2b" value="沿用薄荷绿 #34D399">沿用薄荷绿 #34D399（与插件一致）</label>
+      <label class="opt"><input type="radio" name="D2b" value="想换新主色">想换新主色</label>
+      <label class="opt"><input type="radio" name="D2b" value="你定">你定</label>
+    </div>
+    <textarea name="D2b_txt" placeholder="想换的新主色写这里（选「沿用」或「你定」可留空）"></textarea>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">D3</span>网页字体？（插件用的 Avenir Next 是付费商用字体，网页不能直接嵌）</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="D3" value="开源替代">开源替代（Inter / Manrope，现代干净）</label>
+      <label class="opt"><input type="radio" name="D3" value="购买 Avenir Next 网页授权">购买 Avenir Next 网页版授权</label>
+      <label class="opt"><input type="radio" name="D3" value="系统字体栈">系统字体栈（最快最稳，但不独特）</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">D4</span>动效尺度？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="D4" value="3-5 微交互">3-5：微交互（按钮、卡片 hover、滚动淡入）</label>
+      <label class="opt"><input type="radio" name="D4" value="0-2 几乎不动">0-2：静态页面，最多 hover 变色</label>
+      <label class="opt"><input type="radio" name="D4" value="6-8 产品演示动画">6-8：产品演示动画（旋钮转、频谱动、光影流动）</label>
+      <label class="opt"><input type="radio" name="D4" value="9-10 沉浸式">9-10：沉浸式动效网站</label>
+    </div>
+    <textarea name="D4_txt" placeholder="最想要的一个动画（例：EQ6 频响曲线随滚动画出）"></textarea>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">D5</span>产品视觉素材从哪来？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="D5" value="你截图录屏">你来截图 / 录屏（我给你截图清单）</label>
+      <label class="opt"><input type="radio" name="D5" value="我生成">我来生成（网页重绘放大版界面）</label>
+      <label class="opt"><input type="radio" name="D5" value="需要视频">需要视频演示</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">D6</span>Logo 现状？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="D6" value="已有 logo">已有 logo</label>
+      <label class="opt"><input type="radio" name="D6" value="先用文字标">没有，先用文字标（SanMu Audio）</label>
+      <label class="opt"><input type="radio" name="D6" value="需要设计">需要设计（我给方向方案再执行）</label>
+    </div>
+    <textarea name="D6_txt" placeholder="已有 logo 的文件路径写这里"></textarea>
+  </div>
+
+  <div class="q" data-type="checkbox">
+    <div class="q-title"><span class="qid">D7</span>必须避开的视觉雷区？（多选）</div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="D7" value="纯黑背景">纯黑背景</label>
+      <label class="opt"><input type="checkbox" name="D7" value="霓虹">霓虹</label>
+      <label class="opt"><input type="checkbox" name="D7" value="3D 拟物">3D 拟物</label>
+      <label class="opt"><input type="checkbox" name="D7" value="弹窗">弹窗</label>
+      <label class="opt"><input type="checkbox" name="D7" value="自动播放">自动播放</label>
+      <label class="opt"><input type="checkbox" name="D7" value="大色块">大色块</label>
+      <label class="opt"><input type="checkbox" name="D7" value="无雷区">无雷区</label>
+    </div>
+  </div>
+</details>
+
+<details class="module">
+  <summary><span class="badge">E</span> 技术与部署 <span class="arrow">▶</span></summary>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">E1</span>技术栈偏好？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="E1" value="听我推荐">听我推荐（按留言区需求给最省心方案）</label>
+      <label class="opt"><input type="radio" name="E1" value="已有偏好">已有偏好</label>
+    </div>
+    <textarea name="E1_txt" placeholder="有偏好的技术栈写这里"></textarea>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">E2</span>留言区的技术承载？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="E2" value="Giscus / GitHub Discussions">Giscus / GitHub Discussions（免费、免服务器、仓库即后台）</label>
+      <label class="opt"><input type="radio" name="E2" value="Supabase 或自建小后端">Supabase / 自建小后端（灵活可控，要维护）</label>
+      <label class="opt"><input type="radio" name="E2" value="静态表单发邮箱">静态表单（留言直接发你邮箱，不公开展示）</label>
+      <label class="opt"><input type="radio" name="E2" value="帮我选并说明理由">帮我选并说明理由</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">E3</span>托管与部署？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="E3" value="Vercel / Netlify / Cloudflare Pages">Vercel / Netlify / Cloudflare Pages（免费层、全球 CDN）</label>
+      <label class="opt"><input type="radio" name="E3" value="自有服务器">自有服务器 / 虚拟主机</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">E3b</span>国内访问速度重要吗？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="E3b" value="主要面向海外">主要面向海外，国内慢一点没关系</label>
+      <label class="opt"><input type="radio" name="E3b" value="国内必须快">国内必须快（涉及 ICP 备案）</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">E4</span>域名邮箱？（如 contact@sanmuaudio.com）</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="E4" value="要，免费方案">要，免费方案（Zoho 等）</label>
+      <label class="opt"><input type="radio" name="E4" value="要，付费方案">要，付费方案（Google Workspace 等）</label>
+      <label class="opt"><input type="radio" name="E4" value="暂时不要">暂时不要，用现有邮箱</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">E5</span>访问统计？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="E5" value="要隐私友好统计">要，隐私友好统计（Umami / Plausible，无 Cookie 弹窗）</label>
+      <label class="opt"><input type="radio" name="E5" value="不要">不要</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">E6</span>SEO 与社交分享？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="E6" value="要">要（可被搜索、分享有预览卡片）</label>
+      <label class="opt"><input type="radio" name="E6" value="无所谓">无所谓</label>
+    </div>
+    <textarea name="E6_txt" placeholder="想被搜到的关键词（如 parametric EQ plugin）"></textarea>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">E7</span>内容维护方式？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="E7" value="改 Markdown + git">改 Markdown + git 提交（我代维护）</label>
+      <label class="opt"><input type="radio" name="E7" value="你也要改">你也要改（需要简单后台或教你怎么改）</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">E8</span>验收节奏？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="E8" value="每阶段预览">每阶段给你预览链接，看完提修改</label>
+      <label class="opt"><input type="radio" name="E8" value="大版本一次看">大版本一次看</label>
+    </div>
+  </div>
+</details>
+
+<details class="module">
+  <summary><span class="badge">F</span> 合规与预算 <span class="arrow">▶</span></summary>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">F1</span>隐私政策 / 用户协议？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="F1" value="要">要（留言区收集邮箱时必须）</label>
+      <label class="opt"><input type="radio" name="F1" value="上线后再补">先不写，上线后再补</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">F2</span>ICP 备案？（国内加速需要）</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="F2" value="愿意备案">愿意备案</label>
+      <label class="opt"><input type="radio" name="F2" value="不愿意">不愿意</label>
+      <label class="opt"><input type="radio" name="F2" value="不清楚，听建议">不清楚，听建议</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">F3</span>预算范围？（域名、托管、字体、第三方服务）</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="F3" value="越低越好">越低越好（免费层为主）</label>
+      <label class="opt"><input type="radio" name="F3" value="每年几百元内">每年几百元内</label>
+      <label class="opt"><input type="radio" name="F3" value="每年千元级">每年千元级</label>
+      <label class="opt"><input type="radio" name="F3" value="不设限">不设限</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">F4</span>要在网站上直接卖插件吗？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="F4" value="要站内支付">要（支付方式后续定：PayPal / Stripe / 国内支付）</label>
+      <label class="opt"><input type="radio" name="F4" value="只展示下载，购买走第三方">只展示与下载，购买走第三方</label>
+      <label class="opt"><input type="radio" name="F4" value="待定">待定</label>
+    </div>
+  </div>
+</details>
+
+<details class="module">
+  <summary><span class="badge">G</span> 验收标准 <span class="arrow">▶</span></summary>
+
+  <div class="q" data-type="checkbox">
+    <div class="q-title"><span class="qid">G1</span>什么算「能上线」？（多选）</div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="G1" value="产品页完整">所有已发布产品有完整产品页</label>
+      <label class="opt"><input type="checkbox" name="G1" value="留言可用">留言区可用（能发、你能收到、你能管理）</label>
+      <label class="opt"><input type="checkbox" name="G1" value="移动端不破版">手机端浏览不破版</label>
+      <label class="opt"><input type="checkbox" name="G1" value="下载走通">下载流程走通</label>
+      <label class="opt"><input type="checkbox" name="G1" value="无死链错字">全站无死链、无错别字</label>
+      <label class="opt"><input type="checkbox" name="G1" value="双主题达标">深色主题（如果做）与浅色一样达标</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">G2</span>最在意的手感细节？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="G2" value="加载快">加载快</label>
+      <label class="opt"><input type="radio" name="G2" value="滚动顺滑">滚动顺滑</label>
+      <label class="opt"><input type="radio" name="G2" value="按钮反馈清晰">按钮反馈清晰</label>
+      <label class="opt"><input type="radio" name="G2" value="都重要">都重要</label>
+    </div>
+  </div>
+
+  <div class="q" data-type="radio">
+    <div class="q-title"><span class="qid">G3</span>网站整体气质的「听感类比」？</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="G3" value="干净通透的数字 EQ">干净通透的数字 EQ（克制、精确、无染色）</label>
+      <label class="opt"><input type="radio" name="G3" value="温暖染色的硬件压缩">温暖染色的硬件压缩（有性格、有温度）</label>
+      <label class="opt"><input type="radio" name="G3" value="介于两者之间">介于两者之间</label>
+      <label class="opt"><input type="radio" name="G3" value="听你的">听你的</label>
+    </div>
+  </div>
+</details>
+
+</main>
+
+<div class="toolbar">
+  <div class="prog">进度 <span id="pct">0%</span>
+    <div class="track"><div class="fill" id="fill"></div></div>
+  </div>
+  <button id="resetBtn">清空重答</button>
+  <button id="copyBtn" class="primary">复制答卷结果</button>
+  <button id="downloadBtn">下载 .md</button>
+</div>
+<div id="toast"></div>
+
+<script>
+(function () {
+  var KEY = 'sanmu-site-survey-v1';
+  var maxSelect = { A1: 2, A7: 3, B9: 3 };
+  var all = Array.prototype.slice.call(document.querySelectorAll('.q'));
+
+  function inputs(q) { return Array.prototype.slice.call(q.querySelectorAll('input')); }
+
+  function save() {
+    var state = {};
+    all.forEach(function (q) {
+      var checked = inputs(q).filter(function (i) { return i.checked; }).map(function (i) { return i.value; });
+      var t = q.querySelector('textarea');
+      if (checked.length) state[q.dataset.q || t && t.name] = checked;
+      if (t && t.value.trim()) state[t.name] = t.value.trim();
+    });
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+    updateProgress();
+  }
+
+  function load() {
+    var state = {};
+    try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+    Object.keys(state).forEach(function (k) {
+      var v = state[k];
+      if (!Array.isArray(v)) {
+        var t = document.querySelector('textarea[name="' + k + '"]');
+        if (t) t.value = v;
+        return;
+      }
+      v.forEach(function (val) {
+        var el = document.querySelector('input[name="' + k + '"][value="' + val.replace(/"/g, '\\"') + '"]');
+        if (el) el.checked = true;
+      });
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    var groups = {};
+    document.querySelectorAll('input[name]').forEach(function (i) { groups[i.name] = true; });
+    var total = Object.keys(groups).length, done = 0;
+    Object.keys(groups).forEach(function (n) {
+      if (document.querySelector('input[name="' + n + '"]:checked')) done++;
+    });
+    var p = total ? Math.round(done / total * 100) : 0;
+    document.getElementById('pct').textContent = p + '%';
+    document.getElementById('fill').style.width = p + '%';
+  }
+
+  function qTitle(q) {
+    var t = q.querySelector('.q-title');
+    return t ? t.textContent.replace(/\s+/g, ' ').trim() : '';
+  }
+
+  function buildMarkdown() {
+    var out = ['# SanMu 官网设计答卷（自动生成）', ''];
+    var modules = Array.prototype.slice.call(document.querySelectorAll('details.module'));
+    modules.forEach(function (m) {
+      var title = m.querySelector('summary').textContent.replace('▶', '').replace(/\s+/g, ' ').trim();
+      out.push('## ' + title, '');
+      var qs = Array.prototype.slice.call(m.querySelectorAll('.q'));
+      qs.forEach(function (q) {
+        var checked = inputs(q).filter(function (i) { return i.checked; });
+        var t = q.querySelector('textarea');
+        var txt = t && t.value.trim();
+        if (!checked.length && !txt) return;
+        out.push('- **' + qTitle(q) + '**');
+        if (checked.length) out.push('  - 答：' + checked.map(function (i) { return i.value; }).join('、'));
+        if (txt) out.push('  - 补充：' + txt);
+      });
+      out.push('');
+    });
+    return out.join('\n');
+  }
+
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(function () { el.classList.remove('show'); }, 2200);
+  }
+
+  function copyText(text, onDone) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(onDone, function () { fallbackCopy(text, onDone); });
+    } else fallbackCopy(text, onDone);
+  }
+  function fallbackCopy(text, onDone) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    onDone();
+  }
+
+  document.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.type === 'checkbox') {
+      var q = t.closest('.q');
+      var max = maxSelect[q.dataset.q];
+      if (max) {
+        var group = q.querySelectorAll('input[name="' + t.name + '"]:checked');
+        if (group.length > max) { t.checked = false; toast('这题最多选 ' + max + ' 个'); return; }
+      }
+    }
+    save();
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    copyText(buildMarkdown(), function () { toast('已复制，粘回对话发给我即可'); });
+  });
+
+  document.getElementById('downloadBtn').addEventListener('click', function () {
+    var blob = new Blob([buildMarkdown()], { type: 'text/markdown;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'SanMu官网设计答卷.md';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('已下载 SanMu官网设计答卷.md');
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', function () {
+    if (!confirm('确定清空所有已选答案？')) return;
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(function (i) { i.checked = false; });
+    document.querySelectorAll('textarea').forEach(function (t) { t.value = ''; });
+    updateProgress();
+    toast('已清空');
+  });
+
+  load();
+})();
+</script>
+</body>
+</html>

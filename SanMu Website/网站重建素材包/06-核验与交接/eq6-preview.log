@@ -1,0 +1,36 @@
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /index.html?demo=1 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /shared/reverb.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /eq.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /app.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /analyser-settings.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /graph.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /icons.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /controls.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /bridge.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /band-tools.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /spectrum-motion.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /spectrum-focus.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /shared/icons.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /card-input.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /shared/draw-knob.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /preview.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 22:59:28] code 404, message File not found
+127.0.0.1 - - [21/Sep/2026 22:59:28] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /index.html?demo=1 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /shared/reverb.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /eq.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /app.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /bridge.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /icons.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /graph.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /controls.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /band-tools.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /analyser-settings.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /shared/icons.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /spectrum-motion.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /shared/draw-knob.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /spectrum-focus.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /card-input.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:23] "GET /preview.js HTTP/1.1" 200 -
+127.0.0.1 - - [21/Sep/2026 23:00:24] code 404, message File not found
+127.0.0.1 - - [21/Sep/2026 23:00:24] "GET /favicon.ico HTTP/1.1" 404 -

@@ -1,0 +1,166 @@
+{
+  "release": "internal-beta-20261002",
+  "betaEndsAt": "2026-10-31T23:59:00+08:00",
+  "products": [
+    {
+      "slug": "eq6",
+      "name": "SanMu EQ6",
+      "version": "0.1.5",
+      "macOS": {
+        "status": "ready",
+        "architectures": [
+          "x86_64",
+          "arm64"
+        ],
+        "minimumIntel": "10.15",
+        "minimumAppleSilicon": "11.0",
+        "formats": [
+          "VST3",
+          "AU",
+          "AAX"
+        ],
+        "package": "SanMu_EQ6_v0.1.5_Beta_Until20261031.pkg",
+        "sha256": "aa9d96afba43f99f92076b813cb327c4373697e78e9d914908089eeeb4babdc9",
+        "notarized": true,
+        "pace": {
+          "status": "signed-only-verified",
+          "wrapper": "not-used",
+          "wrapConfigGuid": "2A6E58F0-A062-11F1-8E61-00505692C25A"
+        }
+      },
+      "windows": {
+        "status": "not-built",
+        "architectures": [
+          "x86_64"
+        ],
+        "minimum": "Windows 10 22H2",
+        "formats": [
+          "VST3",
+          "AAX"
+        ],
+        "package": null,
+        "version": "0.1.5"
+      }
+    },
+    {
+      "slug": "comp",
+      "name": "SanMu Comp",
+      "version": "0.1.17",
+      "macOS": {
+        "status": "ready",
+        "architectures": [
+          "x86_64",
+          "arm64"
+        ],
+        "minimumIntel": "10.15",
+        "minimumAppleSilicon": "11.0",
+        "formats": [
+          "VST3",
+          "AU",
+          "AAX"
+        ],
+        "package": "SanMu_Comp_v0.1.17_Beta_Until20261031.pkg",
+        "sha256": "cc5de604be78d589df46abb79ac9f3dc448ec50deabdc4ce5fbc500ef6aa2cbb",
+        "notarized": true,
+        "pace": {
+          "status": "signed-only-verified",
+          "wrapper": "not-used",
+          "wrapConfigGuid": "1C46A820-BB26-11F1-8E61-00505692C25A"
+        }
+      },
+      "windows": {
+        "status": "not-built",
+        "architectures": [
+          "x86_64"
+        ],
+        "minimum": "Windows 10 22H2",
+        "formats": [
+          "VST3",
+          "AAX"
+        ],
+        "package": null,
+        "version": "0.1.17"
+      }
+    },
+    {
+      "slug": "delay",
+      "name": "SanMu Delay",
+      "version": "0.1.5",
+      "macOS": {
+        "status": "ready",
+        "architectures": [
+          "x86_64",
+          "arm64"
+        ],
+        "minimumIntel": "10.15",
+        "minimumAppleSilicon": "11.0",
+        "formats": [
+          "VST3",
+          "AU",
+          "AAX"
+        ],
+        "package": "SanMu_Delay_v0.1.5_Beta_Until20261031.pkg",
+        "sha256": "380433f92e41f49438855b243d72745bbc8bf37658b793759a5fea38d583c274",
+        "notarized": true,
+        "pace": {
+          "status": "signed-only-verified",
+          "wrapper": "not-used",
+          "wrapConfigGuid": "53742CF0-BB26-11F1-BA61-005056928F3B"
+        }
+      },
+      "windows": {
+        "status": "not-built",
+        "architectures": [
+          "x86_64"
+        ],
+        "minimum": "Windows 10 22H2",
+        "formats": [
+          "VST3",
+          "AAX"
+        ],
+        "package": null,
+        "version": "0.1.5"
+      }
+    },
+    {
+      "slug": "reverb",
+      "name": "SanMu Reverb",
+      "version": "1.0.4",
+      "macOS": {
+        "status": "ready",
+        "architectures": [
+          "x86_64",
+          "arm64"
+        ],
+        "minimumIntel": "10.15",
+        "minimumAppleSilicon": "11.0",
+        "formats": [
+          "VST3",
+          "AU",
+          "AAX"
+        ],
+        "package": "SanMu_Reverb_v1.0.4_Beta_Until20261031.pkg",
+        "sha256": "9c582fd8183a502616ef6a5f9bc350c376f781fc6e0db256b9f3c192d77e1036",
+        "notarized": true,
+        "pace": {
+          "status": "signed-only-verified",
+          "wrapper": "not-used",
+          "wrapConfigGuid": "F92A1BB0-BB20-11F1-BA61-005056928F3B"
+        }
+      },
+      "windows": {
+        "status": "not-built",
+        "architectures": [
+          "x86_64"
+        ],
+        "minimum": "Windows 10 22H2",
+        "formats": [
+          "VST3",
+          "AAX"
+        ],
+        "package": null,
+        "version": "1.0.4"
+      }
+    }
+  ]
+}

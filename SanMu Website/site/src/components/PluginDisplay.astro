@@ -1,0 +1,45 @@
+---
+import { productList, type Lang } from '../data/products';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const first = productList[0];
+const t = lang === 'zh' ? { choose:'选择展示的插件', dark:'深色', light:'浅色', themes:'界面主题', note:'真实音乐播放中的界面捕捉', open:'了解 EQ6', status:'界面实录' } : { choose:'Choose a plug-in', dark:'Dark', light:'Light', themes:'Interface theme', note:'Interface captured during music playback', open:'Explore EQ6', status:'INTERFACE CAPTURE' };
+const slides = productList.map(p=>({slug:p.slug,name:p.name,light:p.image,dark:p.darkImage,width:p.darkImageWidth,height:p.darkImageHeight,lightWidth:p.imageWidth,lightHeight:p.imageHeight}));
+---
+<div class="sm-display" data-sm-display data-slides={JSON.stringify(slides)} data-lang={lang}>
+  <figure class="sm-device">
+    <div class="sm-device-bezel">
+      <span class="sm-device-camera" aria-hidden="true"></span>
+      <div class="sm-device-screen"><img data-display-image src={first.darkImage} width={first.darkImageWidth} height={first.darkImageHeight} alt={`${first.name} ${t.note}`} fetchpriority="high" /><span class="sm-device-screen-label">{t.status}</span></div>
+    </div>
+    <div class="sm-device-chin" aria-hidden="true"><span>SanMu Audio</span></div>
+    <div class="sm-device-stand" aria-hidden="true"></div><div class="sm-device-foot" aria-hidden="true"></div>
+    <figcaption class="sm-display-caption">{t.note} <span aria-hidden="true">·</span> <a data-display-link href={`/${lang}/plugins/${first.slug}`}>{t.open}<span aria-hidden="true">↗</span></a></figcaption>
+  </figure>
+  <div class="sm-display-controls">
+    <div class="sm-plugin-tabs" role="group" aria-label={t.choose}>{productList.map((p,i)=><button type="button" data-display-product={p.slug} aria-pressed={i===0?'true':'false'}>{p.name.replace('SanMu ','')}</button>)}</div>
+    <div class="sm-theme-tabs" role="group" aria-label={t.themes}><button type="button" data-display-theme="dark" aria-pressed="true">{t.dark}</button><button type="button" data-display-theme="light" aria-pressed="false">{t.light}</button></div>
+  </div>
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-sm-display]').forEach(display=>{
+    const slides=JSON.parse(display.dataset.slides ?? '[]') as Array<{slug:string;name:string;light:string;dark:string;width:number;height:number;lightWidth:number;lightHeight:number}>;
+    const image=display.querySelector<HTMLImageElement>('[data-display-image]');
+    const link=display.querySelector<HTMLAnchorElement>('[data-display-link]');
+    const productButtons=Array.from(display.querySelectorAll<HTMLButtonElement>('[data-display-product]'));
+    const themeButtons=Array.from(display.querySelectorAll<HTMLButtonElement>('[data-display-theme]'));
+    let active=slides[0]; let theme:'dark'|'light'='dark';
+    const zh=display.dataset.lang==='zh';
+    const render=()=>{
+      if(!active||!image) return;
+      image.src=active[theme]; image.width=theme==='dark'?active.width:active.lightWidth; image.height=theme==='dark'?active.height:active.lightHeight;
+      image.alt=`${active.name} ${zh?'真实音乐响应界面':'real music-response interface'}`;
+      if(link) { link.href=`/${display.dataset.lang}/plugins/${active.slug}`; link.textContent=`${zh?'了解':'Explore'} ${active.name.replace('SanMu ','')} ↗`; }
+      productButtons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.displayProduct===active.slug)));
+      themeButtons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.displayTheme===theme)));
+      display.dataset.theme=theme;
+    };
+    productButtons.forEach(button=>button.addEventListener('click',()=>{ active=slides.find(s=>s.slug===button.dataset.displayProduct) ?? slides[0]; render(); }));
+    themeButtons.forEach(button=>button.addEventListener('click',()=>{ theme=button.dataset.displayTheme==='light'?'light':'dark'; render(); }));
+  });
+</script>

@@ -1,0 +1,64 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import { internalBeta } from '../../data/releases';
+---
+
+<Base lang="zh" title="版本与发布资料 — SanMu Audio" description="SanMu Audio 四款插件开源正式版、官方签名安装包、文档与平台状态。">
+  <Nav lang="zh" />
+  <main class="release-page">
+    <header class="page-hero wrap">
+      <div class="hero-eyebrow t-eyebrow reveal"><span class="dot"></span>SANMU AUDIO · OPEN SOURCE RELEASE</div>
+      <h1 class="t-display reveal">版本与发布资料</h1>
+      <p class="hero-prop reveal">四款插件 · 发布日期 {internalBeta.date} · {internalBeta.betaEndsAt}</p>
+    </header>
+
+    <section class="wrap release-overview reveal">
+      <div>
+        <p class="eyebrow">当前状态</p>
+        <h2>macOS Universal 2 签名安装包已就绪，Windows 版本支持源码与脚本构建。</h2>
+        <p>当前 macOS 包为 Universal 2 正式构建，支持 Intel macOS 10.15+ 与 Apple 芯片 macOS 11.0+，格式包含 VST3、AU、AAX，已完成 Developer ID Application & Installer 签名并通过 Apple `auval` 宿主验证。完整源码按 GNU AGPLv3 协议公开，开发者可免费克隆编译；普通音乐人可直接获取签名安装包。</p>
+      </div>
+      <div class="release-callout">
+        <strong>开源与双轨分发</strong>
+        <span>GitHub 仓库提供完整 C++20 / JUCE 8 / WebView2 源码（默认构建 VST3 与 AU）；官网提供预编译、已签名的官方安装包。</span>
+      </div>
+    </section>
+
+    <section class="wrap release-section">
+      <div class="section-label"><span>01</span><h2>版本与平台</h2></div>
+      <div class="table-wrap reveal">
+        <table class="table-audio release-table">
+          <thead><tr><th>产品</th><th>版本</th><th>macOS</th><th>Windows</th></tr></thead>
+          <tbody>
+            {internalBeta.products.map((product) => <tr>
+              <td><strong>{product.name}</strong></td>
+              <td>{product.version}</td>
+              <td><span class="release-status release-status--ready">Universal 2 · Developer ID 已签名</span><small>{product.packageName}</small></td>
+              <td><span class="release-status release-status--pending">支持脚本 / CI 构建</span><small>Windows 10/11 x64 · VST3</small></td>
+            </tr>)}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="wrap release-section">
+      <div class="section-label"><span>02</span><h2>发布资料</h2></div>
+      <div class="release-doc-grid reveal">
+        {internalBeta.documents.map((document) => <a class="release-doc" href={`/docs/${internalBeta.id}/${document.zhPath}`} download>
+          <span class="release-doc__label">文档</span><strong>{document.zh}</strong><small>{document.zhPath}</small><span class="release-doc__arrow">↗</span>
+        </a>)}
+      </div>
+    </section>
+
+    <section class="wrap release-section release-section--last">
+      <div class="release-callout release-callout--wide reveal">
+        <strong>开源许可与反馈</strong>
+        <span>所有插件已解除内测时间限制，永久可用。欢迎在 GitHub 提交 Issue / PR，或发送邮件至 <a class="text-link" href="mailto:contact@sanmuaudio.com">contact@sanmuaudio.com</a> 反馈宿主、系统版本与复现步骤。</span>
+        <a class="button button-dark" href="/zh/about">反馈与联系 ↗</a>
+      </div>
+    </section>
+  </main>
+  <Footer lang="zh" />
+</Base>

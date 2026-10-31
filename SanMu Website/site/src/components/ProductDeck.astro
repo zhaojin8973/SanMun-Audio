@@ -1,0 +1,147 @@
+---
+import { productList, type Lang } from '../data/products';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const copy = lang === 'zh'
+  ? {
+      title: '四款插件，放在同一张工作台上。',
+      body: '用旋转展台快速查看每款插件的实际界面、处理对象和当前内测版本。图片均来自真实音乐播放中的界面捕捉。',
+      previous: '上一个产品',
+      next: '下一个产品',
+      pause: '暂停自动切换',
+      play: '恢复自动切换',
+      open: '查看产品页',
+    }
+  : {
+      title: 'Four plug-ins on one work surface.',
+      body: 'Rotate through the actual interface captures, working focus and current beta version for each plug-in. Every image comes from music playback in the plug-in.',
+      previous: 'Previous product',
+      next: 'Next product',
+      pause: 'Pause auto-rotation',
+      play: 'Resume auto-rotation',
+      open: 'Open product page',
+    };
+
+const slides = productList.map((product) => ({
+  slug: product.slug,
+  name: product.name,
+  image: product.promo,
+  width: product.promoWidth,
+  height: product.promoHeight,
+  accent: product.accent,
+  kicker: product[lang].kicker,
+  body: product[lang].body,
+  features: product[lang].features,
+  version: product.version,
+}));
+const first = slides[0];
+---
+
+<section class="wrap product-deck-section reveal">
+  <div class="section-label">
+    <span>02</span>
+    <h2>{copy.title}</h2>
+  </div>
+  <p class="product-deck-lede">{copy.body}</p>
+
+  <div class="product-deck" data-product-deck data-slides={JSON.stringify(slides)} data-copy-pause={copy.pause} data-copy-play={copy.play}>
+    <div class="product-deck-stage" aria-label={lang === 'zh' ? '真实界面展台' : 'Real interface deck'}>
+      {slides.map((slide, index) => (
+        <article class="product-deck-card" data-deck-card data-index={index} data-position={index === 0 ? '0' : index === 1 ? '1' : index === 2 ? '2' : '-1'} aria-hidden={index === 0 ? 'false' : 'true'}>
+          <img src={slide.image} alt={`${slide.name} ${lang === 'zh' ? '真实音乐响应界面' : 'real music-response interface'}`} width={slide.width} height={slide.height} loading={index === 0 ? 'eager' : 'lazy'} />
+        </article>
+      ))}
+      <div class="product-deck-controls">
+        <button type="button" class="deck-arrow" data-deck-prev aria-label={copy.previous}>←</button>
+        <button type="button" class="deck-arrow" data-deck-next aria-label={copy.next}>→</button>
+        <button type="button" class="deck-toggle" data-deck-toggle aria-pressed="true">{copy.pause}</button>
+      </div>
+    </div>
+
+    <aside class="product-deck-info" aria-live="polite" style={`--product-accent:${first.accent}`}>
+      <p class="eyebrow" data-deck-kicker style={`color:${first.accent}`}>{first.kicker}</p>
+      <h3 data-deck-name>{first.name}</h3>
+      <p class="deck-version" data-deck-version>{lang === 'zh' ? '内测版本' : 'Beta'} {first.version}</p>
+      <p class="deck-body" data-deck-body>{first.body}</p>
+      <ul data-deck-features>
+        {first.features.map((feature) => <li>{feature}</li>)}
+      </ul>
+      <a class="text-link" data-deck-link href={`${lang === 'zh' ? '/zh' : '/en'}/plugins/${first.slug}`}>{copy.open} <span>↗</span></a>
+    </aside>
+  </div>
+</section>
+
+<script>
+  const decks = document.querySelectorAll<HTMLElement>('[data-product-deck]');
+  decks.forEach((deck) => {
+    const raw = deck.dataset.slides;
+    if (!raw) return;
+    const slides = JSON.parse(raw) as Array<{ slug: string; name: string; accent: string; kicker: string; body: string; features: string[]; version: string }>;
+    const cards = Array.from(deck.querySelectorAll<HTMLElement>('[data-deck-card]'));
+    const prev = deck.querySelector<HTMLButtonElement>('[data-deck-prev]');
+    const next = deck.querySelector<HTMLButtonElement>('[data-deck-next]');
+    const toggle = deck.querySelector<HTMLButtonElement>('[data-deck-toggle]');
+    const kicker = deck.querySelector<HTMLElement>('[data-deck-kicker]');
+    const name = deck.querySelector<HTMLElement>('[data-deck-name]');
+    const version = deck.querySelector<HTMLElement>('[data-deck-version]');
+    const body = deck.querySelector<HTMLElement>('[data-deck-body]');
+    const featureList = deck.querySelector<HTMLElement>('[data-deck-features]');
+    const link = deck.querySelector<HTMLAnchorElement>('[data-deck-link]');
+    let active = 0;
+    let playing = true;
+    let timer: number | undefined;
+
+    const positionFor = (index: number) => {
+      const offset = (index - active + slides.length) % slides.length;
+      return offset === slides.length - 1 ? -1 : offset === slides.length - 2 ? 2 : offset;
+    };
+
+    const render = () => {
+      cards.forEach((card, index) => {
+        const isActive = index === active;
+        card.dataset.position = String(positionFor(index));
+        card.setAttribute('aria-hidden', String(!isActive));
+        card.tabIndex = isActive ? 0 : -1;
+      });
+      const slide = slides[active];
+      if (kicker) {
+        kicker.textContent = slide.kicker;
+        kicker.style.color = slide.accent;
+      }
+      const info = deck.querySelector<HTMLElement>('.product-deck-info');
+      if (info) info.style.setProperty('--product-accent', slide.accent);
+      if (name) name.textContent = slide.name;
+      if (version) version.textContent = `${version.textContent?.split(' ')[0] ?? 'Beta'} ${slide.version}`;
+      if (body) body.textContent = slide.body;
+      if (featureList) featureList.innerHTML = slide.features.map((feature) => `<li>${feature}</li>`).join('');
+      if (link) link.href = `${link.href.split('/plugins/')[0]}/plugins/${slide.slug}`;
+    };
+
+    const advance = (step: number) => {
+      active = (active + step + slides.length) % slides.length;
+      render();
+    };
+    const restart = () => {
+      if (timer) window.clearInterval(timer);
+      timer = playing ? window.setInterval(() => advance(1), 4800) : undefined;
+    };
+    prev?.addEventListener('click', () => { advance(-1); restart(); });
+    next?.addEventListener('click', () => { advance(1); restart(); });
+    toggle?.addEventListener('click', () => {
+      playing = !playing;
+      toggle.setAttribute('aria-pressed', String(playing));
+      toggle.textContent = playing ? (deck.dataset.copyPause ?? '') : (deck.dataset.copyPlay ?? '');
+      restart();
+    });
+    deck.addEventListener('mouseenter', () => { if (timer) window.clearInterval(timer); });
+    deck.addEventListener('mouseleave', restart);
+    deck.addEventListener('focusin', () => { if (timer) window.clearInterval(timer); });
+    deck.addEventListener('focusout', (event) => { if (!deck.contains(event.relatedTarget as Node)) restart(); });
+    render();
+    restart();
+  });
+</script>

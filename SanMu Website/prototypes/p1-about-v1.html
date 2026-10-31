@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>关于 SanMu Audio | SanMu Audio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@100..900&display=block" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: #fff;
+    font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: geometricPrecision;
+  }
+  :root {
+    --dp: 1;
+    --fs-display : 55.7px; --fs-title : 20px; --fs-heading : 17px; --fs-body : 16.1px;
+    --fs-eyebrow : 15.8px; --fs-ui : 15px; --fs-meta : 14.3px; --fs-item : 12.9px;
+    --fs-caption : 12.2px; --fs-wordmark : 17.1px; --fs-sup : 11.4px;
+    --fw-light : 388; --fw-regular : 470; --fw-medium : 500; --fw-semibold : 511; --fw-bold : 577; --fw-black : 783;
+    --tr-display : -0.0572em; --tr-title : -0.0570em; --tr-heading : -0.0200em; --tr-body : -0.0475em;
+    --tr-eyebrow : -0.0293em; --tr-ui : -0.0080em; --tr-cta : -0.0200em; --tr-meta : -0.0447em;
+    --tr-item : -0.0287em; --tr-caption : -0.0295em; --tr-wordmark : -0.0075em;
+    --lh-display : 61px; --lh-body : 20px; --lh-flat : 1;
+    --c-ink : #000000; --c-ink-soft : #2e2e2e; --c-muted : #b8b8b8; --c-on-dark : #ffffff;
+    --c-surface-nav : #000000; --c-surface-card : #f6f8f7; --c-border-row : #ededed;
+    --c-accent : #34D399; --c-accent-deep : #0f766e;
+    --ease-reveal : cubic-bezier(.22, 1, .36, 1); --ease-settle : cubic-bezier(.16, 1, .30, 1);
+  }
+  .t-display { font-size: var(--fs-display); font-weight: var(--fw-regular); letter-spacing: var(--tr-display); line-height: var(--lh-display); color: var(--c-ink); }
+  .t-title   { font-size: var(--fs-title); font-weight: var(--fw-light); letter-spacing: var(--tr-title); line-height: var(--lh-flat); color: var(--c-ink); }
+  .t-heading { font-size: var(--fs-heading); font-weight: var(--fw-semibold); letter-spacing: var(--tr-heading); line-height: var(--lh-flat); color: var(--c-ink); }
+  .t-body    { font-size: var(--fs-body); font-weight: var(--fw-regular); letter-spacing: var(--tr-body); line-height: var(--lh-body); color: var(--c-ink); }
+  .t-eyebrow { font-size: var(--fs-eyebrow); font-weight: var(--fw-light); letter-spacing: var(--tr-eyebrow); line-height: var(--lh-flat); color: var(--c-ink); }
+  .t-meta    { font-size: var(--fs-meta); font-weight: var(--fw-regular); letter-spacing: var(--tr-meta); line-height: 1.7; color: var(--c-ink-soft); }
+  .t-item    { font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); line-height: var(--lh-flat); color: var(--c-ink); }
+  .t-caption { font-size: var(--fs-caption); font-weight: var(--fw-light); letter-spacing: var(--tr-caption); line-height: var(--lh-flat); color: var(--c-muted); }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+
+  .nav {
+    position: sticky; top: 16px; z-index: 50;
+    width: 880px; max-width: calc(100% - 32px); height: 52px; margin: 16px auto 0;
+    background: var(--c-surface-nav); border-radius: 26px; display: flex; align-items: center;
+  }
+  .logo { margin-left: 9px; flex: none; }
+  .wordmark { margin-left: 6px; display: flex; align-items: center; white-space: nowrap; font-size: var(--fs-wordmark); font-weight: var(--fw-black); letter-spacing: var(--tr-wordmark); color: var(--c-on-dark); line-height: var(--lh-flat); }
+  .wordmark sup { font-size: var(--fs-sup); font-weight: var(--fw-regular); letter-spacing: 0.10em; text-transform: uppercase; position: relative; top: -6px; left: 2px; color: var(--c-accent); }
+  .nav a.link { margin-left: 34px; display: flex; align-items: center; height: 52px; font-size: var(--fs-ui); font-weight: var(--fw-medium); letter-spacing: var(--tr-ui); color: var(--c-on-dark); text-decoration: none; white-space: nowrap; line-height: var(--lh-flat); }
+  .nav a.link:hover { color: var(--c-accent); }
+  .nav a.link:first-of-type { margin-left: 42px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 17px; height: 34px; padding: 0 22px; font-family: inherit; font-size: var(--fs-ui); letter-spacing: var(--tr-cta); line-height: var(--lh-flat); white-space: nowrap; cursor: pointer; text-decoration: none; }
+  .btn--nav { margin-left: auto; margin-right: 9px; background: #fff; color: #000; font-weight: var(--fw-bold); }
+  .btn--nav:hover { background: var(--c-accent); }
+  .btn--dark { background: #000; color: #fff; font-weight: var(--fw-medium); }
+  .btn--dark:hover { background: var(--c-accent-deep); }
+
+  .burger { display: none; flex-direction: column; justify-content: center; gap: 5px; margin-left: auto; margin-right: 9px; width: 34px; height: 34px; padding: 0 7px; background: none; border: 0; border-radius: 17px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .burger__bar { display: block; height: 2px; width: 100%; background: #fff; border-radius: 1px; transition: transform .22s ease, opacity .22s ease; }
+  .nav.is-open .burger__bar:nth-child(1) { transform: translateY(3.5px) rotate(45deg); }
+  .nav.is-open .burger__bar:nth-child(2) { transform: translateY(-3.5px) rotate(-45deg); }
+  .navmenu { display: flex; flex-direction: column; position: absolute; top: calc(100% + 8px); right: 0; min-width: 216px; padding: 10px; background: #000; border-radius: 20px; opacity: 0; transform: translateY(-6px); transition: opacity .2s ease, transform .2s ease; pointer-events: none; }
+  .navmenu[hidden] { display: flex; }
+  .nav.is-open .navmenu { opacity: 1; transform: none; pointer-events: auto; }
+  .navmenu__link { padding: 11px 14px; border-radius: 12px; font-size: var(--fs-ui); font-weight: var(--fw-medium); letter-spacing: var(--tr-ui); color: #fff; text-decoration: none; line-height: 1; }
+  .navmenu__link:hover { background: rgba(255,255,255,0.1); }
+
+  .reveal { opacity: 0; translate: 0 14px; transition: opacity .62s var(--ease-settle), translate .62s var(--ease-settle); }
+  .reveal.is-in { opacity: 1; translate: 0 0; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; translate: 0 0; transition: none; }
+    * { transition: none !important; }
+  }
+
+  .hero { display: flex; align-items: center; gap: 56px; padding: 88px 0 72px; }
+  .hero-text { flex: 1 1 60%; min-width: 0; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
+  .hero-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-accent); }
+  .hero h1 { margin: 0; }
+  .hero-prop { margin: 14px 0 0; font-size: var(--fs-title); font-weight: var(--fw-light); letter-spacing: var(--tr-title); line-height: 1.4; color: var(--c-ink); }
+  .hero-sub { margin: 16px 0 0; max-width: 52ch; }
+  .avatar {
+    flex: 0 0 260px; width: 260px; height: 260px; border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95), transparent 46%),
+                radial-gradient(circle at 30% 30%, rgba(52,211,153,0.55), transparent 68%),
+                linear-gradient(160deg, #34D399, #0f766e);
+    display: flex; align-items: center; justify-content: center;
+    font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: 0.08em; color: rgba(255,255,255,0.85);
+    filter: drop-shadow(0 26px 44px rgba(2,72,105,0.16));
+  }
+
+  section { padding: 72px 0; border-top: 1px solid var(--c-border-row); }
+  .sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 28px; }
+  .sec-head .idx { font-size: var(--fs-caption); font-weight: var(--fw-medium); letter-spacing: var(--tr-caption); color: var(--c-accent-deep); }
+  .sec-head h2 { margin: 0; }
+  .prose { max-width: 62ch; }
+  .prose p { margin: 0 0 16px; }
+  .prose strong { font-weight: var(--fw-semibold); }
+
+  .partner {
+    background: linear-gradient(180deg, rgba(52,211,153,0.10), rgba(15,118,110,0.05));
+    border: 1px solid rgba(52,211,153,0.35); border-radius: 22px; padding: 44px 48px;
+  }
+  .partner h3 { margin: 0 0 12px; font-size: var(--fs-heading); font-weight: var(--fw-semibold); letter-spacing: var(--tr-heading); color: var(--c-ink); }
+  .partner p { margin: 0 0 12px; max-width: 62ch; }
+  .partner .steps { margin: 18px 0 26px; padding: 0; list-style: none; }
+  .partner .steps li { display: flex; gap: 12px; padding: 8px 0; font-size: var(--fs-meta); font-weight: var(--fw-regular); letter-spacing: var(--tr-meta); line-height: 1.6; color: var(--c-ink-soft); }
+  .partner .steps li b { flex: none; width: 26px; height: 26px; border-radius: 50%; background: rgba(52,211,153,0.18); color: var(--c-accent-deep); display: inline-flex; align-items: center; justify-content: center; font-weight: var(--fw-bold); font-size: var(--fs-caption); }
+  .partner .mail {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 6px;
+    font-size: var(--fs-ui); font-weight: var(--fw-medium); letter-spacing: var(--tr-ui); color: var(--c-accent-deep); text-decoration: none;
+    border: 1px solid rgba(52,211,153,0.5); border-radius: 17px; height: 40px; padding: 0 24px;
+  }
+  .partner .mail:hover { background: rgba(52,211,153,0.12); }
+
+  .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 720px; }
+  .contact .card { background: var(--c-surface-card); border-radius: 14px; padding: 24px; }
+  .contact .card b { display: block; margin-bottom: 8px; font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); color: var(--c-ink); }
+  .contact .card a, .contact .card span { font-size: var(--fs-meta); font-weight: var(--fw-regular); letter-spacing: var(--tr-meta); line-height: 1.6; color: var(--c-ink-soft); text-decoration: none; }
+  .contact .card a:hover { color: var(--c-accent-deep); }
+
+  footer { border-top: 1px solid var(--c-border-row); padding: 44px 0 56px; }
+  footer .inner { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  footer a { font-size: var(--fs-item); font-weight: var(--fw-medium); letter-spacing: var(--tr-item); color: var(--c-ink-soft); text-decoration: none; margin-right: 20px; }
+  footer a:hover { color: var(--c-accent-deep); }
+  footer .copy { margin-left: auto; font-size: var(--fs-caption); font-weight: var(--fw-light); letter-spacing: var(--tr-caption); color: var(--c-muted); }
+
+  @media (max-width: 939.98px) {
+    .wrap { padding: 0 20px; }
+    .nav { width: 100%; max-width: none; margin-top: 12px; }
+    .nav a.link, .nav .btn--nav { display: none; }
+    .burger { display: flex; }
+    .hero { flex-direction: column-reverse; gap: 36px; padding: 56px 0 48px; }
+    .avatar { flex: none; width: 180px; height: 180px; }
+    .partner { padding: 32px 24px; }
+    .contact { grid-template-columns: 1fr; }
+    footer .copy { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="主导航">
+  <svg class="logo" width="26" height="25" viewBox="0 0 26 25" fill="none" aria-label="SanMu">
+    <rect x="4" y="8" width="4" height="13" rx="2" fill="#34D399"/>
+    <rect x="11" y="3" width="4" height="18" rx="2" fill="#34D399"/>
+    <rect x="18" y="10" width="4" height="11" rx="2" fill="#34D399"/>
+  </svg>
+  <span class="wordmark">SanMu<sup>Audio</sup></span>
+  <a class="link" href="#">产品</a>
+  <a class="link" href="#">关于</a>
+  <a class="link" href="#">FAQ</a>
+  <a class="link" href="#">EN</a>
+  <a class="btn btn--nav" href="#">立即下载</a>
+  <button class="burger" id="burger" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-menu">
+    <span class="burger__bar"></span><span class="burger__bar"></span>
+  </button>
+  <div class="navmenu" id="nav-menu" hidden>
+    <a class="navmenu__link" href="#">产品</a>
+    <a class="navmenu__link" href="#">关于</a>
+    <a class="navmenu__link" href="#">FAQ</a>
+    <a class="navmenu__link" href="#">EN</a>
+    <a class="navmenu__link" href="#">登录</a>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="hero-text reveal">
+    <div class="hero-eyebrow t-eyebrow"><span class="dot"></span>SANMU AUDIO · 关于</div>
+    <h1 class="t-display">关于</h1>
+    <p class="hero-prop">一个混音师，一个人写出的插件套件</p>
+    <p class="hero-sub t-body">白天和音乐打交道，晚上和代码打交道。SanMu 的每一行 DSP 与每一个旋钮，都来自我在混音台前实际遇到的需求。</p>
+  </div>
+  <div class="avatar reveal">你的照片位</div>
+</header>
+
+<main>
+  <section class="wrap" id="story">
+    <div class="sec-head reveal"><span class="idx">01</span><h2 class="t-title">我的故事</h2></div>
+    <div class="prose reveal">
+      <p class="t-meta">【文案草稿 · 待你修改】我是 <strong>______</strong>，一名混音师。每天的工作就是把一堆分轨，变成一首立得住的歌。</p>
+      <p class="t-meta">用过的插件很多，但总在细节上差一口气：想要一个既能在录音时零延迟、又能在母带时相位线性的 EQ；想要一台不靠玄学、把检测拓扑和增益结构老老实实建出来的压缩器。找不到完全顺手的，就自己写。</p>
+      <p class="t-meta">于是有了 SanMu：EQ6 与 Comp 已经发布，Reverb 与 Delay 正在路上。它不追参数表上的数字，只追我在监听音箱前确认过的听感。</p>
+      <p class="t-caption" style="margin-top:8px;">以上为草稿文案，请把你自己的故事发我替换。</p>
+    </div>
+  </section>
+
+  <section class="wrap" id="why">
+    <div class="sec-head reveal"><span class="idx">02</span><h2 class="t-title">为什么是 SanMu</h2></div>
+    <div class="prose reveal">
+      <p class="t-meta"><strong>先听感，后数字。</strong>每个算法先过我自己的混音实机：双引擎 EQ 在 REAPER 里 A/B，四模式压缩在总线与单轨上反复听，时间常数按硬件手感调，不按论文默认值。</p>
+      <p class="t-meta"><strong>干净、通透、精准。</strong>界面不堆砌：米白底、玻璃板、细线小字，彩色只用来区分功能。你看到什么颜色，就是在动什么。</p>
+      <p class="t-meta"><strong>回本即可的定价。</strong>单款 ¥19、全家桶 ¥49，Delay 免费。做插件是为了让更多人用上顺手的工具，也欢迎你一起把它做得更好。</p>
+    </div>
+  </section>
+
+  <section class="wrap" id="partner">
+    <div class="sec-head reveal"><span class="idx">03</span><h2 class="t-title">一起做</h2></div>
+    <div class="partner reveal">
+      <h3>合作开发邀请</h3>
+      <p class="t-meta">SanMu 是个人项目，但不必一直是。如果你也写代码、做 DSP、画 UI，或者只是对"一台好用的压缩器应该长什么样"有强烈意见——欢迎加入共建。</p>
+      <ul class="steps">
+        <li><b>1</b>给我写一封邮件，说说你会什么、想做什么（DSP / UI / 测试 / 文档 / 只是重度用户提需求都行）；</li>
+        <li><b>2</b>我会筛选合适的伙伴，开放私有仓库的共建权限；</li>
+        <li><b>3</b>一起迭代：功能需求在留言区投票排序，代码走评审合入，版本照常发布。</li>
+      </ul>
+      <a class="mail" href="mailto:contact@sanmuaudio.com">✉ contact@sanmuaudio.com</a>
+    </div>
+  </section>
+
+  <section class="wrap" id="contact">
+    <div class="sec-head reveal"><span class="idx">04</span><h2 class="t-title">联系</h2></div>
+    <div class="contact reveal">
+      <div class="card"><b>邮件</b><a href="mailto:contact@sanmuaudio.com">contact@sanmuaudio.com</a></div>
+      <div class="card"><b>反馈与需求</b><span>每个产品页底部的留言区，需求可投票</span></div>
+      <div class="card"><b>社交媒体</b><span>（待定，上线前补）</span></div>
+      <div class="card"><b>媒体与合作</b><a href="mailto:contact@sanmuaudio.com">contact@sanmuaudio.com</a></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap inner">
+    <svg class="logo" width="26" height="25" viewBox="0 0 26 25" fill="none" aria-label="SanMu">
+      <rect x="4" y="8" width="4" height="13" rx="2" fill="#34D399"/>
+      <rect x="11" y="3" width="4" height="18" rx="2" fill="#34D399"/>
+      <rect x="18" y="10" width="4" height="11" rx="2" fill="#34D399"/>
+    </svg>
+    <div>
+      <a href="#">产品</a><a href="#">关于</a><a href="#">FAQ</a><a href="#">隐私政策</a>
+    </div>
+    <div class="copy">© 2026 SanMu Audio · contact@sanmuaudio.com</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var els = document.querySelectorAll('.reveal');
+  if (mq.matches || !('IntersectionObserver' in window)) {
+    els.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(function (el) { io.observe(el); });
+  }
+  var burger = document.getElementById('burger');
+  var nav = document.querySelector('.nav');
+  var menu = document.getElementById('nav-menu');
+  function closeMenu() {
+    nav.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+    menu.hidden = true;
+  }
+  burger.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var open = nav.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded', String(open));
+    menu.hidden = !open;
+  });
+  document.addEventListener('click', function (e) { if (!nav.contains(e.target)) closeMenu(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) closeMenu(); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from './Nav.astro';
+import Footer from './Footer.astro';
+import PluginDisplay from './PluginDisplay.astro';
+import PluginDetail from './PluginDetail.astro';
+import { productList, type Lang } from '../data/products';
+import type { DetailKey } from '../data/product-details';
+import { internalBeta } from '../data/releases';
+import '../styles/home.css';
+const { lang } = Astro.props as { lang:Lang };
+const base=`/${lang}`;
+const zh=lang==='zh';
+const t=zh ? {
+ title:'用于混音的',titleSecond:'四款开源音频插件',sub:'均衡、压缩、延迟与混响 · AGPLv3 开源源码 & 官方签名安装包。',download:'获取安装包与源码',explore:'了解四款插件',status:'macOS · Windows',
+ purposeTitle:'SanMu 个人工作室，',purposeSecond:'协同 AI 开源开发。',
+ paragraphs:['EQ6、Comp、Delay 和 Reverb 分别处理混音中的频率、动态、时间与空间。功能设计和声音判断来自实际混音。','完整 C++ / WebUI 源码以 AGPLv3 协议开源；同时提供经 Apple Developer ID 签名的官方安装包，开箱即用。这里的频谱、压缩曲线和声场，都来自音乐播放时的真实界面。'],
+ productTitle:'按处理任务选择。',productBody:'独立使用，也可以组合在同一条轨道上。',details:'查看产品',notes:'用户手册与开源发布资料',notesBody:'系统要求、版本说明、开源授权条款与安装校验记录。',docs:'阅读发布资料',studio:'了解工作室'
+} : {
+ title:'Four open-source audio plug-ins',titleSecond:'for your mix.',sub:'Equalisation, compression, delay and reverb · AGPLv3 Open Source & Signed Installers.',download:'Get installers & code',explore:'Explore the plug-ins',status:'macOS · Windows',
+ purposeTitle:'An independent studio,',purposeSecond:'open-sourced with AI.',
+ paragraphs:['EQ6, Comp, Delay and Reverb handle frequency, dynamics, time and space. Product decisions and listening come from real mixing sessions.','Full C++ / WebUI source code is open-sourced under AGPLv3, alongside official Developer ID signed installers ready for your DAW. The spectrum, compression curves and sound fields here are captured during music playback.'],
+ productTitle:'Choose by the task.',productBody:'Use each on its own or combine them on one track.',details:'Explore product',notes:'Manuals and release documents',notesBody:'System requirements, release notes, open-source license and installation checks.',docs:'Read the documents',studio:'Meet the studio'
+};
+const catalogDetails:DetailKey[]=['eq-spectrum','comp-controls','delay-time','reverb-field'];
+const gallery=[{slug:'reverb',detail:'reverb-field',name:'SanMu Reverb'},{slug:'eq6',detail:'eq-spectrum',name:'SanMu EQ6'},{slug:'comp',detail:'comp-modes',name:'SanMu Comp'}] as const;
+---
+<Base lang={lang} title={zh?'SanMu Audio — 四款混音插件':'SanMu Audio — Four plug-ins for your mix'} description={t.sub}>
+  <Nav lang={lang} />
+  <main class="sm-home">
+    <header class="sm-home-hero">
+      <h1>{t.title}<br />{t.titleSecond}</h1>
+      <p class="sm-home-subtitle">{t.sub}</p>
+      <div class="sm-home-actions"><a class="button button-dark" href={`${base}/downloads`}><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>{t.download}</a><a class="button button-outline" href="#products">{t.explore}<span aria-hidden="true">↗</span></a></div>
+      <p class="sm-hero-meta">{t.status}<span>·</span>VST3 / AU / AAX<span>·</span>{zh?'平台状态见下载页':'See Downloads for availability'}</p>
+      <PluginDisplay lang={lang} />
+    </header>
+    <section class="sm-purpose" aria-labelledby="purpose-title">
+      <div class="sm-purpose-gallery">
+        {gallery.map((item,i)=><a class={`sm-gallery-item sm-gallery-item--${i}`} href={`${base}/plugins/${item.slug}`} aria-label={`${item.name} ${zh?'功能细节':'interface details'}`}><PluginDetail detail={item.detail} lang={lang} /><span class="sm-gallery-caption">{item.name}<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12 12 4M4 4h8v8"/></svg></span></a>)}
+      </div>
+      <div class="sm-purpose-info"><h2 id="purpose-title">{t.purposeTitle}<br />{t.purposeSecond}</h2><div class="sm-purpose-copy">{t.paragraphs.map(p=><p>{p}</p>)}</div><div class="sm-capability-links">{productList.map(p=><a href={`${base}/plugins/${p.slug}`}><span>{p.name.replace('SanMu ','')}</span><span>{p[lang].kicker}</span><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12 12 4M4 4h8v8"/></svg></a>)}</div><a class="text-link sm-studio-link" href={`${base}/about`}>{t.studio} ↗</a></div>
+    </section>
+    <section class="sm-products" id="products" aria-labelledby="products-title">
+      <div class="sm-section-intro"><h2 id="products-title">{t.productTitle}</h2><p>{t.productBody}</p></div>
+      <div class="sm-product-grid">{productList.map((p,i)=><article class={`sm-product-item sm-product-item--${p.slug}`}><a class="sm-product-image" href={`${base}/plugins/${p.slug}`}><PluginDetail detail={catalogDetails[i]} lang={lang} /></a><div class="sm-product-info"><div><p>{p[lang].kicker}</p><h3>{p.name}</h3></div><span class="sm-catalog-version">v{p.version}</span></div><p class="sm-product-summary">{p[lang].short}</p><a class="text-link" href={`${base}/plugins/${p.slug}`}>{t.details} ↗</a></article>)}</div>
+    </section>
+    <section class="sm-home-docs"><div><h2>{t.notes}</h2><p>{t.notesBody}</p><small>{zh?'当前资料更新':'Updated'} · {internalBeta.date}</small></div><a class="button button-outline" href={`${base}/release`}>{t.docs}<span aria-hidden="true">↗</span></a></section>
+  </main>
+  <Footer lang={lang}/>
+</Base>

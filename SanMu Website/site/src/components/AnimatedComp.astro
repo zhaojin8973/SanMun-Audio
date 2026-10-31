@@ -1,0 +1,36 @@
+---
+import CompMockup from './CompMockup.astro';
+interface Props {
+  variant?: 'small' | 'full';
+  theme?: 'light' | 'dark';
+}
+const { variant = 'small', theme = 'light' } = Astro.props;
+---
+
+<div class:list={['aeq6', 'aeq-comp', `aeq6-${variant}`]} data-theme={theme}>
+  <CompMockup variant={variant} theme={theme} />
+</div>
+
+<style is:global>
+  .aeq-comp { width: 100%; height: 100%; }
+  .aeq-comp svg { display: block; width: 100%; height: 100%; }
+  @keyframes aeq-sheen-comp {
+    0%   { transform: translateX(0px); opacity: 0; }
+    10%  { opacity: 0.5; }
+    90%  { opacity: 0.5; }
+    100% { transform: translateX(700px); opacity: 0; }
+  }
+  .aeq-comp .aeq-sheen { animation: aeq-sheen-comp 9s linear infinite; }
+  .aeq-comp .aeq-knob-0 { animation: aeq-turn 4.4s ease-in-out infinite; }
+  .aeq-comp .aeq-knob-1 { animation: aeq-turn 5.0s ease-in-out .4s infinite; }
+  .aeq-comp .aeq-knob-2 { animation: aeq-turn 4.6s ease-in-out .8s infinite; }
+  .aeq-comp .aeq-knob-3 { animation: aeq-turn 5.4s ease-in-out 1.2s infinite; }
+  .aeq-comp .aeq-knob-4 { animation: aeq-turn 4.9s ease-in-out 1.6s infinite; }
+  .aeq-comp .aeq-meter-l { animation: aeq-meter 3.4s ease-in-out infinite; }
+  .aeq-comp .aeq-meter-r { animation: aeq-meter 4.1s ease-in-out .6s infinite; }
+  .aeq-comp .aeq-curve-glow { animation: aeq-glow 5s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .aeq-comp * { animation: none !important; }
+    .aeq-comp .aeq-sheen { opacity: 0; }
+  }
+</style>

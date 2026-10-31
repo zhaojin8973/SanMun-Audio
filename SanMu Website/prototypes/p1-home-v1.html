@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SanMu Audio — 干净、通透、精准的混音插件</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@100..900&display=block" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #fff; }
+
+  :root {
+    --font-sans: 'Figtree', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', Helvetica, Arial, sans-serif;
+    --u  : 548px;
+    --dp : calc(var(--u) / 548);
+
+    --fs-display : 55.7px;
+    --fs-title   : calc(var(--dp) * 20);
+    --fs-heading : calc(var(--dp) * 17);
+    --fs-body    : 16.1px;
+    --fs-eyebrow : calc(var(--dp) * 15.8);
+    --fs-ui      : 15px;
+    --fs-meta    : calc(var(--dp) * 14.3);
+    --fs-item    : calc(var(--dp) * 12.9);
+    --fs-caption : calc(var(--dp) * 12.2);
+    --fs-tab     : calc(var(--dp) * 12.1);
+    --fs-sup     : 11.4px;
+    --fs-wordmark: 17.1px;
+
+    --fw-light    : 388;
+    --fw-regular  : 470;
+    --fw-medium   : 500;
+    --fw-semibold : 511;
+    --fw-bold     : 577;
+    --fw-black    : 783;
+
+    --tr-display : -0.0572em;
+    --tr-title   : -0.0570em;
+    --tr-heading : -0.0200em;
+    --tr-body    : -0.0475em;
+    --tr-eyebrow : -0.0293em;
+    --tr-ui      : -0.0080em;
+    --tr-cta     : -0.0200em;
+    --tr-meta    : -0.0447em;
+    --tr-item    : -0.0287em;
+    --tr-caption : -0.0295em;
+    --tr-tab     : -0.0398em;
+    --tr-wordmark: -0.0075em;
+
+    --lh-display : 61px;
+    --lh-body    : 20px;
+    --lh-flat    : 1;
+
+    /* SanMu palette（参考稿青色 #38c6ec → 薄荷绿 #34D399） */
+    --c-ink      : #000000;
+    --c-ink-soft : #2e2e2e;
+    --c-muted    : #b8b8b8;
+    --c-on-dark  : #ffffff;
+    --c-on-light : #000000;
+    --c-surface-nav   : #000000;
+    --c-surface-card  : #f6f8f7;
+    --c-surface-panel : #ffffff;
+    --c-border-row    : #ededed;
+    --c-accent        : #34D399;
+    --c-accent-deep   : #0f766e;
+    --c-accent-soft   : rgba(52, 211, 153, 0.12);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
+  }
+
+  .t-display { font-size: var(--fs-display); font-weight: var(--fw-regular); letter-spacing: var(--tr-display); line-height: var(--lh-display); color: var(--c-ink); }
+  .t-body    { font-size: var(--fs-body);    font-weight: var(--fw-regular); letter-spacing: var(--tr-body);    line-height: var(--lh-body);    color: var(--c-ink); }
+  .t-title   { font-size: var(--fs-title);   font-weight: var(--fw-light);   letter-spacing: var(--tr-title);   line-height: var(--lh-flat);    color: var(--c-ink); }
+  .t-heading { font-size: var(--fs-heading); font-weight: var(--fw-semibold);letter-spacing: var(--tr-heading); line-height: var(--lh-flat);    color: var(--c-ink); }
+  .t-eyebrow { font-size: var(--fs-eyebrow); font-weight: var(--fw-light);   letter-spacing: var(--tr-eyebrow); line-height: var(--lh-flat);    color: var(--c-ink); }
+  .t-meta    { font-size: var(--fs-meta);    font-weight: var(--fw-light);   letter-spacing: var(--tr-meta);    line-height: var(--lh-flat);    color: var(--c-muted); }
+  .t-item    { font-size: var(--fs-item);    font-weight: var(--fw-medium);  letter-spacing: var(--tr-item);    line-height: var(--lh-flat);    color: var(--c-ink); }
+  .t-caption { font-size: var(--fs-caption); font-weight: var(--fw-light);   letter-spacing: var(--tr-caption); line-height: var(--lh-flat);    color: var(--c-muted); }
+
+  #viewport { position: fixed; inset: 0; overflow: hidden; background: #fff; }
+  #stage {
+    position: absolute; top: 0; left: 0;
+    width: 1290px; height: 860px;
+    transform-origin: 0 0; background:
+      radial-gradient(46% 30% at 12% -4%, rgba(52,211,153,0.07), transparent 70%),
+      radial-gradient(40% 26% at 94% 6%, rgba(15,118,110,0.05), transparent 70%),
+      #fff;
+  }
+
+  /* ─────────── NAV ─────────── */
+  .nav {
+    position: absolute; left: calc(50% - 439px); top: 43px; width: 880px; height: 52px;
+    background: var(--c-surface-nav); border-radius: 26px;
+  }
+  .logo { position: absolute; left: 9px; top: 13px; }
+  .wordmark {
+    position: absolute; left: 40px; top: 2px; height: 52px;
+    display: flex; align-items: center; white-space: nowrap;
+    font-size: var(--fs-wordmark); font-weight: var(--fw-black); letter-spacing: var(--tr-wordmark);
+    color: var(--c-on-dark); line-height: var(--lh-flat);
+  }
+  .wordmark sup {
+    font-size: var(--fs-sup); font-weight: var(--fw-regular);
+    letter-spacing: 0.10em; text-transform: uppercase;
+    position: relative; top: -6px; left: 2px; color: var(--c-accent);
+  }
+  .nav a.link {
+    position: absolute; top: 0; height: 52px; display: flex; align-items: center;
+    transform: translateX(-50%);
+    font-size: var(--fs-ui); font-weight: var(--fw-medium); letter-spacing: var(--tr-ui);
+    color: var(--c-on-dark); text-decoration: none; white-space: nowrap; line-height: var(--lh-flat);
+  }
+  .nav a.link:hover { color: var(--c-accent); }
+  .link.l1 { left: 279px; }
+  .link.l2 { left: 386.5px; }
+  .link.l3 { left: 483px; }
+  .link.l4 { left: 571px; }
+  .btn {
+    position: absolute; border: 0; border-radius: 17px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: inherit; font-size: var(--fs-ui); letter-spacing: var(--tr-cta);
+    line-height: var(--lh-flat); white-space: nowrap; cursor: pointer; text-decoration: none;
+  }
+  .btn--nav { left: 718px; top: 9px; width: 153px; background: #fff; color: #000; font-weight: var(--fw-bold); }
+  .btn--nav:hover { background: var(--c-accent); }
+  .btn--hero { left: calc(50% - 64px); top: calc(388px + var(--dsk-hero-dy, 0px)); width: 129px; background: #000; color: #fff; font-weight: var(--fw-medium); }
+  .btn--hero:hover { background: var(--c-accent-deep); }
+
+  /* burger */
+  .burger {
+    display: none; flex-direction: column; justify-content: center; gap: 5px;
+    margin-left: auto; margin-right: 9px; width: 34px; height: 34px; padding: 0 7px;
+    background: none; border: 0; border-radius: 17px; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .burger__bar { display: block; height: 2px; width: 100%; background: #fff; border-radius: 1px; transition: transform .22s ease, opacity .22s ease; }
+  .burger:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+  .nav.is-open .burger__bar:nth-child(1) { transform: translateY(3.5px) rotate(45deg); }
+  .nav.is-open .burger__bar:nth-child(2) { transform: translateY(-3.5px) rotate(-45deg); }
+  .navmenu {
+    display: flex; flex-direction: column; position: absolute; top: calc(100% + 8px); right: 0;
+    min-width: 216px; padding: 10px; background: #000; border-radius: 20px;
+    opacity: 0; transform: translateY(-6px); transition: opacity .2s ease, transform .2s ease;
+    pointer-events: none;
+  }
+  .navmenu[hidden] { display: flex; }
+  .nav.is-open .navmenu { opacity: 1; transform: none; pointer-events: auto; }
+  .navmenu__link { padding: 11px 14px; border-radius: 12px; font-size: var(--fs-ui); font-weight: var(--fw-medium); letter-spacing: var(--tr-ui); color: #fff; text-decoration: none; line-height: 1; }
+  .navmenu__link:hover, .navmenu__link:focus { background: rgba(255,255,255,0.1); }
+  .navmenu__cta { margin-top: 6px; padding: 11px 14px; background: #fff; border-radius: 17px; text-align: center; color: #000; text-decoration: none; font-size: var(--fs-ui); font-weight: var(--fw-bold); letter-spacing: var(--tr-cta); }
+
+  /* ─────────── HERO ─────────── */
+  .hero-h1 {
+    position: absolute; left: 0; right: 0; top: calc(203px + var(--dsk-hero-dy, 0px));
+    margin: 0; text-align: center; white-space: pre-line;
+  }
+  .hero-sub {
+    position: absolute; left: 0; right: 0; top: calc(333px + var(--dsk-hero-dy, 0px));
+    margin: 0; text-align: center; white-space: pre-line;
+  }
+
+  /* ─────────── BAND ─────────── */
+  .band {
+    position: absolute; left: 0; right: 0; top: calc(473px + var(--dsk-band-dy, 0px)); bottom: 0;
+    overflow: hidden; background:
+      radial-gradient(60% 90% at 30% 0%, rgba(255,255,255,0.22), transparent 60%),
+      linear-gradient(135deg, #34D399 0%, #0f766e 100%);
+  }
+  .band::after { /* 细纹网格，给色带一点"仪器"质感 */
+    content: ""; position: absolute; inset: 0; opacity: 0.08;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.9), rgba(0,0,0,0.25));
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.9), rgba(0,0,0,0.25));
+    pointer-events: none;
+  }
+
+  /* EQ6 界面示意（占位，等 REAPER 截图后重绘为可动版）。
+     注意：mockup 与 card 都在 .band 内部，top 是相对色带顶（473）的坐标：
+     舞台 553 = 色带顶 + 80；舞台 549 = 色带顶 + 76 */
+  .ui-mockup {
+    position: absolute; left: 60px; top: calc(80px + var(--dsk-band-dy, 0px));
+    width: 600px; height: 332px;
+    filter: drop-shadow(0 26px 48px rgba(2, 72, 105, 0.28));
+  }
+  .ui-mockup svg { display: block; width: 100%; height: 100%; }
+
+  /* ─────────── PRODUCT CARD ─────────── */
+  .card {
+    position: absolute; left: 682px; top: calc(76px + var(--dsk-band-dy, 0px));
+    width: var(--u); height: calc(var(--dp) * 340);
+    transform: scale(var(--dsk-card-s, 1)); transform-origin: top center;
+    background: var(--c-surface-card); border-radius: calc(var(--dp) * 16); overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.6),
+      0 0 calc(var(--dp) * 9) calc(var(--dp) * 3) rgba(255,255,255,0.5),
+      0 calc(var(--dp) * 22) calc(var(--dp) * 64) rgba(2,72,105,0.16);
+  }
+  .eyebrow   { position: absolute; left: calc(var(--dp) * 19); top: calc(var(--dp) * 21); white-space: nowrap; }
+  .cardtitle { position: absolute; left: calc(var(--dp) * 18); top: calc(var(--dp) * 47); white-space: nowrap; }
+  .meta      { position: absolute; left: calc(var(--dp) * 15); top: calc(var(--dp) * 81); height: calc(var(--dp) * 28); display: flex; align-items: center; white-space: nowrap; }
+  .sep { padding: 0 calc(var(--dp) * 10); }
+
+  .tabs { position: absolute; left: 0; right: 0; top: calc(var(--dp) * 129); height: calc(var(--dp) * 30); }
+  .tab {
+    position: absolute; top: 0; height: calc(var(--dp) * 30);
+    display: flex; align-items: center; border: 0; background: none; padding: 0;
+    font-family: inherit; font-size: var(--fs-tab); font-weight: var(--fw-light);
+    letter-spacing: var(--tr-tab); color: var(--c-muted); white-space: nowrap; cursor: pointer;
+    line-height: var(--lh-flat);
+  }
+  .tab.is-active { left: calc(var(--dp) * 19); padding: 0 calc(var(--dp) * 18); font-weight: var(--fw-medium); color: var(--c-ink-soft); background: #fff; border-radius: calc(var(--dp) * 8) calc(var(--dp) * 8) 0 0; }
+  .tab.is-active::after {
+    content: ""; position: absolute; left: calc(var(--dp) * 12); right: calc(var(--dp) * 13); bottom: 0;
+    height: max(1px, calc(var(--dp) * 2)); background: var(--c-accent);
+  }
+  .t2 { left: calc(var(--dp) * 148); }
+  .t3 { left: calc(var(--dp) * 239); }
+  .t4 { left: calc(var(--dp) * 341); }
+
+  .panel {
+    position: absolute; left: calc(var(--dp) * 19); top: calc(var(--dp) * 160);
+    width: calc(var(--dp) * 511); height: calc(var(--dp) * 169);
+    background: var(--c-surface-panel); border-radius: 0 calc(var(--dp) * 8) calc(var(--dp) * 8) calc(var(--dp) * 8);
+  }
+  .panel__heading { position: absolute; left: calc(var(--dp) * 12); top: calc(var(--dp) * 10); white-space: nowrap; }
+  .row {
+    position: absolute; left: calc(var(--dp) * 13); width: calc(var(--dp) * 485); height: calc(var(--dp) * 46);
+    background: #fff; border: 1px solid var(--c-border-row); border-radius: calc(var(--dp) * 8);
+    box-shadow: 0 1px calc(var(--dp) * 2) rgba(0,0,0,0.03);
+  }
+  .row1 { top: calc(var(--dp) * 36); }
+  .row2 { top: calc(var(--dp) * 87); }
+  .dot  { position: absolute; left: calc(var(--dp) * 7); top: calc(var(--dp) * 7); width: calc(var(--dp) * 15); height: calc(var(--dp) * 15); }
+  .rowtitle { position: absolute; left: calc(var(--dp) * 33); top: calc(var(--dp) * 10); white-space: nowrap; }
+  .rowowner { position: absolute; left: calc(var(--dp) * 33); top: calc(var(--dp) * 27); white-space: nowrap; }
+
+  /* ─────────── ENTRANCE ─────────── */
+  --ease-reveal : cubic-bezier(.22, 1, .36, 1);
+  --ease-settle : cubic-bezier(.16, 1, .30, 1);
+  --dur-nav     : .62s; --dur-navitem: .5s; --dur-head: .92s;
+  --dur-copy    : .62s; --dur-cta: .58s;  --dur-panel: .94s;
+
+  [data-enter="pending"] .hero-h1 { clip-path: inset(0 0 100% 0); }
+  [data-enter="pending"] .nav { opacity: 0; translate: 0 -10px; }
+  [data-enter="pending"] .hero-sub { opacity: 0; translate: 0 14px; }
+  [data-enter="pending"] .btn--hero { opacity: 0; translate: 0 14px; }
+  [data-enter="pending"] .card, [data-enter="pending"] .ui-mockup { opacity: 0; translate: 0 22px; }
+  [data-enter="pending"] .logo, [data-enter="pending"] .wordmark,
+  [data-enter="pending"] .nav a.link, [data-enter="pending"] .btn--nav { opacity: 0; }
+
+  @keyframes enter-wipe   { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0% 0); } }
+  @keyframes enter-drop   { from { opacity: 0; translate: 0 -10px; } to { opacity: 1; translate: 0 0; } }
+  @keyframes enter-rise14 { from { opacity: 0; translate: 0 14px; }  to { opacity: 1; translate: 0 0; } }
+  @keyframes enter-rise22 { from { opacity: 0; translate: 0 22px; }  to { opacity: 1; translate: 0 0; } }
+  @keyframes enter-fade   { from { opacity: 0; } to { opacity: 1; } }
+
+  [data-enter="run"] .nav         { animation: enter-drop   var(--dur-nav)     var(--ease-settle) .05s both; }
+  [data-enter="run"] .logo        { animation: enter-fade   var(--dur-navitem) var(--ease-settle) .18s both; }
+  [data-enter="run"] .wordmark    { animation: enter-fade   var(--dur-navitem) var(--ease-settle) .22s both; }
+  [data-enter="run"] .link.l1     { animation: enter-fade   var(--dur-navitem) var(--ease-settle) .26s both; }
+  [data-enter="run"] .link.l2     { animation: enter-fade   var(--dur-navitem) var(--ease-settle) .30s both; }
+  [data-enter="run"] .link.l3     { animation: enter-fade   var(--dur-navitem) var(--ease-settle) .34s both; }
+  [data-enter="run"] .link.l4     { animation: enter-fade   var(--dur-navitem) var(--ease-settle) .38s both; }
+  [data-enter="run"] .btn--nav    { animation: enter-fade   var(--dur-navitem) var(--ease-settle) .42s both; }
+  [data-enter="run"] .hero-h1     { animation: enter-wipe   var(--dur-head)    var(--ease-reveal) .30s both; }
+  [data-enter="run"] .hero-sub    { animation: enter-rise14 var(--dur-copy)    var(--ease-settle) .62s both; }
+  [data-enter="run"] .btn--hero   { animation: enter-rise14 var(--dur-cta)     var(--ease-settle) .78s both; }
+  [data-enter="run"] .card        { animation: enter-rise22 var(--dur-panel)   var(--ease-settle) .88s both; }
+  [data-enter="run"] .ui-mockup   { animation: enter-rise22 var(--dur-panel)   var(--ease-settle) .82s both; }
+
+  [data-enter="done"] .hero-h1 { clip-path: none; }
+  [data-enter="done"] .nav, [data-enter="done"] .hero-sub, [data-enter="done"] .btn--hero,
+  [data-enter="done"] .card, [data-enter="done"] .ui-mockup,
+  [data-enter="done"] .logo, [data-enter="done"] .wordmark,
+  [data-enter="done"] .nav a.link, [data-enter="done"] .btn--nav {
+    opacity: 1; translate: 0 0; animation: none;
+  }
+
+  /* ─────────── COMPACT / MOBILE ─────────── */
+  @media (max-width: 939.98px), (scripting: none) {
+    :root {
+      --page-margin  : clamp(16px, 3.4vw, 34px);
+      --fs-display-t : clamp(31px, 3.2vw + 1.6vh, 54px);
+      --fs-body-t    : clamp(14px, 0.9vw + 0.5vh, 16.1px);
+      --gap-stack    : clamp(14px, 2.4vh, 26px);
+      --card-inset   : clamp(24px, 5.5vh, 76px);
+      --u            : min(86vw, 548px);
+      --card-h       : calc(var(--dp) * 340);
+      --band-h       : min(calc(var(--card-inset) + var(--card-h) * .9 + 340px), 110vh);
+    }
+    html, body { overflow: hidden; }
+    #viewport { position: fixed; inset: 0; overflow: hidden; }
+    #stage {
+      position: static; width: 100%; height: 100dvh; transform: none !important;
+      display: grid; grid-template-columns: 100%;
+      grid-template-rows:
+        auto
+        minmax(clamp(20px, 3.5vh, 44px), 1fr)
+        auto auto auto
+        minmax(clamp(16px, 2.4vh, 30px), .85fr)
+        minmax(0, var(--band-h));
+      grid-template-areas: "nav" "." "head" "sub" "cta" "." "art";
+      padding-top: clamp(20px, 3.4vw, 43px);
+    }
+
+    .nav { position: relative; grid-area: nav; left: auto; top: auto; height: 52px; width: min(calc(100% - 2 * var(--page-margin)), 820px); margin: 0 auto; display: flex; align-items: center; z-index: 20; }
+    .nav a.link, .nav .btn--nav { display: none; }
+    .logo { position: static; margin-left: 9px; flex: none; }
+    .wordmark { position: static; height: auto; margin-left: 6px; }
+    .burger { display: flex; }
+
+    .hero-h1 { grid-area: head; position: static; margin: 0 auto; max-width: calc(100% - 2 * var(--page-margin)); font-size: var(--fs-display-t); line-height: 1.1; white-space: pre-line; text-wrap: balance; }
+    .hero-sub { grid-area: sub; position: static; margin: var(--gap-stack) auto 0; max-width: min(52ch, calc(100% - 2 * var(--page-margin))); font-size: var(--fs-body-t); line-height: 1.45; letter-spacing: var(--tr-body); white-space: normal; text-wrap: balance; }
+    .btn--hero { grid-area: cta; position: static; justify-self: center; margin-top: calc(var(--gap-stack) * 1.4); }
+
+    .band { grid-area: art; position: relative; left: auto; right: auto; top: auto; bottom: auto; margin: 0; border-radius: 0; min-height: 0; display: flex; flex-direction: column; align-items: center; }
+    .ui-mockup {
+      position: relative; left: auto; top: auto;
+      width: min(84vw, 480px); height: auto; aspect-ratio: 600 / 332;
+      margin-top: clamp(28px, 4.5vh, 64px); translate: none;
+    }
+    .card {
+      position: relative; left: auto; top: auto;
+      width: var(--u); height: var(--card-h);
+      transform: none; margin-top: calc(var(--dp) * -40); margin-bottom: calc(var(--dp) * 56);
+    }
+  }
+
+  @media (max-width: 479.98px) {
+    .hero-h1 { white-space: normal; text-wrap: balance; }
+  }
+
+  @media (max-height: 520px) {
+    :root { --band-h: calc(calc(min(86vw, 548px) / 548) * 340 + 2 * 24px + 340px); }
+    html, body { height: auto; min-height: 100%; overflow: visible; }
+    #viewport { position: static; overflow: visible; }
+    #stage { height: auto; min-height: 100dvh; }
+  }
+
+  @media (scripting: none) {
+    .nav:hover .navmenu, .nav:focus-within .navmenu { opacity: 1; transform: none; pointer-events: auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .navmenu, .burger__bar { transition: none; }
+  }
+</style>
+<script>
+  /* 开场动画：尊重系统减弱动效设置 */
+  (function () {
+    try {
+      var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (!mq.matches) document.documentElement.setAttribute('data-enter', 'pending');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+<div id="viewport">
+  <div id="stage">
+
+    <nav class="nav" aria-label="主导航">
+      <svg class="logo" width="26" height="25" viewBox="0 0 26 25" fill="none" aria-label="SanMu">
+        <rect x="4" y="8" width="4" height="13" rx="2" fill="#34D399"/>
+        <rect x="11" y="3" width="4" height="18" rx="2" fill="#34D399"/>
+        <rect x="18" y="10" width="4" height="11" rx="2" fill="#34D399"/>
+      </svg>
+      <span class="wordmark"><span class="wordmark__lockup">SanMu<sup>Audio</sup></span></span>
+      <a class="link l1" href="#">产品</a>
+      <a class="link l2" href="#">关于</a>
+      <a class="link l3" href="#">FAQ</a>
+      <a class="link l4" href="#">EN</a>
+      <a class="btn btn--nav" href="#">立即下载</a>
+      <button class="burger" id="burger" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-menu">
+        <span class="burger__bar"></span><span class="burger__bar"></span>
+      </button>
+      <div class="navmenu" id="nav-menu" hidden>
+        <a class="navmenu__link" href="#">产品</a>
+        <a class="navmenu__link" href="#">关于</a>
+        <a class="navmenu__link" href="#">FAQ</a>
+        <a class="navmenu__link" href="#">EN</a>
+        <a class="navmenu__link" href="#">登录</a>
+        <a class="navmenu__cta" href="#">立即下载</a>
+      </div>
+    </nav>
+
+    <h1 class="hero-h1 t-display">把每一次混音
+变得干净、通透、精准</h1>
+    <p class="hero-sub t-body">六段参量 EQ 与四模式压缩现已可用，混响与延迟即将到来。
+免费试用十五天，满意再购买。</p>
+    <a class="btn btn--hero" href="#">免费试用</a>
+
+    <div class="band" role="presentation">
+      <div class="ui-mockup" aria-label="SanMu EQ6 界面（占位示意图，等截图后重绘为可动版）">
+        <svg viewBox="0 0 600 332" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="uibg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FBFDFC"/><stop offset="1" stop-color="#EEF3F1"/>
+            </linearGradient>
+            <linearGradient id="meter" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#0f766e"/>
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="598" height="330" rx="14" fill="url(#uibg)" stroke="rgba(148,163,184,0.35)"/>
+          <text x="26" y="34" font-family="Figtree,-apple-system,'PingFang SC',sans-serif" font-size="17" font-weight="600" fill="#1F2937">SanMu EQ6</text>
+          <text x="26" y="52" font-family="Figtree,-apple-system,'PingFang SC',sans-serif" font-size="10" fill="#64748B">六段参量均衡器 · Zero Latency / Linear Phase</text>
+          <!-- 曲线区网格 -->
+          <g stroke="rgba(148,163,184,0.28)" stroke-width="1">
+            <line x1="26" y1="74"  x2="574" y2="74"/>
+            <line x1="26" y1="122" x2="574" y2="122"/>
+            <line x1="26" y1="170" x2="574" y2="170"/>
+            <line x1="26" y1="218" x2="574" y2="218"/>
+            <line x1="26" y1="266" x2="574" y2="266"/>
+            <line x1="138" y1="74" x2="138" y2="266"/>
+            <line x1="206" y1="74" x2="206" y2="266"/>
+            <line x1="274" y1="74" x2="274" y2="266"/>
+            <line x1="342" y1="74" x2="342" y2="266"/>
+            <line x1="410" y1="74" x2="410" y2="266"/>
+            <line x1="478" y1="74" x2="478" y2="266"/>
+            <line x1="546" y1="74" x2="546" y2="266"/>
+          </g>
+          <g font-family="Figtree,-apple-system,sans-serif" font-size="8.5" fill="#94A3B8">
+            <text x="30" y="78">+12</text><text x="33" y="126">+6</text>
+            <text x="36" y="174">0</text><text x="33" y="222">−6</text><text x="30" y="270">−12</text>
+            <text x="108" y="280">50</text><text x="178" y="280">100</text>
+            <text x="248" y="280">200</text><text x="316" y="280">500</text>
+            <text x="382" y="280">1k</text><text x="450" y="280">2k</text>
+            <text x="518" y="280">5k</text><text x="558" y="280">10k</text>
+          </g>
+          <!-- 频响曲线（示意） -->
+          <path d="M 26 130 Q 116 130 150 160 Q 190 192 230 172 Q 280 148 328 176 Q 380 206 420 188 Q 466 168 496 178 Q 522 186 574 166"
+                fill="none" stroke="#1F2937" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 26 130 Q 116 130 150 160 Q 190 192 230 172 Q 280 148 328 176 Q 380 206 420 188 Q 466 168 496 178 Q 522 186 574 166"
+                fill="none" stroke="rgba(52,211,153,0.25)" stroke-width="7" stroke-linecap="round"/>
+          <g>
+            <circle cx="116" cy="130" r="4" fill="#1d4ed8" stroke="#fff" stroke-width="1.4"/>
+            <circle cx="230" cy="172" r="4" fill="#059669" stroke="#fff" stroke-width="1.4"/>
+            <circle cx="328" cy="176" r="4" fill="#d97706" stroke="#fff" stroke-width="1.4"/>
+            <circle cx="420" cy="188" r="4" fill="#e11d48" stroke="#fff" stroke-width="1.4"/>
+            <circle cx="496" cy="178" r="4" fill="#7c3aed" stroke="#fff" stroke-width="1.4"/>
+            <circle cx="574" cy="166" r="4" fill="#c026d3" stroke="#fff" stroke-width="1.4"/>
+          </g>
+          <!-- 六段旋钮 -->
+          <g font-family="Figtree,-apple-system,'PingFang SC',sans-serif">
+            <!-- B1 60Hz +4 -->
+            <circle cx="76" cy="308" r="24" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="3"/>
+            <path d="M 59 291 A 24 24 0 0 1 95.6 320" fill="none" stroke="#1d4ed8" stroke-width="5" stroke-linecap="round"/>
+            <text x="76" y="316" font-size="9" font-weight="600" fill="#1d4ed8" text-anchor="middle">+4</text>
+            <text x="76" y="286" font-size="8.5" fill="#64748B" text-anchor="middle">60Hz</text>
+            <!-- B2 250Hz -2 -->
+            <circle cx="162" cy="308" r="24" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="3"/>
+            <path d="M 145 291 A 24 24 0 0 1 179.6 294" fill="none" stroke="#059669" stroke-width="5" stroke-linecap="round"/>
+            <text x="162" y="316" font-size="9" font-weight="600" fill="#059669" text-anchor="middle">−2</text>
+            <text x="162" y="286" font-size="8.5" fill="#64748B" text-anchor="middle">250Hz</text>
+            <!-- B3 1k +3 -->
+            <circle cx="248" cy="308" r="24" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="3"/>
+            <path d="M 231 291 A 24 24 0 0 1 269 322" fill="none" stroke="#d97706" stroke-width="5" stroke-linecap="round"/>
+            <text x="248" y="316" font-size="9" font-weight="600" fill="#d97706" text-anchor="middle">+3</text>
+            <text x="248" y="286" font-size="8.5" fill="#64748B" text-anchor="middle">1k</text>
+            <!-- B4 4k -5 -->
+            <circle cx="334" cy="308" r="24" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="3"/>
+            <path d="M 317 291 A 24 24 0 0 1 347.8 290" fill="none" stroke="#e11d48" stroke-width="5" stroke-linecap="round"/>
+            <text x="334" y="316" font-size="9" font-weight="600" fill="#e11d48" text-anchor="middle">−5</text>
+            <text x="334" y="286" font-size="8.5" fill="#64748B" text-anchor="middle">4k</text>
+            <!-- B5 10k +2 -->
+            <circle cx="420" cy="308" r="24" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="3"/>
+            <path d="M 403 291 A 24 24 0 0 1 441.4 315" fill="none" stroke="#7c3aed" stroke-width="5" stroke-linecap="round"/>
+            <text x="420" y="316" font-size="9" font-weight="600" fill="#7c3aed" text-anchor="middle">+2</text>
+            <text x="420" y="286" font-size="8.5" fill="#64748B" text-anchor="middle">10k</text>
+            <!-- B6 16k +6 -->
+            <circle cx="506" cy="308" r="24" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="3"/>
+            <path d="M 489 291 A 24 24 0 0 1 523 325" fill="none" stroke="#c026d3" stroke-width="5" stroke-linecap="round"/>
+            <text x="506" y="316" font-size="9" font-weight="600" fill="#c026d3" text-anchor="middle">+6</text>
+            <text x="506" y="286" font-size="8.5" fill="#64748B" text-anchor="middle">16k</text>
+            <!-- OUT 表 -->
+            <text x="556" y="282" font-size="8.5" fill="#64748B">OUT</text>
+            <rect x="556" y="286" width="28" height="4" rx="2" fill="#E8EEEC"/>
+            <rect x="556" y="286" width="19" height="4" rx="2" fill="url(#meter)"/>
+            <rect x="556" y="294" width="28" height="4" rx="2" fill="#E8EEEC"/>
+            <rect x="556" y="294" width="17" height="4" rx="2" fill="url(#meter)"/>
+            <text x="568" y="308" font-size="7.5" fill="#94A3B8" text-anchor="middle">L  R</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="card">
+        <div class="eyebrow t-eyebrow">SANMU AUDIO · 三牧音频插件套件</div>
+        <div class="cardtitle t-title" id="card-title">SanMu EQ6</div>
+        <div class="meta t-meta">
+          macOS · Windows<span class="sep">&bull;</span>VST3 / AU / AAX<span class="sep">&bull;</span><span id="card-meta">已发布</span>
+        </div>
+        <div class="tabs" role="tablist">
+          <button class="tab is-active" id="tab-eq6" role="tab" aria-selected="true">EQ6</button>
+          <button class="tab t2" id="tab-comp" role="tab" aria-selected="false">Comp</button>
+          <button class="tab t3" id="tab-reverb" role="tab" aria-selected="false">Reverb</button>
+          <button class="tab t4" id="tab-delay" role="tab" aria-selected="false">Delay</button>
+        </div>
+        <div class="panel">
+          <div class="panel__heading t-heading">核心特性</div>
+          <div class="row row1">
+            <svg class="dot" viewBox="0 0 15 15"><circle cx="7.5" cy="7.5" r="7.5" fill="#34D399"/><path d="M4.1 7.4 6.1 9.3 10.2 5.2" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="rowtitle t-item" id="row1-title">六段参量 EQ，零延迟与线性相位双引擎</div>
+            <div class="rowowner t-meta" id="row1-owner">Owner: 双引擎 · 中/侧处理</div>
+          </div>
+          <div class="row row2">
+            <svg class="dot" viewBox="0 0 15 15"><circle cx="7.5" cy="7.5" r="7.5" fill="#0f766e"/><circle cx="7.5" cy="7.5" r="2.6" fill="#fff"/></svg>
+            <div class="rowtitle t-item" id="row2-title">TPT-SVF 滤波，全频段极低噪底</div>
+            <div class="rowowner t-meta" id="row2-owner">Owner: 高精度滤波拓扑</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  /* 开场动画：等字体就绪 → 双 rAF → data-enter=run；完成清理 → done */
+  var root = document.documentElement;
+  function start() {
+    if (root.getAttribute('data-enter') !== 'pending') return;
+    requestAnimationFrame(function () { requestAnimationFrame(function () {
+      root.setAttribute('data-enter', 'run');
+    }); });
+  }
+  var started = false;
+  function kick() { if (!started) { started = true; start(); } }
+  try {
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(kick).catch(kick);
+      setTimeout(kick, 1200);
+    } else kick();
+  } catch (e) { kick(); }
+
+  var card = document.querySelector('.card');
+  var done = false;
+  function finish() {
+    if (done) return; done = true;
+    root.setAttribute('data-enter', 'done');
+  }
+  if (card) card.addEventListener('animationend', function (e) { if (e.animationName === 'enter-rise22') finish(); });
+  setTimeout(finish, 3000);
+
+  /* 桌面适配：1290×860 舞台等比缩放 */
+  var DW = 1290, DH = 860, CARD_TOP = 549, CARD_H = 340, NAV_W = 880, MINW = 960, HERO_SHARE = 0.55;
+  var stage = document.getElementById('stage');
+  var mq = window.matchMedia('(min-width: 940px)');
+
+  function fit() {
+    if (!mq.matches) {
+      stage.style.width = ''; stage.style.height = ''; stage.style.transform = '';
+      stage.style.setProperty('--dsk-card-s', '1');
+      stage.style.setProperty('--dsk-band-dy', '0px');
+      stage.style.setProperty('--dsk-hero-dy', '0px');
+      return;
+    }
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var s = Math.min(vh / DH, vw / MINW);
+    var W = vw / s, H = vh / s;
+    var csMax = Math.min(NAV_W, 0.80 * W) / 548;
+    var cs = Math.max(1, Math.min((H - CARD_TOP) / CARD_H, csMax));
+    var dy = Math.max(0, H - CARD_TOP - CARD_H * cs);
+    var heroDy = HERO_SHARE * dy;
+    stage.style.width = W + 'px';
+    stage.style.height = H + 'px';
+    stage.style.transform = 'scale(' + s + ')';
+    stage.style.setProperty('--dsk-card-s', String(cs));
+    stage.style.setProperty('--dsk-band-dy', dy + 'px');
+    stage.style.setProperty('--dsk-hero-dy', heroDy + 'px');
+  }
+
+  fit();
+  window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', fit);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', fit);
+  window.addEventListener('pageshow', fit);
+  try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); } catch (e) {}
+
+  /* 汉堡菜单 */
+  var burger = document.getElementById('burger');
+  var nav = document.querySelector('.nav');
+  var menu = document.getElementById('nav-menu');
+  function closeMenu() {
+    nav.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+    menu.hidden = true;
+  }
+  burger.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var open = nav.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded', String(open));
+    menu.hidden = !open;
+    burger.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+  });
+  document.addEventListener('click', function (e) { if (!nav.contains(e.target)) closeMenu(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeMenu(); burger.focus(); }
+  });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) closeMenu(); });
+
+  /* 产品卡片 tabs */
+  var products = {
+    eq6: {
+      title: 'SanMu EQ6', meta: '已发布',
+      r1t: '六段参量 EQ，零延迟与线性相位双引擎', r1o: 'Owner: 双引擎 · 中/侧处理',
+      r2t: 'TPT-SVF 滤波，全频段极低噪底', r2o: 'Owner: 高精度滤波拓扑'
+    },
+    comp: {
+      title: 'SanMu Comp', meta: '已发布',
+      r1t: 'Clean / VCA / FET / Opto 四模式物理建模', r1o: 'Owner: 检测拓扑 · 增益结构',
+      r2t: 'IN / GR / OUT 三表，GR 衰减条与峰值告警', r2o: 'Owner: 实时电平监测'
+    },
+    reverb: {
+      title: 'SanMu Reverb', meta: 'Coming Soon',
+      r1t: '算法混响，自然空间与低 CPU 占用', r1o: 'Owner: 空间弥散算法',
+      r2t: 'RT60 / Damping 精细控制', r2o: 'Owner: 房间建模参数'
+    },
+    delay: {
+      title: 'SanMu Delay', meta: '免费 · Coming Soon',
+      r1t: '四款中唯一免费，BPM 同步与磁带质感', r1o: 'Owner: 时间纵深',
+      r2t: 'Ping-Pong / 分数延迟插值', r2o: 'Owner: 延迟拓扑'
+    }
+  };
+  function activate(key, btn) {
+    var p = products[key];
+    document.getElementById('card-title').textContent = p.title;
+    document.getElementById('card-meta').textContent = p.meta;
+    document.getElementById('row1-title').textContent = p.r1t;
+    document.getElementById('row1-owner').textContent = p.r1o;
+    document.getElementById('row2-title').textContent = p.r2t;
+    document.getElementById('row2-owner').textContent = p.r2o;
+    document.querySelectorAll('.tab').forEach(function (t) {
+      t.classList.remove('is-active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    btn.classList.add('is-active');
+    btn.setAttribute('aria-selected', 'true');
+  }
+  document.getElementById('tab-eq6').addEventListener('click', function () { activate('eq6', this); });
+  document.getElementById('tab-comp').addEventListener('click', function () { activate('comp', this); });
+  document.getElementById('tab-reverb').addEventListener('click', function () { activate('reverb', this); });
+  document.getElementById('tab-delay').addEventListener('click', function () { activate('delay', this); });
+})();
+</script>
+</body>
+</html>

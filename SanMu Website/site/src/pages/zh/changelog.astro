@@ -1,0 +1,45 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Base
+  lang="zh"
+  title="更新日志 — SanMu Audio"
+  description="SanMu Audio 四款插件的产品状态与更新方向。"
+>
+  <Nav lang="zh" current="faq" />
+
+  <header class="page-hero wrap">
+    <div class="hero-eyebrow t-eyebrow reveal"><span class="dot"></span>SANMU AUDIO · 更新</div>
+    <h1 class="t-display reveal">更新日志</h1>
+    <p class="hero-prop reveal">四款产品的当前功能记录</p>
+  </header>
+
+  <main>
+    <section class="wrap" style="padding-top:32px;">
+      <div class="changelog reveal">
+        <div class="cl-entry">
+          <div class="ver">EQ6<small>0.1.5 · 开源正式版</small></div>
+          <ul><li>最多 24 个频段槽位，优化实时悬停选峰响应与移出画布自动退出逻辑，支持 Pre/Post 与 Mid/Side</li><li>Zero Latency 与设置中的 Linear Phase；Clean、Tube、Discrete 保持独立定位</li></ul>
+        </div>
+        <div class="cl-entry">
+          <div class="ver">Comp<small>0.1.17 · 开源正式版</small></div>
+          <ul><li>LEV、VCA、FET、Opto 四种独立压缩行为</li><li>加高 GR + IN/OUT 双表头历史视图，默认 6s 平缓时间窗（支持 6s / 10s / 2s 切换），保留五秒 LISTEN 测算</li></ul>
+        </div>
+        <div class="cl-entry">
+          <div class="ver">Delay<small>0.1.5 · 开源正式版</small></div>
+          <ul><li>Modern、Tape、BBD、Diffused 四种引擎与 Echo time editor</li><li>Independent、Ping-Pong、Cross 路由，支持 SYNC、BPM、FREE 和 Ducking</li></ul>
+        </div>
+        <div class="cl-entry">
+          <div class="ver">Reverb<small>1.0.4 · 开源正式版</small></div>
+          <ul><li>Hall、Plate、Room、Chamber 四类空间入口</li><li>Predelay、Decay、Damping、Diffusion、Modulation 与 Output EQ 分区呈现</li></ul>
+        </div>
+      </div>
+      <p class="t-meta reveal" style="margin-top:28px;">本页对应 2026-10-31 AGPLv3 开源正式版（永久无期限限制）。平台状态与文档见<a class="text-link" href="/zh/release">版本与发布资料页</a>。</p>
+    </section>
+  </main>
+
+  <Footer lang="zh" />
+</Base>
