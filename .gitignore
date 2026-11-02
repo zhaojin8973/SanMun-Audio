@@ -33,6 +33,10 @@ backup_*/
 *.mp3
 *.dmg
 
+# 允许官网下载中心存放已公证的正式安装包
+!SanMu Website/site/public/downloads/**
+
+
 # 本地依赖和 IDE 文件
 node_modules/
 **/node_modules/
@@ -64,8 +68,7 @@ SanMu */.gitmodules
 SanMu */external/JUCE/
 .legacy-git/
 
-# 网站保持独立仓库；其公开文档不参与插件 Windows 构建
-SanMu Website/
+# 插件 Windows 构建只关注源码；网站及设计资料
 SanMu UI 设计系统/
 SanMu 资料库/
 研究资料/
