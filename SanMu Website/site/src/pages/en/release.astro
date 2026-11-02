@@ -35,7 +35,7 @@ import { internalBeta } from '../../data/releases';
             {internalBeta.products.map((product) => <tr>
               <td><strong>{product.name}</strong></td>
               <td>{product.version}</td>
-              <td><span class="release-status release-status--ready">Universal 2 · Signed & Notarized</span><small><a href={`/downloads/macos/${product.packageName}`} download style="color:inherit; text-decoration:underline;">{product.packageName}</a></small></td>
+              <td><span class="release-status release-status--ready">Universal 2 · Signed & Notarized</span><small>{product.packageName} (Launch in preparation)</small></td>
               <td><span class="release-status release-status--pending">Script / CI Build Ready</span><small>Windows 10/11 x64 · VST3</small></td>
             </tr>)}
           </tbody>

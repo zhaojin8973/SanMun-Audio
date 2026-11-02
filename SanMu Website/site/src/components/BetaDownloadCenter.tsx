@@ -1,42 +1,10 @@
 type Lang = 'zh' | 'en';
 
 const macProducts = [
-  {
-    name: 'SanMu EQ6',
-    version: '0.1.5',
-    size: '13.7 MB',
-    filename: 'SanMu_EQ6_v0.1.5_macOS_Signed.pkg',
-    downloadUrl: '/downloads/macos/SanMu_EQ6_v0.1.5_macOS_Signed.pkg',
-    mirrorUrl: 'https://github.com/zhaojin8973/SanMun-Audio/releases/download/v1.0.0-macos/SanMu_EQ6_v0.1.5_macOS_Signed.pkg',
-    formats: 'VST3 / AU / AAX',
-  },
-  {
-    name: 'SanMu Comp',
-    version: '0.1.17',
-    size: '13.5 MB',
-    filename: 'SanMu_Comp_v0.1.17_macOS_Signed.pkg',
-    downloadUrl: '/downloads/macos/SanMu_Comp_v0.1.17_macOS_Signed.pkg',
-    mirrorUrl: 'https://github.com/zhaojin8973/SanMun-Audio/releases/download/v1.0.0-macos/SanMu_Comp_v0.1.17_macOS_Signed.pkg',
-    formats: 'VST3 / AU / AAX',
-  },
-  {
-    name: 'SanMu Delay',
-    version: '0.1.5',
-    size: '13.1 MB',
-    filename: 'SanMu_Delay_v0.1.5_macOS_Signed.pkg',
-    downloadUrl: '/downloads/macos/SanMu_Delay_v0.1.5_macOS_Signed.pkg',
-    mirrorUrl: 'https://github.com/zhaojin8973/SanMun-Audio/releases/download/v1.0.0-macos/SanMu_Delay_v0.1.5_macOS_Signed.pkg',
-    formats: 'VST3 / AU / AAX',
-  },
-  {
-    name: 'SanMu Reverb',
-    version: '1.0.4',
-    size: '15.9 MB',
-    filename: 'SanMu_Reverb_v1.0.4_macOS_Signed.pkg',
-    downloadUrl: '/downloads/macos/SanMu_Reverb_v1.0.4_macOS_Signed.pkg',
-    mirrorUrl: 'https://github.com/zhaojin8973/SanMun-Audio/releases/download/v1.0.0-macos/SanMu_Reverb_v1.0.4_macOS_Signed.pkg',
-    formats: 'VST3 / AU / AAX',
-  },
+  { name: 'SanMu EQ6', version: '0.1.5', formats: 'VST3 / AU / AAX' },
+  { name: 'SanMu Comp', version: '0.1.17', formats: 'VST3 / AU / AAX' },
+  { name: 'SanMu Delay', version: '0.1.5', formats: 'VST3 / AU / AAX' },
+  { name: 'SanMu Reverb', version: '1.0.4', formats: 'VST3 / AU / AAX' },
 ];
 
 const winProducts = [
@@ -48,36 +16,28 @@ const winProducts = [
 
 const copy = {
   zh: {
-    title: '官方签名公证安装包与开源源码',
-    body: 'SanMu Audio 四款效果器现已开放正式版一键下载。macOS 安装包均已完成 Apple Developer ID 签名、苹果官方公证（Notarized）与 Avid PACE 官方 AAX 签名，下载后直接双击安装即可，无需额外安全授权；原生支持 Apple Silicon（M1/M2/M3/M4）与 Intel 处理器，完美兼容 Logic Pro、Cubase、Pro Tools、Reaper、FL Studio 等宿主。',
-    suiteTitle: '📦 四合一全套插件包 (macOS · 56 MB)',
-    suiteDesc: '包含 EQ6、Comp、Delay、Reverb 全部四款已公证安装包，适合一键批量安装。',
-    downloadSuite: '一键下载全套安装包 (.zip)',
-    downloadPkg: '下载 .pkg',
-    macReady: 'macOS Universal 2 · VST3 / AU / AAX（已签名公证）',
-    windowsPending: 'Windows x64 · VST3 / AAX（支持源码编译）',
-    expires: 'AGPLv3 开源正式版 · 永久无期限限制',
-    checksums: 'SHA256 校验清单',
-    releaseTag: 'GitHub Release 镜像 ↗',
-    buildSource: '源码 / 构建 ↗',
-    docLink: '查看版本与公证记录 ↗',
-    notarizedTag: '已公证 · 门禁零拦截',
+    title: '官方发售筹备中 · 暂未开放下载',
+    body: 'SanMu Audio 四款效果器插件（SanMu EQ6、SanMu Comp、SanMu Delay、SanMu Reverb）已全部完成 Apple 官方公证（Notarized）与 Avid PACE 官方签名。目前团队正在最终整理定价方案与商业发售策略，安装包下载通道暂时关闭，敬请期待正式公布！您可先查阅下方产品说明与用户手册了解插件功能。',
+    suiteTitle: '🏷️ 定价与发售方案制定中',
+    suiteDesc: '全套四款插件（EQ6、Comp、Delay、Reverb）将连同官方定价与授权方式统一正式公布。',
+    comingSoonBadge: '敬请期待 · 暂未开放下载',
+    macReady: 'macOS Universal 2 · VST3 / AU / AAX（签名公证已就绪）',
+    windowsPending: 'Windows x64 · VST3 / AAX（筹备中）',
+    statusTag: '发售筹备中',
+    docLink: '查阅产品文档与手册 ↗',
+    feedbackLink: '关注发售动态 / 联系工作室 ↗',
   },
   en: {
-    title: 'Official Signed & Notarized Installers & Source Code',
-    body: 'SanMu Audio plug-in suite is now open for direct download. macOS packages are signed with Apple Developer ID, officially notarized by Apple, and digitally signed by Avid PACE for AAX. Ready to install with zero Gatekeeper warnings; natively supports Apple Silicon (M1-M4) & Intel, compatible with Logic Pro, Cubase, Pro Tools, Reaper, FL Studio, and more.',
-    suiteTitle: '📦 4-in-1 Suite Package (macOS · 56 MB)',
-    suiteDesc: 'Contains notarized installers for EQ6, Comp, Delay, and Reverb in a single download.',
-    downloadSuite: 'Download 4-in-1 Suite (.zip)',
-    downloadPkg: 'Download .pkg',
-    macReady: 'macOS Universal 2 · VST3 / AU / AAX (Notarized)',
-    windowsPending: 'Windows x64 · VST3 / AAX (Build from source)',
-    expires: 'AGPLv3 Open-Source Release · No Time Limit',
-    checksums: 'SHA256 Checksums',
-    releaseTag: 'GitHub Release Mirror ↗',
-    buildSource: 'Source / Build ↗',
-    docLink: 'View Release & Notarization Docs ↗',
-    notarizedTag: 'Notarized · Zero Warnings',
+    title: 'Official Launch in Preparation · Downloads Paused',
+    body: 'The SanMu Audio plug-in suite (EQ6, Comp, Delay, Reverb) has completed Apple Notarization and Avid PACE signing. Official pricing and launch packages are currently being finalized. Downloads are temporarily paused. Stay tuned for the official release! In the meantime, feel free to explore the product overviews and manuals below.',
+    suiteTitle: '🏷️ Pricing & Launch Details Pending',
+    suiteDesc: 'The complete 4-plugin suite will be officially launched alongside pricing and licensing options.',
+    comingSoonBadge: 'Coming Soon · Downloads Closed',
+    macReady: 'macOS Universal 2 · VST3 / AU / AAX (Signed & Notarized)',
+    windowsPending: 'Windows x64 · VST3 / AAX (In preparation)',
+    statusTag: 'In Preparation',
+    docLink: 'Read Documentation & Manuals ↗',
+    feedbackLink: 'Contact Studio ↗',
   },
 } as const;
 
@@ -88,7 +48,7 @@ export default function BetaDownloadCenter({ lang }: { lang: Lang; releaseId?: s
     <div class="download-center">
       <div class="download-auth">
         <div>
-          <p class="eyebrow">SANMU AUDIO · OPEN SOURCE & OFFICIAL INSTALLERS</p>
+          <p class="eyebrow">SANMU AUDIO · OFFICIAL LAUNCH PREPARATION</p>
           <h2>{t.title}</h2>
           <p>{t.body}</p>
         </div>
@@ -96,18 +56,13 @@ export default function BetaDownloadCenter({ lang }: { lang: Lang; releaseId?: s
           <strong style="font-size:15px; font-weight:600; color:#111;">{t.suiteTitle}</strong>
           <p style="font-size:12px; color:#666; margin:0; line-height:1.6;">{t.suiteDesc}</p>
           <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:4px;">
-            <a
-              class="button button-dark"
-              href="https://github.com/zhaojin8973/SanMun-Audio/releases/download/v1.0.0-macos/SanMu_Audio_macOS_Signed_Installers_Suite.zip"
-              style="font-size:12px; padding:0 18px; min-height:40px; text-decoration:none;"
+            <span
+              style="display:inline-flex; align-items:center; font-size:12px; font-weight:600; padding:8px 16px; background:#f0f0f2; color:#555; border-radius:6px;"
             >
-              {t.downloadSuite}
-            </a>
-            <a class="text-link" href="/downloads/macos/SHA256SUMS.txt" target="_blank" rel="noopener" style="font-size:11px;">
-              {t.checksums}
-            </a>
-            <a class="text-link" href="https://github.com/zhaojin8973/SanMun-Audio/releases/tag/v1.0.0-macos" target="_blank" rel="noopener" style="font-size:11px;">
-              {t.releaseTag}
+              {t.comingSoonBadge}
+            </span>
+            <a class="text-link" href="#documents" style="font-size:11px;">
+              {t.docLink}
             </a>
           </div>
         </div>
@@ -115,7 +70,7 @@ export default function BetaDownloadCenter({ lang }: { lang: Lang; releaseId?: s
 
       <div class="download-release-meta">
         <span>macOS Universal 2 · Apple Silicon (M1~M4) & Intel · macOS 10.15+</span>
-        <span>{t.expires}</span>
+        <span>代码签名与 Apple 官方公证已就绪 · 发售方案准备中</span>
       </div>
 
       <div class="download-platform-grid">
@@ -131,13 +86,16 @@ export default function BetaDownloadCenter({ lang }: { lang: Lang; releaseId?: s
                 <div>
                   <strong>{product.name}</strong>
                   <small>
-                    v{product.version} · {product.size} · Universal 2 · {product.formats} · {t.notarizedTag}
+                    v{product.version} · Universal 2 · {product.formats} · 签名公证已就绪
                   </small>
                 </div>
                 <div style="display:flex; gap:8px; align-items:center;">
-                  <a class="button button-dark" href={product.downloadUrl} download style="text-decoration:none;">
-                    {t.downloadPkg}
-                  </a>
+                  <span
+                    class="download-artifact-status"
+                    style="font-size:11px; padding:6px 12px; background:#f0f0f2; color:#666; border-radius:5px; font-weight:500;"
+                  >
+                    {t.statusTag}
+                  </span>
                 </div>
               </article>
             ))}
@@ -157,15 +115,12 @@ export default function BetaDownloadCenter({ lang }: { lang: Lang; releaseId?: s
                   <strong>{product.name}</strong>
                   <small>v{product.version} · Windows 10/11 x64 · {product.formats}</small>
                 </div>
-                <a
-                  class="button button-outline"
-                  href="https://github.com/zhaojin8973/SanMun-Audio"
-                  target="_blank"
-                  rel="noopener"
-                  style="text-decoration:none;"
+                <span
+                  class="download-artifact-status"
+                  style="font-size:11px; padding:6px 12px; background:#f0f0f2; color:#666; border-radius:5px; font-weight:500;"
                 >
-                  {t.buildSource}
-                </a>
+                  {t.statusTag}
+                </span>
               </article>
             ))}
           </div>

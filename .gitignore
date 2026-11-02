@@ -33,8 +33,6 @@ backup_*/
 *.mp3
 *.dmg
 
-# 允许官网下载中心存放已公证的正式安装包
-!SanMu Website/site/public/downloads/**
 
 
 # 本地依赖和 IDE 文件
