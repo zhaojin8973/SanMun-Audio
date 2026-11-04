@@ -9,7 +9,7 @@
 }
 *,*::before,*::after { box-sizing:border-box; }
 html { scroll-behavior:smooth; scroll-padding-top:30px; }
-body { margin:0; background:#fff; color:var(--ink); font-family:Inter,-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Segoe UI',sans-serif; -webkit-font-smoothing:antialiased; min-width:300px; }
+body { margin:0; background:#fff; color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','PingFang SC','Hiragino Sans GB','Microsoft YaHei','Segoe UI',Roboto,sans-serif; -webkit-font-smoothing:antialiased; min-width:300px; text-rendering:optimizeLegibility; }
 img { display:block; max-width:100%; height:auto; }
 a { color:inherit; text-decoration:none; }
 button,input,textarea,select { font:inherit; }

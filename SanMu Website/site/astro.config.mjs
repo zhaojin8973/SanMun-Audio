@@ -10,10 +10,10 @@ export default defineConfig({
   i18n: {
     defaultLocale: 'zh',
     locales: ['zh', 'en'],
-    routing: { prefixDefaultLocale: true },
+    routing: {
+      prefixDefaultLocale: true,
+      redirectToDefaultLocale: false,
+    },
   },
   integrations: [sitemap(), preact()],
-  redirects: {
-    '/': '/zh/',
-  },
 });
